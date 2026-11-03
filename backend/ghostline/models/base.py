@@ -14,8 +14,8 @@ from scipy.integrate import odeint
 from ..schemas import ModelSpec, ParamSpec
 
 G = 9.81
-RTOL = 1e-8
-ATOL = 1e-10
+RTOL = 1e-10
+ATOL = 1e-12
 
 
 class PhysModel(ABC):

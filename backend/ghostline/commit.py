@@ -125,7 +125,7 @@ def condition_initial_state(model_name: str, phys: dict, t: np.ndarray, y: np.nd
     for g in guesses[:3]:
         x_start = np.clip(np.asarray(g[n_phys:], float), lo + 1e-9, hi - 1e-9)
         sol = least_squares(res, x_start, bounds=(lo, hi), method="trf", loss="soft_l1",
-                            f_scale=max(3 * noise_sigma, 1e-9), x_scale="jac")
+                            f_scale=max(3 * noise_sigma, 1e-9), x_scale="jac", diff_step=1e-6)
         if best is None or sol.cost < best.cost:
             best = sol
     return [float(v) for v in best.x], t0

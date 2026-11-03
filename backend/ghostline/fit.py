@@ -15,6 +15,9 @@ from .models.base import PhysModel, get_model
 from .schemas import FitResult
 
 
+DIFF_STEP = 1e-6
+
+
 def _vec_bounds(model: PhysModel):
     lo = np.array([p.lower for p in model.all_params], float)
     hi = np.array([p.upper for p in model.all_params], float)
@@ -53,9 +56,18 @@ def _solve(model, t, y, t0, x_start, lo, hi, f_scale, max_nfev=300):
         phys, x0 = _unpack(model, v)
         return model.simulate(t, phys, x0, t0) - y
 
-    x_start = np.clip(x_start, lo + 1e-9, hi - 1e-9)
-    return least_squares(res, x_start, bounds=(lo, hi), method="trf", loss="soft_l1",
-                         f_scale=f_scale, x_scale="jac", max_nfev=max_nfev), res
+    x = np.clip(x_start, lo + 1e-9, hi - 1e-9)
+    # diff_step well above the integrator tolerance keeps finite-difference Jacobians clean;
+    # restarting trf avoids its premature xtol stops on these oscillatory cost surfaces.
+    total = 0
+    for _ in range(4):
+        sol = least_squares(res, x, bounds=(lo, hi), method="trf", loss="soft_l1", f_scale=f_scale,
+                            x_scale="jac", diff_step=DIFF_STEP, max_nfev=max_nfev)
+        total += sol.nfev
+        if np.allclose(sol.x, x, rtol=1e-9, atol=0) or total >= 3 * max_nfev:
+            break
+        x = sol.x
+    return sol, res
 
 
 def fit_model(model: PhysModel, t: np.ndarray, y: np.ndarray, noise_sigma: float, run_id: str = "",
