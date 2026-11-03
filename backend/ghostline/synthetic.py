@@ -85,7 +85,7 @@ class SynthConfig:
     truth_model: str = ""  # default: pendulum_nonlinear / drag_quadratic
     fps: float = 60.0
     duration: Optional[float] = None
-    track_noise_px: float = 0.3
+    track_noise_px: float = 0.6
     pixel_noise: float = 3.0
     seed: int = 0
     bump_at: Optional[float] = None

@@ -14,6 +14,23 @@ KNOB_GRIDS = {
 DEFAULT_KNOB = {"pendulum": "release_angle_deg", "falling_drag": "n_filters"}
 
 
+DECISIVE_SIGMA = 10.0
+
+
+def relative_effect(fits: list[FitResult], value: float, ref_knob: float) -> float:
+    """Largest pairwise relative difference in the models' predicted observable at this setting."""
+    obs = []
+    for f in fits:
+        m = get_model(f.model)
+        p = m.transfer(physics_of(f), ref_knob, value)
+        obs.append(m.predicted_observables(p, value)[m.observable])
+    best = 0.0
+    for i in range(len(obs)):
+        for j in range(i + 1, len(obs)):
+            best = max(best, abs(obs[i] - obs[j]) / max(abs(obs[i] + obs[j]) / 2, 1e-12))
+    return best
+
+
 def feasibility(knob: str, value: float) -> tuple[float, str]:
     if knob == "release_angle_deg":
         if value <= 70:
@@ -26,43 +43,67 @@ def feasibility(knob: str, value: float) -> tuple[float, str]:
 
 
 def separation(fits: list[FitResult], knob: str, value: float, ref_knob: float, noise_sigma: float,
-               fps: float = 60.0) -> tuple[float, float, dict]:
-    """Simulate every model at `value` from the same initial state; return (rms sep σ, max sep σ, curves)."""
+               fps: float = 60.0, window_s: float = 0.5) -> tuple[float, float, dict]:
+    """Expected separation under the commit/reveal protocol.
+
+    For each ordered pair (A = truth, B = candidate): simulate what the camera would see if A were true,
+    condition B's initial state on the first `window_s` of that footage (params frozen, exactly as in a
+    reveal), then measure how far B's prediction drifts from A afterwards. Returns (rms σ, max σ, curves).
+    """
+    from .commit import condition_initial_state
+
     models = [get_model(f.model) for f in fits]
     phys = [m.transfer(physics_of(f), ref_knob, value) for m, f in zip(models, fits)]
     horizon = max(m.design_horizon(p, value) for m, p in zip(models, phys))
     t = np.arange(0, horizon, 1 / fps)
-    preds = {f.model: m.simulate(t, p, m.default_initial_state(value), 0.0) for f, m, p in zip(fits, models, phys)}
-    keys = list(preds)
-    rms, mx = 0.0, 0.0
-    for i in range(len(keys)):
-        for j in range(i + 1, len(keys)):
-            d = preds[keys[i]] - preds[keys[j]]
+    s = max(noise_sigma, 1e-12)
+    rms, mx, curves = 0.0, 0.0, {"t": t}
+    for a, (fa, ma, pa) in enumerate(zip(fits, models, phys)):
+        ya = ma.simulate(t, pa, ma.default_initial_state(value), 0.0)
+        obs = ma.observed_mask(t, ya)
+        to, yo = t[obs], ya[obs]
+        if len(to) < 10:
+            continue
+        cond = to <= to[0] + window_s
+        curves[fa.model] = ya
+        for b, (fb, mb, pb) in enumerate(zip(fits, models, phys)):
+            if a == b or cond.all():
+                continue
+            x0, t0 = condition_initial_state(fb.model, pb, to[cond], yo[cond], s)
+            d = mb.simulate(to[~cond], pb, x0, t0) - yo[~cond]
             rms = max(rms, float(np.sqrt(np.mean(d ** 2))))
             mx = max(mx, float(np.max(np.abs(d))))
-    s = max(noise_sigma, 1e-12)
-    return rms / s, mx / s, {"t": t, **preds}
+    return rms / s, mx / s, curves
 
 
 def design_experiment(fits: list[FitResult], knob: str, ref_knob: float, noise_sigma: float,
                       source_run_id: str = "") -> ExperimentProposal:
     grid = KNOB_GRIDS[knob]
-    curve, best, best_u = [], None, -1.0
+    rows = []
     for v in grid:
         rms, mx, _ = separation(fits, knob, v, ref_knob, noise_sigma)
         feas, _ = feasibility(knob, v)
-        u = np.log1p(rms) * feas  # diminishing returns on separation, penalise risky setups
-        curve.append((v, rms))
-        if u > best_u:
-            best, best_u = (v, rms, mx), u
-    v, rms, mx = best
+        rows.append({"value": v, "rms": rms, "max": mx, "feas": feas,
+                     "effect": relative_effect(fits, v, ref_knob)})
+    curve = [(r["value"], r["rms"]) for r in rows]
+    # 1) settings that are decisive with margin and safe to perform;
+    # 2) among them, the largest effect in the physical observable (robust to unmodelled systematics).
+    ok = [r for r in rows if r["rms"] >= DECISIVE_SIGMA and r["feas"] >= 0.9]
+    if ok:
+        best = max(ok, key=lambda r: r["effect"])
+        why = (f"it is the feasible setting with the largest physical effect ({100 * best['effect']:.0f}% difference in the "
+               f"predicted observable) among settings that separate the models by ≥{DECISIVE_SIGMA:g}σ")
+    else:
+        best = max(rows, key=lambda r: np.log1p(r["rms"]) * r["feas"])
+        why = "no feasible setting reaches a decisive margin; this maximises separation with a feasibility penalty"
+    v, rms, mx = best["value"], best["rms"], best["max"]
     _, note = feasibility(knob, v)
     unit = "°" if knob == "release_angle_deg" else " filters"
     cur = dict(curve).get(ref_knob)
     cur_txt = f"{cur:.1f}σ at the current setting ({ref_knob:g}{unit})" if cur is not None else ""
-    feas_note = (f"Best trade-off between separation and feasibility at {v:g}{unit}: models separate by {rms:.1f}σ "
-                 f"(RMS; max {mx:.0f}σ). " + (f"Compare {cur_txt}. " if cur_txt else "") +
-                 (f"Larger values were penalised because {feasibility(knob, grid[-1])[1]}." if note == "" else f"Caution: {note}."))
+    feas_note = (f"Recommend {v:g}{unit} because {why}. Expected separation {rms:.1f}σ RMS (max {mx:.0f}σ) after the "
+                 f"0.5 s conditioning window. " + (f"Compare {cur_txt}. " if cur_txt else "") +
+                 (f"Larger values were avoided because {feasibility(knob, grid[-1])[1]}." if note == "" else f"Caution: {note}."))
     if knob == "release_angle_deg":
         instr = (f"Release the same pendulum from {v:g}° (string taut, bob at rest), keep the camera and the reference "
                  f"object exactly where they were, and record at least 6 full swings.")

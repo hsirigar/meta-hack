@@ -79,6 +79,10 @@ class PhysModel(ABC):
     @abstractmethod
     def design_horizon(self, phys: dict, knob_value: float) -> float: ...
 
+    def observed_mask(self, t: np.ndarray, y: np.ndarray) -> np.ndarray:
+        """Which simulated samples the camera would actually see (experiment design)."""
+        return np.ones(len(t), bool)
+
     @abstractmethod
     def predicted_observables(self, phys: dict, knob_value: float) -> dict[str, float]: ...
 

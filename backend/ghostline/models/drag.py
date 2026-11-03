@@ -6,7 +6,8 @@ import numpy as np
 from ..schemas import ParamSpec
 from .base import G, PhysModel, register
 
-DROP_HEIGHT_M = 2.0
+DROP_HEIGHT_M = 2.0  # visible fall distance
+RELEASE_ABOVE_M = 0.3  # filters are released just above the top of the frame
 
 
 class _DragBase(PhysModel):
@@ -35,11 +36,14 @@ class _DragBase(PhysModel):
         return starts
 
     def default_initial_state(self, knob_value):
-        return [0.0, 0.0]
+        return [-RELEASE_ABOVE_M, 0.0]
+
+    def observed_mask(self, t, y):
+        return (y >= 0) & (y <= DROP_HEIGHT_M)
 
     def design_horizon(self, phys, knob_value):
         t = np.linspace(0, 10, 2001)
-        y = self.simulate(t, phys, [0.0, 0.0], 0.0)
+        y = self.simulate(t, phys, self.default_initial_state(knob_value), 0.0)
         i = int(np.searchsorted(y, DROP_HEIGHT_M))
         return float(t[min(i, len(t) - 1)])
 
