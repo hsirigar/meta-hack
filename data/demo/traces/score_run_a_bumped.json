@@ -1,0 +1,274 @@
+{
+ "task": "score",
+ "ids": {
+  "run_id": "run_a_bumped",
+  "commitment_id": "c_e331bd0d76e1",
+  "experiment_id": "exp_pendulum_a",
+  "system_type": "pendulum"
+ },
+ "events": [
+  {
+   "type": "status",
+   "ts": 1793703541.1082938,
+   "text": "agent: scripted policy (mock; set LLM_BACKEND=meta for Muse Wonder)",
+   "task": "score",
+   "ids": {
+    "run_id": "run_a_bumped",
+    "commitment_id": "c_e331bd0d76e1",
+    "experiment_id": "exp_pendulum_a",
+    "system_type": "pendulum"
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703541.108303,
+   "text": "Same setup as the committed experiment, so I'm reusing its scene description and reference object."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703541.108306,
+   "id": "call_0_describe_scene",
+   "name": "describe_scene",
+   "args": {
+    "run_id": "run_a_bumped"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703541.155853,
+   "id": "call_0_describe_scene",
+   "name": "describe_scene",
+   "ok": true,
+   "result": {
+    "system_type": "pendulum",
+    "tracked_concepts": [
+     "orange pendulum bob"
+    ],
+    "reference_object": {
+     "concept": "green reference disk (US quarter)",
+     "known_size_m": 0.02426,
+     "dimension": "diameter"
+    },
+    "anchor_hint": "pivot at top center",
+    "gravity_direction_hint": "down",
+    "notes": "Mock scene backend (template). Set SCENE_BACKEND=meta or baseten for Muse Spark. | reused from committed setup",
+    "confidence": 0.9,
+    "backend": "template (mock)"
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703541.1558578,
+   "text": "Tracking the orange pendulum bob in the new video."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703541.15586,
+   "id": "call_1_track_objects",
+   "name": "track_objects",
+   "args": {
+    "run_id": "run_a_bumped"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703543.638913,
+   "id": "call_1_track_objects",
+   "name": "track_objects",
+   "ok": true,
+   "result": {
+    "tracks": {
+     "orange pendulum bob": {
+      "track_id": "orange:orange pendulum bob",
+      "frames": 720,
+      "coverage": 1.0,
+      "mean_score": 1.0
+     },
+     "green reference disk (US quarter)": {
+      "track_id": "green:green reference disk (US quarter)",
+      "frames": 720,
+      "coverage": 1.0,
+      "mean_score": 1.0
+     }
+    }
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703543.6389172,
+   "text": "Measuring. For a reveal run, only the first 0.5 s may be used, and only to read off the starting state."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703543.6389189,
+   "id": "call_2_measure",
+   "name": "measure",
+   "args": {
+    "run_id": "run_a_bumped"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703543.659559,
+   "id": "call_2_measure",
+   "name": "measure",
+   "ok": true,
+   "result": {
+    "series": "theta",
+    "unit": "rad",
+    "n_frames": 720,
+    "n_valid": 720,
+    "duration_s": 11.983,
+    "noise_sigma": 0.0012814,
+    "meters_per_pixel": 0.0012735,
+    "calibration_method": "reference_object",
+    "split_train_end_t": 0.5,
+    "knobs": {
+     "release_angle_deg": 70.0
+    },
+    "pendulum_length_m": 0.61226,
+    "pivot_px": [
+     655.81,
+     76.959
+    ],
+    "amplitude_deg": 70.385
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703543.6595619,
+   "text": "Checking this recording is trustworthy and matches the committed setup."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703543.659563,
+   "id": "call_3_check_validity",
+   "name": "check_validity",
+   "args": {
+    "run_id": "run_a_bumped"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703543.69638,
+   "id": "call_3_check_validity",
+   "name": "check_validity",
+   "ok": true,
+   "result": {
+    "status": "invalid",
+    "checks": [
+     {
+      "name": "camera_drift",
+      "status": "pass",
+      "reason": "Reference object stayed within 32.4 px of its starting position."
+     },
+     {
+      "name": "camera_jump",
+      "status": "invalid",
+      "reason": "The reference object jumped 32.3 px between t=4.98s and t=5.00s (646\u03c3 of normal jitter): the camera was bumped."
+     },
+     {
+      "name": "scale_changed",
+      "status": "pass",
+      "reason": "Scale stable (reference size varied 0.7%)."
+     },
+     {
+      "name": "tracking_lost",
+      "status": "pass",
+      "reason": "Object tracked in 100.0% of the evaluation frames."
+     },
+     {
+      "name": "frame_timing",
+      "status": "pass",
+      "reason": "Frame timing regular (median 60.0 fps)."
+     },
+     {
+      "name": "pendulum_geometry",
+      "status": "warning",
+      "reason": "The bob's path is not a clean arc (circle-fit residual 10.6 px): string may stretch or the swing isn't planar."
+     },
+     {
+      "name": "setup_mismatch",
+      "status": "pass",
+      "reason": "Same pendulum as the committed experiment (length 0.612 m vs 0.601 m)."
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703543.696383,
+   "text": "Verifying the commitment hash, then scoring the frozen predictions against what actually happened."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703543.696385,
+   "id": "call_4_evaluate_commitment",
+   "name": "evaluate_commitment",
+   "args": {
+    "commitment_id": "c_e331bd0d76e1",
+    "run_id": "run_a_bumped"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703543.716675,
+   "id": "call_4_evaluate_commitment",
+   "name": "evaluate_commitment",
+   "ok": true,
+   "result": {
+    "hash_verified": true,
+    "validity": "invalid",
+    "winner": null,
+    "summary": {
+     "refused": "run is INVALID; commitment not scored",
+     "reasons": [
+      "The reference object jumped 32.3 px between t=4.98s and t=5.00s (646\u03c3 of normal jitter): the camera was bumped.",
+      "The bob's path is not a clean arc (circle-fit residual 10.6 px): string may stretch or the swing isn't planar."
+     ]
+    },
+    "per_model": [],
+    "validity_reasons": [
+     "The reference object jumped 32.3 px between t=4.98s and t=5.00s (646\u03c3 of normal jitter): the camera was bumped.",
+     "The bob's path is not a clean arc (circle-fit residual 10.6 px): string may stretch or the swing isn't planar."
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703543.7166772,
+   "text": "Rendering the committed predictions as ghosts over the new video."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703543.716678,
+   "id": "call_5_render_ghosts",
+   "name": "render_ghosts",
+   "args": {
+    "run_id": "run_a_bumped"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703545.2671459,
+   "id": "call_5_render_ghosts",
+   "name": "render_ghosts",
+   "ok": true,
+   "result": {
+    "overlay_url": "/api/runs/run_a_bumped/overlay.mp4",
+    "ghosts": [],
+    "path": "runs/run_a_bumped/overlay.mp4"
+   }
+  },
+  {
+   "type": "message",
+   "ts": 1793703545.2671611,
+   "text": "INVALID run, so the commitment stays unscored. The reference object jumped 32.3 px between t=4.98s and t=5.00s (646\u03c3 of normal jitter): the camera was bumped. The bob's path is not a clean arc (circle-fit residual 10.6 px): string may stretch or the swing isn't planar. Re-film with the camera fixed and the same setup; the commitment is still open."
+  },
+  {
+   "type": "done",
+   "ts": 1793703545.267173,
+   "result": {}
+  }
+ ]
+}

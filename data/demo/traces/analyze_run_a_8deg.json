@@ -1,0 +1,450 @@
+{
+ "task": "analyze",
+ "ids": {
+  "run_id": "run_a_8deg",
+  "experiment_id": "exp_pendulum_a",
+  "system_type": "pendulum"
+ },
+ "events": [
+  {
+   "type": "status",
+   "ts": 1793703524.6146529,
+   "text": "agent: scripted policy (mock; set LLM_BACKEND=meta for Muse Wonder)",
+   "task": "analyze",
+   "ids": {
+    "run_id": "run_a_8deg",
+    "experiment_id": "exp_pendulum_a",
+    "system_type": "pendulum"
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703524.614669,
+   "text": "First I need to know what's in the frame and what I can use as a ruler."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703524.614672,
+   "id": "call_0_describe_scene",
+   "name": "describe_scene",
+   "args": {
+    "run_id": "run_a_8deg"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703524.615545,
+   "id": "call_0_describe_scene",
+   "name": "describe_scene",
+   "ok": true,
+   "result": {
+    "system_type": "pendulum",
+    "tracked_concepts": [
+     "orange pendulum bob"
+    ],
+    "reference_object": {
+     "concept": "green reference disk (US quarter)",
+     "known_size_m": 0.02426,
+     "dimension": "diameter"
+    },
+    "anchor_hint": "pivot at top center",
+    "gravity_direction_hint": "down",
+    "notes": "Mock scene backend (template). Set SCENE_BACKEND=meta or baseten for Muse Spark.",
+    "confidence": 0.9,
+    "backend": "template (mock)"
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703524.615555,
+   "text": "Tracking the orange pendulum bob and the green reference disk (US quarter) (24.26 mm reference)."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703524.6155572,
+   "id": "call_1_track_objects",
+   "name": "track_objects",
+   "args": {
+    "run_id": "run_a_8deg"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703527.130147,
+   "id": "call_1_track_objects",
+   "name": "track_objects",
+   "ok": true,
+   "result": {
+    "tracks": {
+     "orange pendulum bob": {
+      "track_id": "orange:orange pendulum bob",
+      "frames": 720,
+      "coverage": 1.0,
+      "mean_score": 1.0
+     },
+     "green reference disk (US quarter)": {
+      "track_id": "green:green reference disk (US quarter)",
+      "frames": 720,
+      "coverage": 1.0,
+      "mean_score": 1.0
+     }
+    }
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703527.130157,
+   "text": "Converting pixels to physical units and fixing the train/holdout split before any fitting."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703527.130165,
+   "id": "call_2_measure",
+   "name": "measure",
+   "args": {
+    "run_id": "run_a_8deg"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703527.150669,
+   "id": "call_2_measure",
+   "name": "measure",
+   "ok": true,
+   "result": {
+    "series": "theta",
+    "unit": "rad",
+    "n_frames": 720,
+    "n_valid": 720,
+    "duration_s": 11.983,
+    "noise_sigma": 0.0011843,
+    "meters_per_pixel": 0.001278,
+    "calibration_method": "reference_object",
+    "split_train_end_t": 7.19,
+    "knobs": {
+     "release_angle_deg": 8.0
+    },
+    "pendulum_length_m": 0.63879,
+    "pivot_px": [
+     640.36,
+     50.053
+    ],
+    "amplitude_deg": 7.6578
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703527.150672,
+   "text": "Before trusting these numbers, checking that the camera, scale and tracking held steady."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703527.150673,
+   "id": "call_3_check_validity",
+   "name": "check_validity",
+   "args": {
+    "run_id": "run_a_8deg"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703527.1852422,
+   "id": "call_3_check_validity",
+   "name": "check_validity",
+   "ok": true,
+   "result": {
+    "status": "valid",
+    "checks": [
+     {
+      "name": "camera_drift",
+      "status": "pass",
+      "reason": "Reference object stayed within 0.0 px of its starting position."
+     },
+     {
+      "name": "camera_jump",
+      "status": "pass",
+      "reason": "No sudden camera jumps."
+     },
+     {
+      "name": "scale_changed",
+      "status": "pass",
+      "reason": "Scale stable (reference size varied 0.4%)."
+     },
+     {
+      "name": "tracking_lost",
+      "status": "pass",
+      "reason": "Object tracked in 100.0% of the evaluation frames."
+     },
+     {
+      "name": "frame_timing",
+      "status": "pass",
+      "reason": "Frame timing regular (median 60.0 fps)."
+     },
+     {
+      "name": "pendulum_geometry",
+      "status": "pass",
+      "reason": "Bob moves on a circular arc (residual 0.60 px, length 0.639 m)."
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703527.185246,
+   "text": "Listing the candidate models for this system."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703527.185247,
+   "id": "call_4_list_models",
+   "name": "list_models",
+   "args": {
+    "system_type": "pendulum"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703527.18605,
+   "id": "call_4_list_models",
+   "name": "list_models",
+   "ok": true,
+   "result": {
+    "models": [
+     {
+      "name": "pendulum_linear",
+      "equation": "\\ddot\\theta + 2\\gamma\\dot\\theta + \\omega_0^2\\,\\theta = 0",
+      "params": [
+       "omega0",
+       "gamma",
+       "theta0",
+       "dtheta0"
+      ],
+      "knob_transfer": "omega0 and gamma are properties of the pendulum and stay fixed; the new initial state comes from the conditioning window"
+     },
+     {
+      "name": "pendulum_nonlinear",
+      "equation": "\\ddot\\theta + 2\\gamma\\dot\\theta + \\omega_0^2\\,\\sin\\theta = 0",
+      "params": [
+       "omega0",
+       "gamma",
+       "theta0",
+       "dtheta0"
+      ],
+      "knob_transfer": "omega0 and gamma are properties of the pendulum and stay fixed; the new initial state comes from the conditioning window"
+     },
+     {
+      "name": "pendulum_nonlinear_quaddamp",
+      "equation": "\\ddot\\theta + c\\,\\dot\\theta|\\dot\\theta| + \\omega_0^2\\,\\sin\\theta = 0",
+      "params": [
+       "omega0",
+       "c",
+       "theta0",
+       "dtheta0"
+      ],
+      "knob_transfer": "omega0 and gamma are properties of the pendulum and stay fixed; the new initial state comes from the conditioning window"
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703527.18606,
+   "text": "Fitting pendulum_linear and pendulum_nonlinear on the first part of the clip only. The rest is held out."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703527.1860611,
+   "id": "call_5_fit_models",
+   "name": "fit_models",
+   "args": {
+    "run_id": "run_a_8deg",
+    "model_names": [
+     "pendulum_linear",
+     "pendulum_nonlinear"
+    ]
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703530.6871302,
+   "id": "call_5_fit_models",
+   "name": "fit_models",
+   "ok": true,
+   "result": {
+    "note": "fitted on training window only; holdout scored with frozen parameters",
+    "fits": [
+     {
+      "model": "pendulum_linear",
+      "params": {
+       "omega0": 4.04,
+       "gamma": 0.02999,
+       "theta0": 0.1341,
+       "dtheta0": 0.0005204
+      },
+      "param_std": {
+       "omega0": 0.0004203,
+       "gamma": 0.0003972,
+       "theta0": 0.0002123,
+       "dtheta0": 0.0008856
+      },
+      "train_rmse": 0.00149,
+      "holdout_rmse": 0.001655,
+      "bic": -5600.0,
+      "ljung_box_p": 0.3141,
+      "n_train": 432,
+      "n_holdout": 288
+     },
+     {
+      "model": "pendulum_nonlinear",
+      "params": {
+       "omega0": 4.043,
+       "gamma": 0.03,
+       "theta0": 0.1341,
+       "dtheta0": -6.521e-05
+      },
+      "param_std": {
+       "omega0": 0.0003649,
+       "gamma": 0.000398,
+       "theta0": 0.0002112,
+       "dtheta0": 0.0008129
+      },
+      "train_rmse": 0.001484,
+      "holdout_rmse": 0.001653,
+      "bic": -5603.0,
+      "ljung_box_p": 0.2961,
+      "n_train": 432,
+      "n_holdout": 288
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703530.6871328,
+   "text": "Comparing the models only on the data they never saw."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703530.687134,
+   "id": "call_6_compare_models",
+   "name": "compare_models",
+   "args": {
+    "run_id": "run_a_8deg"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703530.707718,
+   "id": "call_6_compare_models",
+   "name": "compare_models",
+   "ok": true,
+   "result": {
+    "status": "ambiguous",
+    "best": null,
+    "max_separation_sigma": 0.4795,
+    "delta_bic": 3.259,
+    "holdout_rmse_ratio": 1.002,
+    "noise_sigma": 0.001184,
+    "rule": "ambiguous if |dBIC| < 6 and holdout RMSE ratio < 1.2 and max separation < 3 sigma",
+    "holdout_rmse": {
+     "pendulum_linear": 0.001655,
+     "pendulum_nonlinear": 0.001653
+    },
+    "holdout_rmse_in_noise_sigma": {
+     "pendulum_linear": 1.398,
+     "pendulum_nonlinear": 1.395
+    },
+    "implied_length_m": {
+     "pendulum_linear": 0.6012,
+     "pendulum_nonlinear": 0.6001
+    },
+    "measured_length_m": 0.6388,
+    "amplitude": {
+     "deg": 7.658
+    }
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703530.707722,
+   "text": "As a cross-check, letting sparse regression propose an equation from the data alone."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703530.707723,
+   "id": "call_7_discover_equation",
+   "name": "discover_equation",
+   "args": {
+    "run_id": "run_a_8deg"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703531.135634,
+   "id": "call_7_discover_equation",
+   "name": "discover_equation",
+   "ok": true,
+   "result": {
+    "equation": "\u03b8'' = \u2212 16.37\u00b7sin(theta)",
+    "terms": {
+     "sin(theta)": -16.37
+    },
+    "r2": 0.954,
+    "library": [
+     "theta",
+     "theta^3",
+     "sin(theta)",
+     "dtheta",
+     "dtheta|dtheta|"
+    ],
+    "threshold": 0.05,
+    "amplitude_deg": 7.658,
+    "method": "PySINDy smoothed finite differences + best-subset sparse regression (BIC)",
+    "caveat": "theta and sin(theta) are nearly collinear below ~20 degrees"
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703531.135639,
+   "text": "Drawing each model's prediction over the video as a ghost."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703531.135641,
+   "id": "call_8_render_ghosts",
+   "name": "render_ghosts",
+   "args": {
+    "run_id": "run_a_8deg",
+    "model_names": [
+     "pendulum_linear",
+     "pendulum_nonlinear"
+    ]
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703532.91225,
+   "id": "call_8_render_ghosts",
+   "name": "render_ghosts",
+   "ok": true,
+   "result": {
+    "overlay_url": "/api/runs/run_a_8deg/overlay.mp4",
+    "ghosts": [
+     "linear (small-angle)",
+     "nonlinear (sin)"
+    ],
+    "path": "runs/run_a_8deg/overlay.mp4"
+   }
+  },
+  {
+   "type": "message",
+   "ts": 1793703532.9122891,
+   "text": "Inconclusive at 7.7\u00b0. Both models predict the held-out data equally well (pendulum_linear: 1.40\u03c3, pendulum_nonlinear: 1.40\u03c3 RMSE), and their predictions never differ by more than 0.48\u03c3 of measurement noise (\u0394BIC 3.3). This footage can't tell them apart. Ask me what to film next. Implied length g/\u03c9\u2080\u00b2 = 0.601 m (the arc is too short to measure the string length precisely from the video)."
+  },
+  {
+   "type": "done",
+   "ts": 1793703532.9123049,
+   "result": {}
+  }
+ ]
+}

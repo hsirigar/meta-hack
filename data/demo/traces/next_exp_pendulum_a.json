@@ -1,0 +1,176 @@
+{
+ "task": "next",
+ "ids": {
+  "experiment_id": "exp_pendulum_a",
+  "system_type": "pendulum"
+ },
+ "events": [
+  {
+   "type": "status",
+   "ts": 1793703532.933513,
+   "text": "agent: scripted policy (mock; set LLM_BACKEND=meta for Muse Wonder)",
+   "task": "next",
+   "ids": {
+    "experiment_id": "exp_pendulum_a",
+    "system_type": "pendulum"
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703532.933522,
+   "text": "Searching over the setting I control for the experiment where the models disagree the most, relative to measurement noise."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703532.933524,
+   "id": "call_0_design_experiment",
+   "name": "design_experiment",
+   "args": {
+    "experiment_id": "exp_pendulum_a",
+    "knob": "release_angle_deg"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703533.409995,
+   "id": "call_0_design_experiment",
+   "name": "design_experiment",
+   "ok": true,
+   "result": {
+    "knob": "release_angle_deg",
+    "recommended_value": 70.0,
+    "expected_separation_sigma": 860.5,
+    "expected_max_separation_sigma": 1554.0,
+    "discrimination_curve": [
+     {
+      "value": 5.0,
+      "separation_sigma": 0.4664
+     },
+     {
+      "value": 10.0,
+      "separation_sigma": 1.137
+     },
+     {
+      "value": 15.0,
+      "separation_sigma": 6.879
+     },
+     {
+      "value": 20.0,
+      "separation_sigma": 18.89
+     },
+     {
+      "value": 25.0,
+      "separation_sigma": 39.31
+     },
+     {
+      "value": 30.0,
+      "separation_sigma": 70.34
+     },
+     {
+      "value": 35.0,
+      "separation_sigma": 114.1
+     },
+     {
+      "value": 40.0,
+      "separation_sigma": 172.7
+     },
+     {
+      "value": 45.0,
+      "separation_sigma": 247.8
+     },
+     {
+      "value": 50.0,
+      "separation_sigma": 340.5
+     },
+     {
+      "value": 55.0,
+      "separation_sigma": 450.7
+     },
+     {
+      "value": 60.0,
+      "separation_sigma": 576.8
+     },
+     {
+      "value": 65.0,
+      "separation_sigma": 715.2
+     },
+     {
+      "value": 70.0,
+      "separation_sigma": 860.5
+     },
+     {
+      "value": 75.0,
+      "separation_sigma": 1005.0
+     },
+     {
+      "value": 80.0,
+      "separation_sigma": 1140.0
+     }
+    ],
+    "feasibility_note": "Recommend 70\u00b0 because it is the feasible setting with the largest physical effect (8% difference in the predicted observable) among settings that separate the models by \u226510\u03c3. Expected separation 860.5\u03c3 RMS (max 1554\u03c3) after the 0.5 s conditioning window. Larger values were avoided because above ~75\u00b0 the string can go slack and the bob may leave the frame.",
+    "filming_instructions": "Release the same pendulum from 70\u00b0 (string taut, bob at rest), keep the camera and the reference object exactly where they were, and record at least 6 full swings."
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703533.4099982,
+   "text": "Locking in every model's prediction now, before you film, so the result can't be fitted after the fact."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703533.4099998,
+   "id": "call_1_commit_predictions",
+   "name": "commit_predictions",
+   "args": {
+    "experiment_id": "exp_pendulum_a",
+    "knob_setting": {
+     "release_angle_deg": 70.0
+    }
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703533.450282,
+   "id": "call_1_commit_predictions",
+   "name": "commit_predictions",
+   "ok": true,
+   "result": {
+    "commitment_id": "c_e331bd0d76e1",
+    "sha256": "e331bd0d76e13e0457ccf5fb974e84bdb47f87193c95e9abb214045dd4bbf48d",
+    "hash12": "e331bd0d76e1",
+    "created_at": "2026-11-03T10:58:53.446324Z",
+    "knob_setting": {
+     "release_angle_deg": 70.0
+    },
+    "predictions": {
+     "pendulum_linear": {
+      "period_s": 1.555,
+      "implied_length_m": 0.60116,
+      "omega0_at_target": 4.0396,
+      "gamma_at_target": 0.029991
+     },
+     "pendulum_nonlinear": {
+      "period_s": 1.6826,
+      "implied_length_m": 0.60007,
+      "omega0_at_target": 4.0433,
+      "gamma_at_target": 0.029997
+     }
+    },
+    "protocol": "winner = lowest RMSE after the conditioning window, provided the run is valid"
+   }
+  },
+  {
+   "type": "message",
+   "ts": 1793703533.450312,
+   "text": "Film this next: 70\u00b0. There the models separate by 860.5\u03c3 (max 1554\u03c3), versus 0.5\u03c3 at the weakest setting. Predictions are committed as e331bd0d76e1 (pendulum_linear: period_s 1.55, implied_length_m 0.601; pendulum_nonlinear: period_s 1.68, implied_length_m 0.6). Release the same pendulum from 70\u00b0 (string taut, bob at rest), keep the camera and the reference object exactly where they were, and record at least 6 full swings."
+  },
+  {
+   "type": "done",
+   "ts": 1793703533.4503198,
+   "result": {
+    "commitment_id": "c_e331bd0d76e1",
+    "sha256": "e331bd0d76e13e0457ccf5fb974e84bdb47f87193c95e9abb214045dd4bbf48d"
+   }
+  }
+ ]
+}

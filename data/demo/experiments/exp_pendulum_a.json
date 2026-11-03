@@ -1,0 +1,94 @@
+{
+ "id": "exp_pendulum_a",
+ "name": "Pendulum A",
+ "system_type": "pendulum",
+ "run_ids": [
+  "run_a_8deg",
+  "run_a_70deg",
+  "run_a_bumped"
+ ],
+ "commit_ids": [
+  "c_e331bd0d76e1"
+ ],
+ "description": "Small-angle pendulum: linear or nonlinear?",
+ "proposal": {
+  "knob": "release_angle_deg",
+  "value": 70.0,
+  "expected_separation_sigma": 860.4655387758429,
+  "expected_max_separation_sigma": 1553.7949948951984,
+  "discrimination_curve": [
+   [
+    5.0,
+    0.46640552015514464
+   ],
+   [
+    10.0,
+    1.1368360617445024
+   ],
+   [
+    15.0,
+    6.87938120001594
+   ],
+   [
+    20.0,
+    18.88777573577498
+   ],
+   [
+    25.0,
+    39.314451820093105
+   ],
+   [
+    30.0,
+    70.33575794451235
+   ],
+   [
+    35.0,
+    114.11462868783829
+   ],
+   [
+    40.0,
+    172.69649208134135
+   ],
+   [
+    45.0,
+    247.79497098364538
+   ],
+   [
+    50.0,
+    340.4625789243585
+   ],
+   [
+    55.0,
+    450.6582954114532
+   ],
+   [
+    60.0,
+    576.7713309235249
+   ],
+   [
+    65.0,
+    715.2443251684556
+   ],
+   [
+    70.0,
+    860.4655387758429
+   ],
+   [
+    75.0,
+    1004.9399639130419
+   ],
+   [
+    80.0,
+    1139.5238286712251
+   ]
+  ],
+  "feasibility_note": "Recommend 70° because it is the feasible setting with the largest physical effect (8% difference in the predicted observable) among settings that separate the models by ≥10σ. Expected separation 860.5σ RMS (max 1554σ) after the 0.5 s conditioning window. Larger values were avoided because above ~75° the string can go slack and the bob may leave the frame.",
+  "models": [
+   "pendulum_linear",
+   "pendulum_nonlinear"
+  ],
+  "source_run_id": "run_a_8deg",
+  "filming_instructions": "Release the same pendulum from 70° (string taut, bob at rest), keep the camera and the reference object exactly where they were, and record at least 6 full swings."
+ },
+ "created_at": "2026-11-03T10:58:43.060615Z"
+}

@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --color-ink: #0b0d12;
+  --color-panel: #12151c;
+  --color-panel2: #181c25;
+  --color-line: #262b37;
+  --color-mute: #8a93a6;
+  --color-linear: #00beff;
+  --color-nonlinear: #ff3cc8;
+  --color-ok: #47e08a;
+  --color-warn: #ffc247;
+  --color-bad: #ff5a5a;
+  --color-accent: #ffdc00;
+}
+
+html, body, #root { background: var(--color-ink); color: #e8ebf2; }
+body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+.mono { font-family: var(--font-mono); }
+.card { background: var(--color-panel); border: 1px solid var(--color-line); border-radius: 14px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 2px 10px; font-size: 12px; border: 1px solid var(--color-line); }
+.btn { display: inline-flex; align-items: center; gap: 8px; border-radius: 10px; padding: 8px 14px; font-weight: 600; font-size: 14px; transition: all .15s; }
+.btn-primary { background: var(--color-accent); color: #111; }
+.btn-primary:hover { filter: brightness(1.1); }
+.btn-ghost { border: 1px solid var(--color-line); color: #e8ebf2; }
+.btn-ghost:hover { background: var(--color-panel2); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+@keyframes pulse-dot { 0%,100% { opacity: .3 } 50% { opacity: 1 } }
+.pulse { animation: pulse-dot 1.2s infinite; }

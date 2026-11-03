@@ -1,0 +1,11 @@
+**/node_modules
+**/.venv
+frontend/dist
+data/raw
+data/runs
+data/experiments
+data/commits
+data/cache
+data/traces
+eval
+.git

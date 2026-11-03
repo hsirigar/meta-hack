@@ -1,0 +1,285 @@
+{
+ "task": "score",
+ "ids": {
+  "run_id": "run_b_4filters",
+  "commitment_id": "c_0fdf6bff6f07",
+  "experiment_id": "exp_filters_b",
+  "system_type": "falling_drag"
+ },
+ "events": [
+  {
+   "type": "status",
+   "ts": 1793703547.7836642,
+   "text": "agent: scripted policy (mock; set LLM_BACKEND=meta for Muse Wonder)",
+   "task": "score",
+   "ids": {
+    "run_id": "run_b_4filters",
+    "commitment_id": "c_0fdf6bff6f07",
+    "experiment_id": "exp_filters_b",
+    "system_type": "falling_drag"
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703547.783674,
+   "text": "Same setup as the committed experiment, so I'm reusing its scene description and reference object."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703547.783675,
+   "id": "call_0_describe_scene",
+   "name": "describe_scene",
+   "args": {
+    "run_id": "run_b_4filters"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703547.7863848,
+   "id": "call_0_describe_scene",
+   "name": "describe_scene",
+   "ok": true,
+   "result": {
+    "system_type": "falling_drag",
+    "tracked_concepts": [
+     "orange coffee filter"
+    ],
+    "reference_object": {
+     "concept": "green reference card (credit card)",
+     "known_size_m": 0.0856,
+     "dimension": "long_side"
+    },
+    "anchor_hint": null,
+    "gravity_direction_hint": "down",
+    "notes": "Mock scene backend (template). Set SCENE_BACKEND=meta or baseten for Muse Spark. | reused from committed setup",
+    "confidence": 0.9,
+    "backend": "template (mock)"
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703547.786387,
+   "text": "Tracking the orange coffee filter in the new video."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703547.7863889,
+   "id": "call_1_track_objects",
+   "name": "track_objects",
+   "args": {
+    "run_id": "run_b_4filters"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703548.15235,
+   "id": "call_1_track_objects",
+   "name": "track_objects",
+   "ok": true,
+   "result": {
+    "tracks": {
+     "orange coffee filter": {
+      "track_id": "orange:orange coffee filter",
+      "frames": 102,
+      "coverage": 0.6471,
+      "mean_score": 1.0
+     },
+     "green reference card (credit card)": {
+      "track_id": "green:green reference card (credit card)",
+      "frames": 102,
+      "coverage": 1.0,
+      "mean_score": 1.0
+     }
+    }
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703548.1523561,
+   "text": "Measuring. For a reveal run, only the first 0.5 s may be used, and only to read off the starting state."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703548.1523578,
+   "id": "call_2_measure",
+   "name": "measure",
+   "args": {
+    "run_id": "run_b_4filters"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703548.155988,
+   "id": "call_2_measure",
+   "name": "measure",
+   "ok": true,
+   "result": {
+    "series": "y",
+    "unit": "m",
+    "n_frames": 102,
+    "n_valid": 62,
+    "duration_s": 1.0167,
+    "noise_sigma": 0.00076626,
+    "meters_per_pixel": 0.0018213,
+    "calibration_method": "reference_object",
+    "split_train_end_t": 0.8,
+    "knobs": {
+     "n_filters": 4.0
+    },
+    "mean_speed_mps": 2.1713
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703548.155992,
+   "text": "Checking this recording is trustworthy and matches the committed setup."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703548.155993,
+   "id": "call_3_check_validity",
+   "name": "check_validity",
+   "args": {
+    "run_id": "run_b_4filters"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703548.161032,
+   "id": "call_3_check_validity",
+   "name": "check_validity",
+   "ok": true,
+   "result": {
+    "status": "valid",
+    "checks": [
+     {
+      "name": "camera_drift",
+      "status": "pass",
+      "reason": "Reference object stayed within 0.0 px of its starting position."
+     },
+     {
+      "name": "camera_jump",
+      "status": "pass",
+      "reason": "No sudden camera jumps."
+     },
+     {
+      "name": "scale_changed",
+      "status": "pass",
+      "reason": "Scale stable (reference size varied 0.0%)."
+     },
+     {
+      "name": "tracking_lost",
+      "status": "pass",
+      "reason": "Object tracked in 100.0% of the evaluation frames."
+     },
+     {
+      "name": "frame_timing",
+      "status": "pass",
+      "reason": "Frame timing regular (median 60.0 fps)."
+     },
+     {
+      "name": "camera_distance",
+      "status": "pass",
+      "reason": "Camera distance matches the committed run."
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703548.1610339,
+   "text": "Verifying the commitment hash, then scoring the frozen predictions against what actually happened."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703548.161035,
+   "id": "call_4_evaluate_commitment",
+   "name": "evaluate_commitment",
+   "args": {
+    "commitment_id": "c_0fdf6bff6f07",
+    "run_id": "run_b_4filters"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703548.1851368,
+   "id": "call_4_evaluate_commitment",
+   "name": "evaluate_commitment",
+   "ok": true,
+   "result": {
+    "hash_verified": true,
+    "validity": "valid",
+    "winner": "drag_quadratic",
+    "summary": {
+     "knob": "n_filters",
+     "value": 4,
+     "conditioning_window_s": 0.5,
+     "noise_sigma": 0.0007663,
+     "eval_samples": 31,
+     "eval_start_t": 0.8,
+     "observable_measured": 2.199,
+     "rmse_ratio_loser_over_winner": 25.0
+    },
+    "per_model": [
+     {
+      "model": "drag_quadratic",
+      "rmse": 0.02128,
+      "rmse_sigma": 27.77,
+      "observable": "terminal_velocity_mps",
+      "observable_predicted": 2.253,
+      "observable_measured": 2.199,
+      "observable_error_pct": 2.447
+     },
+     {
+      "model": "drag_linear",
+      "rmse": 0.5321,
+      "rmse_sigma": 694.4,
+      "observable": "terminal_velocity_mps",
+      "observable_predicted": 4.018,
+      "observable_measured": 2.199,
+      "observable_error_pct": 82.71
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703548.18514,
+   "text": "Rendering the committed predictions as ghosts over the new video."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703548.185141,
+   "id": "call_5_render_ghosts",
+   "name": "render_ghosts",
+   "args": {
+    "run_id": "run_b_4filters"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703548.463626,
+   "id": "call_5_render_ghosts",
+   "name": "render_ghosts",
+   "ok": true,
+   "result": {
+    "overlay_url": "/api/runs/run_b_4filters/overlay.mp4",
+    "ghosts": [
+     "linear drag",
+     "quadratic drag"
+    ],
+    "path": "runs/run_b_4filters/overlay.mp4"
+   }
+  },
+  {
+   "type": "message",
+   "ts": 1793703548.463648,
+   "text": "Verdict: drag_quadratic. Hash verified. After the 0.5 s conditioning window, drag_quadratic is off by 27.8\u03c3 RMS while drag_linear is off by 694\u03c3. Measured late-fall speed: 2.199 m/s; drag_quadratic predicted 2.253 (+2.4%), drag_linear predicted 4.018 (+82.7%)."
+  },
+  {
+   "type": "done",
+   "ts": 1793703548.46366,
+   "result": {}
+  }
+ ]
+}

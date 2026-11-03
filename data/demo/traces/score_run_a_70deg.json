@@ -1,0 +1,295 @@
+{
+ "task": "score",
+ "ids": {
+  "run_id": "run_a_70deg",
+  "commitment_id": "c_e331bd0d76e1",
+  "experiment_id": "exp_pendulum_a",
+  "system_type": "pendulum"
+ },
+ "events": [
+  {
+   "type": "status",
+   "ts": 1793703535.097294,
+   "text": "agent: scripted policy (mock; set LLM_BACKEND=meta for Muse Wonder)",
+   "task": "score",
+   "ids": {
+    "run_id": "run_a_70deg",
+    "commitment_id": "c_e331bd0d76e1",
+    "experiment_id": "exp_pendulum_a",
+    "system_type": "pendulum"
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703535.097306,
+   "text": "Same setup as the committed experiment, so I'm reusing its scene description and reference object."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703535.0973089,
+   "id": "call_0_describe_scene",
+   "name": "describe_scene",
+   "args": {
+    "run_id": "run_a_70deg"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703535.110288,
+   "id": "call_0_describe_scene",
+   "name": "describe_scene",
+   "ok": true,
+   "result": {
+    "system_type": "pendulum",
+    "tracked_concepts": [
+     "orange pendulum bob"
+    ],
+    "reference_object": {
+     "concept": "green reference disk (US quarter)",
+     "known_size_m": 0.02426,
+     "dimension": "diameter"
+    },
+    "anchor_hint": "pivot at top center",
+    "gravity_direction_hint": "down",
+    "notes": "Mock scene backend (template). Set SCENE_BACKEND=meta or baseten for Muse Spark. | reused from committed setup",
+    "confidence": 0.9,
+    "backend": "template (mock)"
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703535.110291,
+   "text": "Tracking the orange pendulum bob in the new video."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703535.110292,
+   "id": "call_1_track_objects",
+   "name": "track_objects",
+   "args": {
+    "run_id": "run_a_70deg"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703537.610702,
+   "id": "call_1_track_objects",
+   "name": "track_objects",
+   "ok": true,
+   "result": {
+    "tracks": {
+     "orange pendulum bob": {
+      "track_id": "orange:orange pendulum bob",
+      "frames": 720,
+      "coverage": 1.0,
+      "mean_score": 1.0
+     },
+     "green reference disk (US quarter)": {
+      "track_id": "green:green reference disk (US quarter)",
+      "frames": 720,
+      "coverage": 1.0,
+      "mean_score": 1.0
+     }
+    }
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703537.61071,
+   "text": "Measuring. For a reveal run, only the first 0.5 s may be used, and only to read off the starting state."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703537.6107159,
+   "id": "call_2_measure",
+   "name": "measure",
+   "args": {
+    "run_id": "run_a_70deg"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703537.631577,
+   "id": "call_2_measure",
+   "name": "measure",
+   "ok": true,
+   "result": {
+    "series": "theta",
+    "unit": "rad",
+    "n_frames": 720,
+    "n_valid": 720,
+    "duration_s": 11.983,
+    "noise_sigma": 0.0013093,
+    "meters_per_pixel": 0.001278,
+    "calibration_method": "reference_object",
+    "split_train_end_t": 0.5,
+    "knobs": {
+     "release_angle_deg": 70.0
+    },
+    "pendulum_length_m": 0.61365,
+    "pivot_px": [
+     640.09,
+     69.729
+    ],
+    "amplitude_deg": 69.431
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703537.6315808,
+   "text": "Checking this recording is trustworthy and matches the committed setup."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703537.631582,
+   "id": "call_3_check_validity",
+   "name": "check_validity",
+   "args": {
+    "run_id": "run_a_70deg"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703537.667122,
+   "id": "call_3_check_validity",
+   "name": "check_validity",
+   "ok": true,
+   "result": {
+    "status": "valid",
+    "checks": [
+     {
+      "name": "camera_drift",
+      "status": "pass",
+      "reason": "Reference object stayed within 0.1 px of its starting position."
+     },
+     {
+      "name": "camera_jump",
+      "status": "pass",
+      "reason": "No sudden camera jumps."
+     },
+     {
+      "name": "scale_changed",
+      "status": "pass",
+      "reason": "Scale stable (reference size varied 0.9%)."
+     },
+     {
+      "name": "tracking_lost",
+      "status": "pass",
+      "reason": "Object tracked in 100.0% of the evaluation frames."
+     },
+     {
+      "name": "frame_timing",
+      "status": "pass",
+      "reason": "Frame timing regular (median 60.0 fps)."
+     },
+     {
+      "name": "pendulum_geometry",
+      "status": "pass",
+      "reason": "Bob moves on a circular arc (residual 0.59 px, length 0.614 m)."
+     },
+     {
+      "name": "setup_mismatch",
+      "status": "pass",
+      "reason": "Same pendulum as the committed experiment (length 0.614 m vs 0.601 m)."
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703537.667126,
+   "text": "Verifying the commitment hash, then scoring the frozen predictions against what actually happened."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703537.667128,
+   "id": "call_4_evaluate_commitment",
+   "name": "evaluate_commitment",
+   "args": {
+    "commitment_id": "c_e331bd0d76e1",
+    "run_id": "run_a_70deg"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703537.713436,
+   "id": "call_4_evaluate_commitment",
+   "name": "evaluate_commitment",
+   "ok": true,
+   "result": {
+    "hash_verified": true,
+    "validity": "valid",
+    "winner": "pendulum_nonlinear",
+    "summary": {
+     "knob": "release_angle_deg",
+     "value": 70,
+     "conditioning_window_s": 0.5,
+     "noise_sigma": 0.001309,
+     "eval_samples": 689,
+     "eval_start_t": 0.5,
+     "observable_measured": 1.659,
+     "rmse_ratio_loser_over_winner": 46.0
+    },
+    "per_model": [
+     {
+      "model": "pendulum_nonlinear",
+      "rmse": 0.02128,
+      "rmse_sigma": 16.25,
+      "observable": "period_s",
+      "observable_predicted": 1.658,
+      "observable_measured": 1.659,
+      "observable_error_pct": -0.06337
+     },
+     {
+      "model": "pendulum_linear",
+      "rmse": 0.9789,
+      "rmse_sigma": 747.7,
+      "observable": "period_s",
+      "observable_predicted": 1.554,
+      "observable_measured": 1.659,
+      "observable_error_pct": -6.278
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703537.713439,
+   "text": "Rendering the committed predictions as ghosts over the new video."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703537.71344,
+   "id": "call_5_render_ghosts",
+   "name": "render_ghosts",
+   "args": {
+    "run_id": "run_a_70deg"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703539.4246411,
+   "id": "call_5_render_ghosts",
+   "name": "render_ghosts",
+   "ok": true,
+   "result": {
+    "overlay_url": "/api/runs/run_a_70deg/overlay.mp4",
+    "ghosts": [
+     "linear (small-angle)",
+     "nonlinear (sin)"
+    ],
+    "path": "runs/run_a_70deg/overlay.mp4"
+   }
+  },
+  {
+   "type": "message",
+   "ts": 1793703539.4246678,
+   "text": "Verdict: pendulum_nonlinear. Hash verified. After the 0.5 s conditioning window, pendulum_nonlinear is off by 16.2\u03c3 RMS while pendulum_linear is off by 748\u03c3. Measured period: 1.659 s; pendulum_nonlinear predicted 1.658 (-0.1%), pendulum_linear predicted 1.554 (-6.3%)."
+  },
+  {
+   "type": "done",
+   "ts": 1793703539.424684,
+   "result": {}
+  }
+ ]
+}

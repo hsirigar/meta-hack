@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: ghostline
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DEMO_MODE
+        value: "1"
+      - key: MODEL_API_KEY
+        sync: false

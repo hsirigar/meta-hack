@@ -1,0 +1,382 @@
+{
+ "task": "analyze",
+ "ids": {
+  "run_id": "run_b_1filter",
+  "experiment_id": "exp_filters_b",
+  "system_type": "falling_drag"
+ },
+ "events": [
+  {
+   "type": "status",
+   "ts": 1793703545.7928221,
+   "text": "agent: scripted policy (mock; set LLM_BACKEND=meta for Muse Wonder)",
+   "task": "analyze",
+   "ids": {
+    "run_id": "run_b_1filter",
+    "experiment_id": "exp_filters_b",
+    "system_type": "falling_drag"
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703545.792834,
+   "text": "First I need to know what's in the frame and what I can use as a ruler."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703545.7928379,
+   "id": "call_0_describe_scene",
+   "name": "describe_scene",
+   "args": {
+    "run_id": "run_b_1filter"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703545.793453,
+   "id": "call_0_describe_scene",
+   "name": "describe_scene",
+   "ok": true,
+   "result": {
+    "system_type": "falling_drag",
+    "tracked_concepts": [
+     "orange coffee filter"
+    ],
+    "reference_object": {
+     "concept": "green reference card (credit card)",
+     "known_size_m": 0.0856,
+     "dimension": "long_side"
+    },
+    "anchor_hint": null,
+    "gravity_direction_hint": "down",
+    "notes": "Mock scene backend (template). Set SCENE_BACKEND=meta or baseten for Muse Spark.",
+    "confidence": 0.9,
+    "backend": "template (mock)"
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703545.793461,
+   "text": "Tracking the orange coffee filter and the green reference card (credit card) (85.60 mm reference)."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703545.793462,
+   "id": "call_1_track_objects",
+   "name": "track_objects",
+   "args": {
+    "run_id": "run_b_1filter"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703546.4024498,
+   "id": "call_1_track_objects",
+   "name": "track_objects",
+   "ok": true,
+   "result": {
+    "tracks": {
+     "orange coffee filter": {
+      "track_id": "orange:orange coffee filter",
+      "frames": 171,
+      "coverage": 0.7485,
+      "mean_score": 1.0
+     },
+     "green reference card (credit card)": {
+      "track_id": "green:green reference card (credit card)",
+      "frames": 171,
+      "coverage": 1.0,
+      "mean_score": 1.0
+     }
+    }
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703546.402459,
+   "text": "Converting pixels to physical units and fixing the train/holdout split before any fitting."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703546.4024608,
+   "id": "call_2_measure",
+   "name": "measure",
+   "args": {
+    "run_id": "run_b_1filter"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703546.406965,
+   "id": "call_2_measure",
+   "name": "measure",
+   "ok": true,
+   "result": {
+    "series": "y",
+    "unit": "m",
+    "n_frames": 171,
+    "n_valid": 128,
+    "duration_s": 2.1167,
+    "noise_sigma": 0.0011521,
+    "meters_per_pixel": 0.0018609,
+    "calibration_method": "reference_object",
+    "split_train_end_t": 1.62,
+    "knobs": {
+     "n_filters": 1.0
+    },
+    "mean_speed_mps": 1.1208
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703546.406968,
+   "text": "Before trusting these numbers, checking that the camera, scale and tracking held steady."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703546.406969,
+   "id": "call_3_check_validity",
+   "name": "check_validity",
+   "args": {
+    "run_id": "run_b_1filter"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703546.4145489,
+   "id": "call_3_check_validity",
+   "name": "check_validity",
+   "ok": true,
+   "result": {
+    "status": "valid",
+    "checks": [
+     {
+      "name": "camera_drift",
+      "status": "pass",
+      "reason": "Reference object stayed within 0.0 px of its starting position."
+     },
+     {
+      "name": "camera_jump",
+      "status": "pass",
+      "reason": "No sudden camera jumps."
+     },
+     {
+      "name": "scale_changed",
+      "status": "pass",
+      "reason": "Scale stable (reference size varied 0.0%)."
+     },
+     {
+      "name": "tracking_lost",
+      "status": "pass",
+      "reason": "Object tracked in 100.0% of the evaluation frames."
+     },
+     {
+      "name": "frame_timing",
+      "status": "pass",
+      "reason": "Frame timing regular (median 60.0 fps)."
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703546.414551,
+   "text": "Listing the candidate models for this system."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703546.414552,
+   "id": "call_4_list_models",
+   "name": "list_models",
+   "args": {
+    "system_type": "falling_drag"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703546.414617,
+   "id": "call_4_list_models",
+   "name": "list_models",
+   "ok": true,
+   "result": {
+    "models": [
+     {
+      "name": "drag_linear",
+      "equation": "\\dot v = g\\,(1 - v/v_t)",
+      "params": [
+       "v_t",
+       "y0",
+       "v0"
+      ],
+      "knob_transfer": "v_t(k filters) = k * v_t(1)"
+     },
+     {
+      "name": "drag_quadratic",
+      "equation": "\\dot v = g\\,(1 - (v/v_t)^2)",
+      "params": [
+       "v_t",
+       "y0",
+       "v0"
+      ],
+      "knob_transfer": "v_t(k filters) = sqrt(k) * v_t(1)"
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703546.414622,
+   "text": "Fitting drag_linear and drag_quadratic on the first part of the clip only. The rest is held out."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703546.414623,
+   "id": "call_5_fit_models",
+   "name": "fit_models",
+   "args": {
+    "run_id": "run_b_1filter",
+    "model_names": [
+     "drag_linear",
+     "drag_quadratic"
+    ]
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703546.81937,
+   "id": "call_5_fit_models",
+   "name": "fit_models",
+   "ok": true,
+   "result": {
+    "note": "fitted on training window only; holdout scored with frozen parameters",
+    "fits": [
+     {
+      "model": "drag_linear",
+      "params": {
+       "v_t": 1.127,
+       "y0": 0.0006124,
+       "v0": 1.111
+      },
+      "param_std": {
+       "v_t": 0.0005288,
+       "y0": 0.0007006,
+       "v0": 0.007943
+      },
+      "train_rmse": 0.001259,
+      "holdout_rmse": 0.001564,
+      "bic": -1015.0,
+      "ljung_box_p": 0.08187,
+      "n_train": 77,
+      "n_holdout": 51
+     },
+     {
+      "model": "drag_quadratic",
+      "params": {
+       "v_t": 1.126,
+       "y0": 0.001858,
+       "v0": 1.075
+      },
+      "param_std": {
+       "v_t": 0.0004413,
+       "y0": 0.0008494,
+       "v0": 0.01667
+      },
+      "train_rmse": 0.001219,
+      "holdout_rmse": 0.00154,
+      "bic": -1020.0,
+      "ljung_box_p": 0.03983,
+      "n_train": 77,
+      "n_holdout": 51
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703546.8193731,
+   "text": "Comparing the models only on the data they never saw."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703546.819374,
+   "id": "call_6_compare_models",
+   "name": "compare_models",
+   "args": {
+    "run_id": "run_b_1filter"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703546.823306,
+   "id": "call_6_compare_models",
+   "name": "compare_models",
+   "ok": true,
+   "result": {
+    "status": "ambiguous",
+    "best": null,
+    "max_separation_sigma": 0.06934,
+    "delta_bic": 4.928,
+    "holdout_rmse_ratio": 1.016,
+    "noise_sigma": 0.001152,
+    "rule": "ambiguous if |dBIC| < 6 and holdout RMSE ratio < 1.2 and max separation < 3 sigma",
+    "holdout_rmse": {
+     "drag_linear": 0.001564,
+     "drag_quadratic": 0.00154
+    },
+    "holdout_rmse_in_noise_sigma": {
+     "drag_linear": 1.358,
+     "drag_quadratic": 1.336
+    },
+    "implied_length_m": {
+     "drag_linear": null,
+     "drag_quadratic": null
+    },
+    "measured_length_m": null,
+    "amplitude": null
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793703546.823313,
+   "text": "Drawing each model's prediction over the video as a ghost."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793703546.823314,
+   "id": "call_7_render_ghosts",
+   "name": "render_ghosts",
+   "args": {
+    "run_id": "run_b_1filter",
+    "model_names": [
+     "drag_linear",
+     "drag_quadratic"
+    ]
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793703547.2372181,
+   "id": "call_7_render_ghosts",
+   "name": "render_ghosts",
+   "ok": true,
+   "result": {
+    "overlay_url": "/api/runs/run_b_1filter/overlay.mp4",
+    "ghosts": [
+     "linear drag",
+     "quadratic drag"
+    ],
+    "path": "runs/run_b_1filter/overlay.mp4"
+   }
+  },
+  {
+   "type": "message",
+   "ts": 1793703547.237243,
+   "text": "Inconclusive. Both models predict the held-out data equally well (drag_linear: 1.36\u03c3, drag_quadratic: 1.34\u03c3 RMSE), and their predictions never differ by more than 0.07\u03c3 of measurement noise (\u0394BIC 4.9). This footage can't tell them apart. Ask me what to film next."
+  },
+  {
+   "type": "done",
+   "ts": 1793703547.2372549,
+   "result": {}
+  }
+ ]
+}
