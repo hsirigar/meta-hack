@@ -2,32 +2,32 @@
  "task": "score",
  "ids": {
   "run_id": "run_a_bumped",
-  "commitment_id": "c_c9a86cd6b2b4",
+  "commitment_id": "c_c81aafb138ec",
   "experiment_id": "exp_pendulum_a",
   "system_type": "pendulum"
  },
  "events": [
   {
    "type": "status",
-   "ts": 1793819822.963231,
+   "ts": 1793823899.8418188,
    "text": "agent: muse-wonder-1.0 via Meta Model API",
    "task": "score",
    "ids": {
     "run_id": "run_a_bumped",
-    "commitment_id": "c_c9a86cd6b2b4",
+    "commitment_id": "c_c81aafb138ec",
     "experiment_id": "exp_pendulum_a",
     "system_type": "pendulum"
    }
   },
   {
    "type": "thought",
-   "ts": 1793819827.213335,
-   "text": "I will check what is in this new video first so I know what to track and whether the setup matches."
+   "ts": 1793823902.672631,
+   "text": "Checking what is in this new video so I know what to track."
   },
   {
    "type": "tool_call",
-   "ts": 1793819827.213357,
-   "id": "call_55506d4e-125c-4b91-951a-d4e921c8ee6f",
+   "ts": 1793823902.6726441,
+   "id": "call_3aecf6f6-ea41-4134-96e0-b44fee4a3037",
    "name": "describe_scene",
    "args": {
     "run_id": "run_a_bumped"
@@ -35,8 +35,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793819827.233305,
-   "id": "call_55506d4e-125c-4b91-951a-d4e921c8ee6f",
+   "ts": 1793823902.689128,
+   "id": "call_3aecf6f6-ea41-4134-96e0-b44fee4a3037",
    "name": "describe_scene",
    "ok": true,
    "result": {
@@ -58,13 +58,13 @@
   },
   {
    "type": "thought",
-   "ts": 1793819830.700109,
-   "text": "Seen a pendulum with an orange bob, so I will track the bob and reference disk to get its motion."
+   "ts": 1793823905.101116,
+   "text": "Scene is a pendulum with an orange bob. Tracking it through the video now."
   },
   {
    "type": "tool_call",
-   "ts": 1793819830.70013,
-   "id": "call_16acdea3-57fe-4462-ada1-ea8f574f38c8",
+   "ts": 1793823905.1011379,
+   "id": "call_e981a074-7bbb-4b4b-a2fd-4d3aee7fd1bf",
    "name": "track_objects",
    "args": {
     "run_id": "run_a_bumped",
@@ -76,8 +76,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793819830.876853,
-   "id": "call_16acdea3-57fe-4462-ada1-ea8f574f38c8",
+   "ts": 1793823905.2344599,
+   "id": "call_e981a074-7bbb-4b4b-a2fd-4d3aee7fd1bf",
    "name": "track_objects",
    "ok": true,
    "result": {
@@ -99,13 +99,13 @@
   },
   {
    "type": "thought",
-   "ts": 1793819834.1261818,
-   "text": "Tracking looks complete, so I will convert it to a calibrated angle time series."
+   "ts": 1793823907.8936708,
+   "text": "Tracking looks complete. Converting tracks to angle over time now."
   },
   {
    "type": "tool_call",
-   "ts": 1793819834.126196,
-   "id": "call_53111564-c315-4338-ae2c-8f2fbad465e9",
+   "ts": 1793823907.893683,
+   "id": "call_7088efde-c9cd-481a-9d7b-0c53b4f5fcfb",
    "name": "measure",
    "args": {
     "run_id": "run_a_bumped"
@@ -113,8 +113,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793819834.150274,
-   "id": "call_53111564-c315-4338-ae2c-8f2fbad465e9",
+   "ts": 1793823907.902741,
+   "id": "call_7088efde-c9cd-481a-9d7b-0c53b4f5fcfb",
    "name": "measure",
    "ok": true,
    "result": {
@@ -140,13 +140,13 @@
   },
   {
    "type": "thought",
-   "ts": 1793819838.3341959,
-   "text": "Measurement is ready, so I will check whether this recording can be trusted before scoring it."
+   "ts": 1793823911.909164,
+   "text": "Measurement done. Checking whether the camera and setup can be trusted before scoring."
   },
   {
    "type": "tool_call",
-   "ts": 1793819838.334213,
-   "id": "call_5ae18110-e755-4929-99ac-c801954bad4a",
+   "ts": 1793823911.9091861,
+   "id": "call_f3f0a2cb-1c14-42a6-8212-c1123c198f61",
    "name": "check_validity",
    "args": {
     "run_id": "run_a_bumped"
@@ -154,8 +154,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793819838.37312,
-   "id": "call_5ae18110-e755-4929-99ac-c801954bad4a",
+   "ts": 1793823911.937462,
+   "id": "call_f3f0a2cb-1c14-42a6-8212-c1123c198f61",
    "name": "check_validity",
    "ok": true,
    "result": {
@@ -192,6 +192,11 @@
       "reason": "The bob's path is not a clean arc (circle-fit residual 10.6 px): string may stretch or the swing isn't planar."
      },
      {
+      "name": "object_shape",
+      "status": "pass",
+      "reason": "The tracked object keeps a steady outline (size varies 5%)."
+     },
+     {
       "name": "setup_mismatch",
       "status": "pass",
       "reason": "Same pendulum as the committed experiment (length 0.595 m from swing timing vs 0.600 m)."
@@ -201,12 +206,12 @@
   },
   {
    "type": "message",
-   "ts": 1793819844.267049,
-   "text": "Verdict: Invalid \u2014 I cannot score this run against the commitment.\n\nThe reference object jumped 32.3 px between t=4.98s and t=5.00s, which means the camera was bumped, and its apparent size changed by 5.5%, so the scale is not constant.\n\nPlease re-film on a fixed tripod with zoom and focus locked, making sure nothing touches the camera during the swing."
+   "ts": 1793823918.539763,
+   "text": "Invalid: I cannot score run_a_bumped against commitment c_c81aafb138ec.\n\nThe camera was bumped: the reference jumped 32.3 px between t=4.98s and t=5.00s, and its apparent size changed by 5.5%, so the scale is not constant.\n\nPlease re-film at the same 70.0\u00b0 release with the camera firmly mounted, zoom locked, and untouched during the swing."
   },
   {
    "type": "done",
-   "ts": 1793819844.267322,
+   "ts": 1793823918.5398002,
    "result": {}
   }
  ]

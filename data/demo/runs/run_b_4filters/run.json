@@ -4902,13 +4902,13 @@
   "n_filters": 4.0
  },
  "role": "reveal",
- "commitment_id": "c_cef98eacf170",
+ "commitment_id": "c_87deede32785",
  "fits": null,
  "comparison": null,
  "discovery": null,
  "overlay_path": "runs/run_b_4filters/overlay.mp4",
  "verdict": {
-  "commitment_id": "c_cef98eacf170",
+  "commitment_id": "c_87deede32785",
   "run_id": "run_b_4filters",
   "hash_verified": true,
   "validity": {
@@ -5022,5 +5022,5 @@
  "trace_tasks": [
   "score"
  ],
- "created_at": "2026-11-04T19:18:21.574553Z"
+ "created_at": "2026-11-04T20:26:12.416549Z"
 }

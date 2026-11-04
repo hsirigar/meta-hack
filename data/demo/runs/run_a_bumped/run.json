@@ -35280,6 +35280,13 @@
     "reason": "The bob's path is not a clean arc (circle-fit residual 10.6 px): string may stretch or the swing isn't planar."
    },
    {
+    "name": "object_shape",
+    "status": "pass",
+    "value": 0.05,
+    "threshold": 0.35,
+    "reason": "The tracked object keeps a steady outline (size varies 5%)."
+   },
+   {
     "name": "setup_mismatch",
     "status": "pass",
     "value": 0.008526688110754037,
@@ -35296,7 +35303,7 @@
   "release_angle_deg": 70.0
  },
  "role": "reveal",
- "commitment_id": "c_c9a86cd6b2b4",
+ "commitment_id": "c_c81aafb138ec",
  "fits": null,
  "comparison": null,
  "discovery": null,
@@ -35305,5 +35312,5 @@
  "trace_tasks": [
   "score"
  ],
- "created_at": "2026-11-04T19:17:02.962466Z"
+ "created_at": "2026-11-04T20:24:59.841012Z"
 }

@@ -2,32 +2,32 @@
  "task": "score",
  "ids": {
   "run_id": "run_d_large",
-  "commitment_id": "c_aa7f524343e8",
+  "commitment_id": "c_7d1f535b6863",
   "experiment_id": "exp_real_mouse",
   "system_type": "pendulum"
  },
  "events": [
   {
    "type": "status",
-   "ts": 1793819998.772098,
+   "ts": 1793824069.033282,
    "text": "agent: muse-wonder-1.0 via Meta Model API",
    "task": "score",
    "ids": {
     "run_id": "run_d_large",
-    "commitment_id": "c_aa7f524343e8",
+    "commitment_id": "c_7d1f535b6863",
     "experiment_id": "exp_real_mouse",
     "system_type": "pendulum"
    }
   },
   {
    "type": "thought",
-   "ts": 1793820001.6536582,
-   "text": "I will inspect run_d_large first to confirm what to track before scoring it."
+   "ts": 1793824074.718317,
+   "text": "I will look at the video first to identify the system and what to track."
   },
   {
    "type": "tool_call",
-   "ts": 1793820001.653684,
-   "id": "call_f3fb532b-aaad-4387-8af6-e6b6e40adc70",
+   "ts": 1793824074.718355,
+   "id": "call_98a0154a-56be-4826-bdda-95da5bb4560e",
    "name": "describe_scene",
    "args": {
     "run_id": "run_d_large"
@@ -35,8 +35,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793820001.751699,
-   "id": "call_f3fb532b-aaad-4387-8af6-e6b6e40adc70",
+   "ts": 1793824074.809731,
+   "id": "call_98a0154a-56be-4826-bdda-95da5bb4560e",
    "name": "describe_scene",
    "ok": true,
    "result": {
@@ -58,13 +58,13 @@
   },
   {
    "type": "thought",
-   "ts": 1793820006.95667,
-   "text": "Now I will track the bob and the reference card to get its motion through the clip."
+   "ts": 1793824079.969976,
+   "text": "I will track the black mouse bob against the white card to build its motion trace."
   },
   {
    "type": "tool_call",
-   "ts": 1793820006.9566982,
-   "id": "call_078bb1ff-ac96-4e49-86f6-ffc7adbe5632",
+   "ts": 1793824079.969992,
+   "id": "call_abd10e71-d557-44a3-9735-4c04ab093cc9",
    "name": "track_objects",
    "args": {
     "run_id": "run_d_large",
@@ -76,8 +76,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793820007.554314,
-   "id": "call_078bb1ff-ac96-4e49-86f6-ffc7adbe5632",
+   "ts": 1793824080.556145,
+   "id": "call_abd10e71-d557-44a3-9735-4c04ab093cc9",
    "name": "track_objects",
    "ok": true,
    "result": {
@@ -99,13 +99,13 @@
   },
   {
    "type": "thought",
-   "ts": 1793820011.1402502,
-   "text": "Next I will convert the tracks into a calibrated angle series for testing."
+   "ts": 1793824082.995908,
+   "text": "I will convert the tracks into a calibrated angle time series with a train and holdout split."
   },
   {
    "type": "tool_call",
-   "ts": 1793820011.140275,
-   "id": "call_407e4d71-0854-4406-b52e-d0f8593ada4b",
+   "ts": 1793824082.995929,
+   "id": "call_f23df80e-da14-4699-a151-4cda52ff7e93",
    "name": "measure",
    "args": {
     "run_id": "run_d_large"
@@ -113,8 +113,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793820011.1609821,
-   "id": "call_407e4d71-0854-4406-b52e-d0f8593ada4b",
+   "ts": 1793824083.021017,
+   "id": "call_f23df80e-da14-4699-a151-4cda52ff7e93",
    "name": "measure",
    "ok": true,
    "result": {
@@ -140,13 +140,13 @@
   },
   {
    "type": "thought",
-   "ts": 1793820013.939928,
-   "text": "Now I will run the validity check, because an invalid recording cannot be scored."
+   "ts": 1793824086.276714,
+   "text": "I will check whether the recording can be trusted before scoring it."
   },
   {
    "type": "tool_call",
-   "ts": 1793820013.939945,
-   "id": "call_a39edbf9-3d00-4daa-9e97-30fc3f328c48",
+   "ts": 1793824086.276746,
+   "id": "call_1ccee024-2187-4173-a122-7acd44d0b1ba",
    "name": "check_validity",
    "args": {
     "run_id": "run_d_large"
@@ -154,8 +154,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793820013.9603121,
-   "id": "call_a39edbf9-3d00-4daa-9e97-30fc3f328c48",
+   "ts": 1793824086.305286,
+   "id": "call_1ccee024-2187-4173-a122-7acd44d0b1ba",
    "name": "check_validity",
    "ok": true,
    "result": {
@@ -192,6 +192,11 @@
       "reason": "Bob moves on a circular arc (residual 6.59 px, length 0.501 m)."
      },
      {
+      "name": "object_shape",
+      "status": "warning",
+      "reason": "The tracked object's outline changes size by 62% during the clip: it twists, tilts or swings toward the camera, so its centre is not a fixed point. Point-mass models may not fit; use a small, round, heavy bob on a thin string."
+     },
+     {
       "name": "setup_mismatch",
       "status": "pass",
       "reason": "Same pendulum as the committed experiment (length 0.384 m from swing timing vs 0.371 m)."
@@ -201,23 +206,23 @@
   },
   {
    "type": "thought",
-   "ts": 1793820017.629607,
-   "text": "Validity is only a warning, so I will score this reveal run against the frozen commitment."
+   "ts": 1793824090.472106,
+   "text": "Validity is warning, not invalid, so I will score this reveal run against the frozen commitment without refitting."
   },
   {
    "type": "tool_call",
-   "ts": 1793820017.629636,
-   "id": "call_ef3ede57-1894-4f08-afd5-0003dd2a1236",
+   "ts": 1793824090.47215,
+   "id": "call_29ff7238-6799-41f3-b6c7-fc9c2e65f009",
    "name": "evaluate_commitment",
    "args": {
-    "commitment_id": "c_aa7f524343e8",
+    "commitment_id": "c_7d1f535b6863",
     "run_id": "run_d_large"
    }
   },
   {
    "type": "tool_result",
-   "ts": 1793820017.701828,
-   "id": "call_ef3ede57-1894-4f08-afd5-0003dd2a1236",
+   "ts": 1793824090.548346,
+   "id": "call_29ff7238-6799-41f3-b6c7-fc9c2e65f009",
    "name": "evaluate_commitment",
    "ok": true,
    "result": {
@@ -236,7 +241,8 @@
      "winner_rmse_sigma": 328.1,
      "winner_observable_error_pct": 2.007,
      "all_models_inadequate": true,
-     "inadequacy_note": "Even the best model misses by 328\u03c3 and its period_s is off by 2.0%: the system is outside the candidate set."
+     "inadequacy_note": "Even the best model misses by 328\u03c3 and its period_s is off by 2.0%: the system is outside the candidate set. Likely cause: the tracked object is not a point mass: its outline changes size by 62% as it twists and tilts during the swing.",
+     "likely_cause": "the tracked object is not a point mass: its outline changes size by 62% as it twists and tilts during the swing"
     },
     "per_model": [
      {
@@ -271,13 +277,13 @@
   },
   {
    "type": "thought",
-   "ts": 1793820022.173104,
-   "text": "The best model still misses badly, so I will render all three ghost predictions for you to see the mismatch."
+   "ts": 1793824093.8654568,
+   "text": "I will render ghosts for each candidate model so you can see their predictions over the video."
   },
   {
    "type": "tool_call",
-   "ts": 1793820022.1731288,
-   "id": "call_58165873-9e6f-4abe-b708-524de5a074c4",
+   "ts": 1793824093.865474,
+   "id": "call_01724ee6-333c-4957-bf71-fdd27bb9b5f9",
    "name": "render_ghosts",
    "args": {
     "run_id": "run_d_large",
@@ -290,8 +296,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793820024.0732071,
-   "id": "call_58165873-9e6f-4abe-b708-524de5a074c4",
+   "ts": 1793824095.787971,
+   "id": "call_01724ee6-333c-4957-bf71-fdd27bb9b5f9",
    "name": "render_ghosts",
    "ok": true,
    "result": {
@@ -306,12 +312,12 @@
   },
   {
    "type": "message",
-   "ts": 1793820034.115386,
-   "text": "Verdict: none of the candidates describes this system \u2014 the least-wrong model is pendulum_nonlinear_quaddamp. The commitment reports: \"Even the best model misses by 328\u03c3 and its period_s is off by 2.0%: the system is outside the candidate set.\" The hash was verified and validity is a warning only, so the scoring stands. I rendered all three ghosts over the video so you can see the mismatch."
+   "ts": 1793824100.104104,
+   "text": "None of the candidates describes this system, although pendulum_nonlinear_quaddamp is the least-wrong. Even the best model misses by 328\u03c3 and its period_s is off by 2.0%: the system is outside the candidate set. Likely cause: the tracked object is not a point mass: its outline changes size by 62% as it twists and tilts during the swing. The commitment hash was verified, and the ghosts show the models drifting from the real swing."
   },
   {
    "type": "done",
-   "ts": 1793820034.1175199,
+   "ts": 1793824100.1042402,
    "result": {}
   }
  ]

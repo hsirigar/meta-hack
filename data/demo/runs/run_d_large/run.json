@@ -37785,6 +37785,13 @@
     "reason": "Bob moves on a circular arc (residual 6.59 px, length 0.501 m)."
    },
    {
+    "name": "object_shape",
+    "status": "warning",
+    "value": 0.6205357142857143,
+    "threshold": 0.35,
+    "reason": "The tracked object's outline changes size by 62% during the clip: it twists, tilts or swings toward the camera, so its centre is not a fixed point. Point-mass models may not fit; use a small, round, heavy bob on a thin string."
+   },
+   {
     "name": "setup_mismatch",
     "status": "pass",
     "value": 0.032816549909857155,
@@ -37801,13 +37808,13 @@
   "release_angle_deg": 18.0
  },
  "role": "reveal",
- "commitment_id": "c_aa7f524343e8",
+ "commitment_id": "c_7d1f535b6863",
  "fits": null,
  "comparison": null,
  "discovery": null,
  "overlay_path": "runs/run_d_large/overlay.mp4",
  "verdict": {
-  "commitment_id": "c_aa7f524343e8",
+  "commitment_id": "c_7d1f535b6863",
   "run_id": "run_d_large",
   "hash_verified": true,
   "validity": {
@@ -37854,6 +37861,13 @@
      "value": 6.5931936011738586,
      "threshold": 32.65669574530738,
      "reason": "Bob moves on a circular arc (residual 6.59 px, length 0.501 m)."
+    },
+    {
+     "name": "object_shape",
+     "status": "warning",
+     "value": 0.6205357142857143,
+     "threshold": 0.35,
+     "reason": "The tracked object's outline changes size by 62% during the clip: it twists, tilts or swings toward the camera, so its centre is not a fixed point. Point-mass models may not fit; use a small, round, heavy bob on a thin string."
     },
     {
      "name": "setup_mismatch",
@@ -37951,11 +37965,12 @@
    "winner_rmse_sigma": 328.14144730244425,
    "winner_observable_error_pct": 2.006562203429199,
    "all_models_inadequate": true,
-   "inadequacy_note": "Even the best model misses by 328σ and its period_s is off by 2.0%: the system is outside the candidate set."
+   "inadequacy_note": "Even the best model misses by 328σ and its period_s is off by 2.0%: the system is outside the candidate set. Likely cause: the tracked object is not a point mass: its outline changes size by 62% as it twists and tilts during the swing.",
+   "likely_cause": "the tracked object is not a point mass: its outline changes size by 62% as it twists and tilts during the swing"
   }
  },
  "trace_tasks": [
   "score"
  ],
- "created_at": "2026-11-04T19:19:58.771142Z"
+ "created_at": "2026-11-04T20:27:49.032395Z"
 }

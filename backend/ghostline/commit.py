@@ -197,5 +197,10 @@ def evaluate_commitment(c: Commitment, run_id: str, t: np.ndarray, y: np.ndarray
         if facts["all_models_inadequate"]:
             facts["inadequacy_note"] = (f"Even the best model misses by {w['rmse_sigma']:.0f}σ and its {w['observable']} is off by "
                                         f"{err_pct:.1f}%: the system is outside the candidate set.")
+            shape = next((c for c in validity.checks if c.name == "object_shape" and c.status == "warning"), None)
+            if shape is not None:
+                facts["likely_cause"] = (f"the tracked object is not a point mass: its outline changes size by {100 * shape.value:.0f}% "
+                                         "as it twists and tilts during the swing")
+                facts["inadequacy_note"] += f" Likely cause: {facts['likely_cause']}."
     return Verdict(commitment_id=c.id, run_id=run_id, hash_verified=True, validity=validity, per_model=per_model,
                    winner=winner, summary_facts=facts), curves

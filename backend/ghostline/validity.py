@@ -166,6 +166,31 @@ def check_setup(run: Run, reference: dict) -> list[ValidityCheck]:
     return out
 
 
+def check_object_rigidity(run: Run) -> ValidityCheck | None:
+    """Point-mass models assume the tracked box centre is a fixed point on the bob. If the box changes shape a lot
+    (the object twists, tilts, or swings toward the camera), the centre moves around the body and adds error
+    that no candidate model can explain. Warning only: the run is still scored."""
+    if not run.scene or not run.tracks or not run.scene.tracked_concepts:
+        return None
+    tr = run.tracks.get(run.scene.tracked_concepts[0])
+    if tr is None:
+        return None
+    b = np.array([f.bbox for f in tr.frames if f.centroid is not None and f.bbox], float)
+    if len(b) < 30:
+        return None
+    w, h = b[:, 2], b[:, 3]
+    k = max(len(w) // 100, 1)  # ignore the most extreme 1% at each end (blur, edge frames)
+    span = max((np.sort(w)[-k] - np.sort(w)[k - 1]) / np.median(w), (np.sort(h)[-k] - np.sort(h)[k - 1]) / np.median(h))
+    thr = 0.35
+    if span > thr:
+        return ValidityCheck(name="object_shape", status="warning", value=float(span), threshold=thr,
+                             reason=f"The tracked object's outline changes size by {100 * span:.0f}% during the clip: it twists, tilts or "
+                                    "swings toward the camera, so its centre is not a fixed point. Point-mass models may not fit; "
+                                    "use a small, round, heavy bob on a thin string.")
+    return ValidityCheck(name="object_shape", status="pass", value=float(span), threshold=thr,
+                         reason=f"The tracked object keeps a steady outline (size varies {100 * span:.0f}%).")
+
+
 def check_validity(run: Run, system_type: str, reference: dict | None = None) -> ValidityReport:
     checks: list[ValidityCheck] = []
     checks += check_camera(run)
@@ -182,6 +207,9 @@ def check_validity(run: Run, system_type: str, reference: dict | None = None) ->
     checks.append(check_timing(run))
     if system_type == "pendulum" and run.calibration and run.calibration.length_px:
         checks.append(check_pendulum_geometry(run))
+    shape = check_object_rigidity(run) if system_type == "pendulum" else None
+    if shape is not None:
+        checks.append(shape)
     if reference:
         checks += check_setup(run, reference)
     worst = max((_RANK[c.status] for c in checks), default=0)

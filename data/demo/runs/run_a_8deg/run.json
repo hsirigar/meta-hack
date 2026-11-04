@@ -35404,6 +35404,13 @@
     "value": 0.6351632936880284,
     "threshold": 10.242255739941836,
     "reason": "Bob moves on a circular arc (residual 0.64 px, length 0.637 m)."
+   },
+   {
+    "name": "object_shape",
+    "status": "pass",
+    "value": 0.05,
+    "threshold": 0.35,
+    "reason": "The tracked object keeps a steady outline (size varies 5%)."
    }
   ]
  },
@@ -48675,5 +48682,5 @@
  "trace_tasks": [
   "analyze"
  ],
- "created_at": "2026-11-04T19:15:28.276873Z"
+ "created_at": "2026-11-04T20:23:14.476708Z"
 }

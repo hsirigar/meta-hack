@@ -7,7 +7,7 @@
   "run_d_large"
  ],
  "commit_ids": [
-  "c_aa7f524343e8"
+  "c_7d1f535b6863"
  ],
  "description": "Real phone footage: a computer mouse hanging on its cable in front of a mesh chair back. The reference is an ID-1 card (85.6 mm long side, same size as a credit card) on the ledge below; its face is blurred for privacy. This rig can only swing to about 20° before the mouse leaves the frame.",
  "knob_max": 20.0,
@@ -43,5 +43,5 @@
   "source_run_id": "run_d_small",
   "filming_instructions": "Release the same pendulum from 20° (string taut, bob at rest), keep the camera and the reference object exactly where they were, and record at least 6 full swings."
  },
- "created_at": "2026-11-04T19:18:47.599580Z"
+ "created_at": "2026-11-04T20:26:37.585148Z"
 }

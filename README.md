@@ -6,6 +6,8 @@
 
 Built for the **Meta Global AI Developer Hackathon** (Cerebral Valley), track **Push the Frontier**.
 
+**Live demo:** https://ghostline-nfsm.onrender.com (precomputed scenes, no upload needed; the free instance may take ~1 min to wake up)
+
 <!-- HERO: ghost-split GIF -->
 
 ---
@@ -27,9 +29,11 @@ Built for the **Meta Global AI Developer Hackathon** (Cerebral Valley), track **
 | A: pendulum | 8° release → *inconclusive* (<1σ apart) | 70° release | nonlinear wins; linear period is ~6% short |
 | B: coffee filters | 1 filter → *inconclusive* | stack 4 filters (linear predicts vₜ×4, quadratic ×2) | quadratic drag wins |
 | C: bumped camera | 70° reveal with a mid-clip bump | n/a | **INVALID**: reference jumped 32 px; not scored |
-| D: **real phone footage**, a computer mouse on its cable | 3.9° swing → *inconclusive* (<1σ apart) | 20° (the most this rig allows) | Quadratic damping is least wrong, but **none of the candidates fits**: the best misses the period by 2% (328σ), and Ghostline says so |
+| D: **real phone footage**, a computer mouse on its cable | 3.9° swing → *inconclusive* (<1σ apart) | 20° (the most this rig allows) | Quadratic damping is least wrong, but **none of the candidates fits**: the best misses the period by 2% (328σ). Ghostline says so and names the cause: the mouse's outline changes size by 62% as it twists |
 
-> Scenes A–C use rendered videos with known physics (`scripts/make_synthetic.py`), so the right answer is known. Scene D is real iPhone footage, processed end to end by Muse Spark, SAM 3.1 and Muse Wonder. A mouse hanging on its cable is not a point mass on a string: it is a rigid body that twists and pushes air. Ghostline's candidate models leave a 2% period error, and instead of declaring a winner it reports that no candidate describes the system. The ID card used as the size reference is blurred for privacy, and only its ends are kept sharp.
+> Scenes A–C use rendered videos with known physics (`scripts/make_synthetic.py`), so the right answer is known. Scene D is real iPhone footage, processed end to end by Muse Spark, SAM 3.1 and Muse Wonder. A mouse hanging on its cable is not a point mass on a string: it is a rigid body that twists and pushes air. Ghostline's candidate models leave a 2% period error, and instead of declaring a winner it reports that no candidate describes the system.
+
+> **Why no candidate fits (diagnosed):** frame timing is clean (regular 33.3 ms frames), so the error is physical. (1) The mouse twists on its cable and tilts toward the camera: SAM's box around it changes width from 152 to 335 px within a swing, so the box centre is not a fixed point on the body. The fit residuals oscillate at twice the swing frequency, which is the signature of this. (2) Even fitted to its own footage, the best point pendulum leaves 46σ residuals on the 20° take (9σ on the 4° take). (3) At equal amplitude the 20° take's period is 1–1.5% longer than the 4° take's, so the effective cable length shifted between takes. Ghostline now checks the tracked object's outline (`object_shape` in `validity.py`) and puts the likely cause into the verdict. The ID card used as the size reference is blurred for privacy, and only its ends are kept sharp.
 
 ## How it works
 
