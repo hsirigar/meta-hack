@@ -9,3 +9,6 @@ data/cache
 data/traces
 eval
 .git
+.env
+.env.*
+!.env.example
