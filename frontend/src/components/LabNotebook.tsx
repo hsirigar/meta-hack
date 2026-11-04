@@ -1,23 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import type { AgentEvent } from "../api";
 
-const TOOL_ICON: Record<string, string> = {
-  describe_scene: "👁", track_objects: "◎", measure: "📏", check_validity: "🛡", list_models: "∑",
-  fit_models: "∿", compare_models: "⚖", discover_equation: "ƒ", design_experiment: "🧪",
-  commit_predictions: "🔒", evaluate_commitment: "✓", render_ghosts: "👻",
-};
-
 function ResultView({ result }: { result: any }) {
   const [open, setOpen] = useState(false);
   if (!result) return null;
   const summary = summarize(result);
   return (
     <div className="mt-1">
-      <button className="text-xs text-mute hover:text-white" onClick={() => setOpen(!open)}>
-        {open ? "▾" : "▸"} {summary}
+      <button className="mono text-left text-[11px] text-ink2 hover:text-ink" onClick={() => setOpen(!open)}>
+        <span className="text-mute">{open ? "−" : "+"}</span> {summary}
       </button>
       {open && (
-        <pre className="mono mt-1 max-h-72 overflow-auto rounded-lg bg-black/40 p-3 text-[11px] leading-relaxed text-[#b8c2d6]">
+        <pre className="mono mt-1 max-h-72 overflow-auto bg-inset p-3 text-[11px] leading-relaxed text-ink2">
           {JSON.stringify(result, null, 2)}
         </pre>
       )}
@@ -49,42 +43,46 @@ export default function LabNotebook({ events, running, title = "Lab notebook" }:
   }, [events.length, running]);
   const status = events.find((e) => e.type === "status");
   const results = new Map(events.filter((e) => e.type === "tool_result").map((e) => [e.id, e]));
+  let step = 0;
   return (
     <div className="card flex h-full flex-col">
-      <div className="flex items-center justify-between border-b border-line px-4 py-3">
-        <div className="text-sm font-semibold">{title}</div>
-        <div className="flex items-center gap-2 text-xs text-mute">
-          {running && <span className="pulse inline-block h-2 w-2 rounded-full bg-accent" />}
-          {status?.text}
-          {events.some((e) => e.replay) && <span className="chip">replay</span>}
+      <div className="flex items-baseline justify-between gap-3 border-b border-ink px-4 py-2.5">
+        <div className="label !text-ink">{title}</div>
+        <div className="mono flex items-center gap-2 text-[11px] text-mute">
+          {running && <span className="pulse text-ink">● recording</span>}
+          {status?.text?.replace(/^agent: /, "")}
+          {events.some((e) => e.replay) && <span>· replay</span>}
         </div>
       </div>
       <div className="flex-1 space-y-3 overflow-auto px-4 py-3 text-sm" style={{ maxHeight: 560 }}>
-        {events.length === 0 && <div className="text-mute">No agent activity yet.</div>}
+        {events.length === 0 && <div className="text-mute">No entries yet.</div>}
         {events.map((e, i) => {
-          if (e.type === "thought") return <div key={i} className="italic text-[#aab3c5]">{e.text}</div>;
+          if (e.type === "thought") return <p key={i} className="serif text-[15px] italic leading-snug text-ink2">{e.text}</p>;
           if (e.type === "tool_call") {
             const res = results.get(e.id);
+            step += 1;
             return (
-              <div key={i} className="rounded-lg border border-line bg-panel2 px-3 py-2">
-                <div className="mono flex items-center gap-2 text-[12px]">
-                  <span>{TOOL_ICON[e.name || ""] || "⚙"}</span>
-                  <span className="font-semibold text-accent">{e.name}</span>
-                  <span className="truncate text-mute">({Object.entries(e.args || {}).map(([k, v]) => `${k}=${JSON.stringify(v)}`).join(", ")})</span>
-                  {!res && running && <span className="pulse ml-auto text-mute">running…</span>}
-                  {res && <span className={`ml-auto ${res.ok ? "text-ok" : "text-bad"}`}>{res.ok ? "ok" : "error"}</span>}
+              <div key={i} className="grid grid-cols-[1.8rem_1fr] gap-x-1">
+                <span className="mono pt-px text-[11px] text-mute">{String(step).padStart(2, "0")}</span>
+                <div className="min-w-0">
+                  <div className="mono flex items-baseline gap-2 text-[12px]">
+                    <span className="font-semibold">{e.name}</span>
+                    <span className="truncate text-mute">{Object.entries(e.args || {}).map(([k, v]) => `${k}=${JSON.stringify(v)}`).join(", ")}</span>
+                    {!res && running && <span className="pulse ml-auto shrink-0 text-mute">running</span>}
+                    {res && <span className={`ml-auto shrink-0 ${res.ok ? "text-mute" : "text-bad"}`}>{res.ok ? "ok" : "error"}</span>}
+                  </div>
+                  {res && <ResultView result={res.result} />}
                 </div>
-                {res && <ResultView result={res.result} />}
               </div>
             );
           }
           if (e.type === "message")
             return (
-              <div key={i} className="rounded-lg border border-accent/40 bg-accent/5 px-3 py-2 leading-relaxed text-white">
+              <div key={i} className="serif border-l-2 border-ink py-0.5 pl-3 text-[16px] leading-snug text-ink">
                 {e.text}
               </div>
             );
-          if (e.type === "error") return <div key={i} className="text-bad">⚠ {e.text}</div>;
+          if (e.type === "error") return <div key={i} className="text-bad">Error: {e.text}</div>;
           return null;
         })}
         <div ref={end} />

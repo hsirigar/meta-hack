@@ -100,7 +100,9 @@ def _run_summary(r) -> dict:
             "validity": r.validity.status if r.validity else None,
             "comparison": {"status": r.comparison.status, "best": r.comparison.best,
                            "max_separation_sigma": r.comparison.max_separation_sigma} if r.comparison else None,
-            "verdict": {"winner": r.verdict.winner, "hash_verified": r.verdict.hash_verified} if r.verdict else None,
+            "verdict": {"winner": r.verdict.winner, "hash_verified": r.verdict.hash_verified,
+                        "all_models_inadequate": bool(r.verdict.summary_facts.get("all_models_inadequate")),
+                        "refused": r.verdict.summary_facts.get("refused")} if r.verdict else None,
             "has_overlay": bool(r.overlay_path), "trace_tasks": r.trace_tasks}
 
 

@@ -20,7 +20,7 @@ export type RunSummary = {
   commitment_id: string | null;
   validity: "valid" | "warning" | "invalid" | null;
   comparison: { status: string; best: string | null; max_separation_sigma: number } | null;
-  verdict: { winner: string | null; hash_verified: boolean } | null;
+  verdict: { winner: string | null; hash_verified: boolean; all_models_inadequate?: boolean; refused?: string | null } | null;
   has_overlay: boolean;
   trace_tasks: string[];
 };
@@ -129,12 +129,13 @@ export async function stream(
   }
 }
 
+// Same hex values as backend/ghostline/render.py so plots and ghost videos agree.
 export const MODEL_COLORS: Record<string, string> = {
-  pendulum_linear: "#00beff",
-  pendulum_nonlinear: "#ff3cc8",
-  pendulum_nonlinear_quaddamp: "#ffe600",
-  drag_linear: "#00beff",
-  drag_quadratic: "#ff3cc8",
+  pendulum_linear: "#2f6fdc",
+  pendulum_nonlinear: "#d0306f",
+  pendulum_nonlinear_quaddamp: "#c28a10",
+  drag_linear: "#2f6fdc",
+  drag_quadratic: "#d0306f",
 };
 
 export const MODEL_LABELS: Record<string, string> = {

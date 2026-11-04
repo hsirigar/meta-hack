@@ -11,12 +11,12 @@ from . import storage
 from .measure import centroids
 from .schemas import Run
 
-COLORS = {  # BGR
-    "pendulum_linear": (255, 190, 0),
-    "pendulum_nonlinear": (200, 60, 255),
-    "pendulum_nonlinear_quaddamp": (0, 230, 255),
-    "drag_linear": (255, 190, 0),
-    "drag_quadratic": (200, 60, 255),
+COLORS = {  # BGR; same hex as frontend MODEL_COLORS (#2f6fdc, #d0306f, #c28a10)
+    "pendulum_linear": (220, 111, 47),
+    "pendulum_nonlinear": (111, 48, 208),
+    "pendulum_nonlinear_quaddamp": (16, 138, 194),
+    "drag_linear": (220, 111, 47),
+    "drag_quadratic": (111, 48, 208),
 }
 LABELS = {
     "pendulum_linear": "linear (small-angle)",

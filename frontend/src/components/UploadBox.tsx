@@ -5,14 +5,14 @@ export default function UploadBox({ label, knobName, defaultKnob, onSubmit, busy
   const [knob, setKnob] = useState<string>(defaultKnob !== undefined ? String(defaultKnob) : "");
   const knobLabel = knobName === "release_angle_deg" ? "Release angle (°)" : "Number of filters";
   return (
-    <div className="card flex flex-wrap items-end gap-4 border-dashed p-4">
-      <label className="flex flex-col text-xs text-mute">
-        Video (mp4 / mov)
-        <input type="file" accept="video/*" className="mt-1 text-sm text-white file:mr-3 file:rounded-md file:border-0 file:bg-panel2 file:px-3 file:py-1.5 file:text-white" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+    <div className="flex flex-wrap items-end gap-4 border border-dashed border-ink/40 bg-sheet p-4">
+      <label className="flex flex-col gap-1">
+        <span className="label">Video (mp4 / mov)</span>
+        <input type="file" accept="video/*" className="text-sm file:mr-3 file:border file:border-line file:bg-paper file:px-3 file:py-1.5 file:text-ink" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
       </label>
-      <label className="flex flex-col text-xs text-mute">
-        {knobLabel} (optional)
-        <input value={knob} onChange={(e) => setKnob(e.target.value)} className="mono mt-1 w-32 rounded-md border border-line bg-panel2 px-2 py-1.5 text-sm text-white" />
+      <label className="flex flex-col gap-1">
+        <span className="label">{knobLabel}, optional</span>
+        <input value={knob} onChange={(e) => setKnob(e.target.value)} className="field mono w-32" />
       </label>
       <button className="btn btn-primary" disabled={!file || busy} onClick={() => file && onSubmit(file, knob ? { [knobName]: Number(knob) } : {})}>
         {busy ? "Working…" : label}

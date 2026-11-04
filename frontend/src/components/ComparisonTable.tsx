@@ -12,37 +12,39 @@ export default function ComparisonTable({ run }: { run: any }) {
   return (
     <div className="card overflow-hidden">
       {cmp && (
-        <div className={`flex flex-wrap items-center gap-3 px-4 py-3 ${amb ? "bg-warn/10" : "bg-ok/10"}`}>
-          <span className={`text-lg font-bold ${amb ? "text-warn" : "text-ok"}`}>{amb ? "INCONCLUSIVE" : `DECISIVE: ${MODEL_LABELS[cmp.best] || cmp.best}`}</span>
-          <span className="text-sm text-[#c9cfdb]">
+        <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-line px-4 py-4">
+          <span className="label">Result</span>
+          <span className={`serif text-[24px] font-medium ${amb ? "text-warn" : "text-ok"}`}>{amb ? "Inconclusive." : `${MODEL_LABELS[cmp.best] || cmp.best} predicts better.`}</span>
+          <span className="w-full text-sm text-ink2">
             {amb
-              ? `The models differ by at most ${fmt(cmp.max_separation_sigma, 2)}σ of measurement noise on held-out data.`
-              : `Models separate by up to ${fmt(cmp.max_separation_sigma, 1)}σ on held-out data.`}
+              ? `On the held-out footage the laws differ by at most ${fmt(cmp.max_separation_sigma, 2)}σ, less than the measurement noise can resolve.`
+              : `On the held-out footage the laws separate by up to ${fmt(cmp.max_separation_sigma, 1)}σ.`}
+            {f.bic_ignored_autocorrelated_residuals && " BIC was not used: the residuals are autocorrelated, which makes it overstate the evidence."}
           </span>
-          <span className="mono ml-auto text-xs text-mute">ΔBIC {fmt(f.delta_bic, 1)} · RMSE ratio {fmt(f.holdout_rmse_ratio, 3)}</span>
+          <span className="mono w-full text-[11px] text-mute">ΔBIC {fmt(f.delta_bic, 1)} · holdout RMSE ratio {fmt(f.holdout_rmse_ratio, 3)}</span>
         </div>
       )}
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="text-left text-xs uppercase tracking-wide text-mute">
+          <thead className="text-left">
             <tr className="border-b border-line">
-              <th className="px-4 py-2">Model</th>
-              <th className="px-4 py-2">Fitted parameters (± 1σ)</th>
-              <th className="px-4 py-2 text-right">Train RMSE</th>
-              <th className="px-4 py-2 text-right">Holdout RMSE</th>
-              <th className="px-4 py-2 text-right">BIC</th>
-              <th className="px-4 py-2 text-right">Residual whiteness p</th>
+              <th className="label px-4 py-2 font-normal">Law</th>
+              <th className="label px-4 py-2 font-normal">Fitted parameters ± 1σ</th>
+              <th className="label px-4 py-2 text-right font-normal">Train</th>
+              <th className="label px-4 py-2 text-right font-normal !text-ink">Holdout</th>
+              <th className="label px-4 py-2 text-right font-normal">BIC</th>
+              <th className="label px-4 py-2 text-right font-normal">Whiteness p</th>
             </tr>
           </thead>
           <tbody>
             {fits.map((x: any) => (
-              <tr key={x.model} className="border-b border-line/60 align-top">
+              <tr key={x.model} className="border-b border-line align-top last:border-b-0">
                 <td className="px-4 py-3">
-                  <div className="flex items-center gap-2 font-semibold">
-                    <span className="inline-block h-3 w-3 rounded-full" style={{ background: MODEL_COLORS[x.model] }} />
+                  <div className="flex items-center gap-2 font-medium">
+                    <span className="swatch" style={{ background: MODEL_COLORS[x.model] }} />
                     {MODEL_LABELS[x.model] || x.model}
                   </div>
-                  <div className="mono mt-1 text-xs text-mute">{MODEL_EQ[x.model]}</div>
+                  <div className="mono mt-1 text-[11px] text-ink2">{MODEL_EQ[x.model]}</div>
                 </td>
                 <td className="mono px-4 py-3 text-xs">
                   {Object.entries(x.params).filter(([k]) => k !== "t_ref").map(([k, v]) => (
@@ -60,8 +62,8 @@ export default function ComparisonTable({ run }: { run: any }) {
           </tbody>
         </table>
       </div>
-      <div className="px-4 py-2 text-xs text-mute">
-        Errors are in units of measurement noise σ = {fmt(noise, 5)} {run.series?.theta ? "rad" : "m"}. Models were fitted on the training window only; holdout is pure prediction.
+      <div className="hair px-4 py-2 text-xs text-ink2">
+        Errors in units of measurement noise, σ = {fmt(noise, 5)} {run.series?.theta ? "rad" : "m"}. Models were fitted on the training window only; holdout is pure prediction.
         {f.measured_length_m && <> Measured string length {fmt(f.measured_length_m, 3)} m.</>}
       </div>
     </div>
