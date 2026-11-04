@@ -53,6 +53,12 @@ Upload ─► ingest (ffprobe PTS, H.264 ≤720p, keyframes)
 | Scene understanding from keyframes | **Muse Spark** (`muse-spark-1.3`) via Meta Model API, or **Muse Spark Open** via Baseten | `backend/ghostline/scene.py` |
 | Object segmentation + video tracking | **SAM 3.1** (`sam-3.1`) via Meta Model API (or open weights `facebook/sam3.1` on Modal) | `backend/ghostline/clients/sam_meta.py`, `sam_local.py` |
 
+How the Meta models are used, as tested against the live API on Nov 4:
+
+- **Muse Spark** looks at 6 keyframes plus the user's note ("the green disk is a US quarter") and returns a validated `SceneDescription`: which system it is, short segmentation prompts, and the reference size. It identifies the system correctly even with no hint. It cannot know the real size of a reference object from pixels alone, so the size comes from the user's note or the scene-edit form.
+- **SAM 3.1** gets the whole uploaded clip (`input_video`) and returns per-frame boxes for every frame. It matches short concrete phrases ("orange ball") much better than descriptive ones ("orange pendulum bob"), so Ghostline probes a few short variants on one frame and then tracks with the first one that matches.
+- **Muse Wonder** runs the tool loop: it decides when the evidence is inconclusive, designs the next experiment, commits before filming, and writes the lab notebook. It reports only numbers that came from tools.
+
 Every external call is cached to disk (`cache/{sha256(model+request+file hashes)}.json`). With `DEMO_MODE=1` the app never touches the network. Without API keys, deterministic fallbacks run behind the same interfaces: a template scene, an OpenCV colour tracker, and a scripted agent policy. They are labelled as such in the UI.
 
 ### Leakage prevention (enforced in code, tested)
@@ -134,7 +140,8 @@ Switch to the real Meta models in `.env`: `LLM_BACKEND=meta`, `SCENE_BACKEND=met
 - A video cannot uniquely determine a physical law. Results are limited to the candidate model set.
 - Short pendulum arcs make the string length from the circle fit imprecise. Ghostline then uses g/ω₀² for setup matching and says so.
 - Tracking depends on lighting and contrast. The colour-tracker fallback needs coloured objects.
-- The SAM 3.1 video request format is implemented from the public docs and is marked `VERIFY` until tested with a key.
+- SAM 3.1's mask payload uses a compressed codec that is not publicly documented, so Ghostline measures from SAM's per-frame boxes (centre and size). That works well for the compact objects used here (bob, reference marker). Decoding the masks through Meta's `meta-sam-parser` would give sub-pixel centroids.
+- The demo clips are synthetic renders with known physics, because real footage could not be filmed in time. The pipeline, including SAM 3.1 tracking, runs unchanged on real phone video.
 
 ## Built during the hackathon
 

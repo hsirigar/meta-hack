@@ -30,7 +30,9 @@ Given keyframes from a phone video of a simple physical experiment, return ONLY 
   "anchor_hint": string or null (e.g. "pivot at top center"),
   "gravity_direction_hint": string or null (e.g. "down"),
   "notes": short string, "confidence": 0..1}}
-Concepts must be short phrases a segmentation model can find (include the colour).
+Concepts must be SHORT (2-3 words: colour + simple noun, e.g. "orange ball", "green circle"); the
+segmentation model matches short concrete phrases best. If the user states the reference object's size,
+use exactly that size.
 {KNOWN_SIZES}"""
 
 TEMPLATES = {
@@ -61,11 +63,13 @@ def _parse(text: str) -> SceneDescription:
     return SceneDescription.model_validate(json.loads(text[start:end + 1]))
 
 
-def _openai_scene(base_url: str, api_key: str, model: str, keyframes: list[Path], hint: str | None) -> SceneDescription:
+def _openai_scene(base_url: str, api_key: str, model: str, keyframes: list[Path], hint: str | None,
+                  user_note: str = "") -> SceneDescription:
     from openai import OpenAI
 
     client = OpenAI(base_url=base_url, api_key=api_key)
-    user_text = "Describe this experiment." + (f" The user says it is a {hint} experiment." if hint else "")
+    user_text = ("Describe this experiment." + (f" The user says it is a {hint} experiment." if hint else "")
+                 + (f" User's note: {user_note}" if user_note else ""))
     messages = [{"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": [{"type": "text", "text": user_text}] + [_img_part(k) for k in keyframes]}]
     hashes = [file_sha256(k) for k in keyframes]
@@ -88,17 +92,18 @@ def _openai_scene(base_url: str, api_key: str, model: str, keyframes: list[Path]
     raise RuntimeError(f"scene model returned invalid JSON 3 times: {err}")
 
 
-def describe_scene(keyframes: list[Path], system_hint: str | None = None, backend: str | None = None) -> SceneDescription:
+def describe_scene(keyframes: list[Path], system_hint: str | None = None, backend: str | None = None,
+                   user_note: str = "") -> SceneDescription:
     s = get_settings()
     backend = backend or s.scene_backend
     if backend == "meta":
-        return _openai_scene(s.meta_base_url, s.model_api_key, s.vision_model, keyframes, system_hint)
+        return _openai_scene(s.meta_base_url, s.model_api_key, s.vision_model, keyframes, system_hint, user_note)
     if backend == "baseten":
         try:
-            return _openai_scene(s.baseten_base_url, s.baseten_api_key, s.baseten_model, keyframes, system_hint)
+            return _openai_scene(s.baseten_base_url, s.baseten_api_key, s.baseten_model, keyframes, system_hint, user_note)
         except Exception:
             if s.model_api_key:  # fallback to Meta API
-                return _openai_scene(s.meta_base_url, s.model_api_key, s.vision_model, keyframes, system_hint)
+                return _openai_scene(s.meta_base_url, s.model_api_key, s.vision_model, keyframes, system_hint, user_note)
             raise
     tpl = TEMPLATES.get(system_hint or "pendulum", TEMPLATES["pendulum"])
     return tpl.model_copy(deep=True)

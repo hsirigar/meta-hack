@@ -61,7 +61,7 @@ def describe_scene(run_id: str) -> SceneDescription:
         scene = prior[0].scene.model_copy(deep=True)  # same setup: reuse prompts and reference
         scene.notes = (scene.notes + " | reused from committed setup").strip(" |")
     else:
-        scene = scene_describe([storage.abs_path(k) for k in r.keyframes], e.system_type)
+        scene = scene_describe([storage.abs_path(k) for k in r.keyframes], e.system_type, user_note=e.description)
     r.scene = scene
     storage.save_run(r)
     return scene

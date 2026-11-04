@@ -1,0 +1,8 @@
+{
+ "scene_backend": "Muse Spark (muse-spark-1.3) via Meta Model API",
+ "segment_backend": "meta",
+ "llm_backend": "meta",
+ "agent_model": "muse-wonder-1.0",
+ "muse_spark_open": false,
+ "built_at": "2026-11-04 04:23 EST"
+}

@@ -26,6 +26,10 @@ def zero_crossings(t: np.ndarray, y: np.ndarray) -> np.ndarray:
     return np.array(out)
 
 
+CONDITIONING_S = 0.5    # matches settings.conditioning_window_s (the reveal protocol)
+PERIOD_WINDOW_S = 10.0  # period observable = mean period over this long after the conditioning window
+
+
 def measure_period(t: np.ndarray, y: np.ndarray, max_periods: int | None = None) -> float | None:
     zc = zero_crossings(np.asarray(t), np.asarray(y))
     if max_periods:
@@ -101,11 +105,14 @@ class _PendulumBase(PhysModel):
         return 6 * 2 * np.pi / phys["omega0"]
 
     def predicted_observables(self, phys, knob_value):
+        """Mean period over the same window the reveal measures: PERIOD_WINDOW_S after the conditioning window
+        (the swing decays, so this is shorter than the first-swing period for nonlinear models)."""
         x0 = self.default_initial_state(knob_value)
         T0 = 2 * np.pi / phys["omega0"]
-        t = np.linspace(0, 3 * T0 * 1.3, 4000)
+        t = np.linspace(0, CONDITIONING_S + PERIOD_WINDOW_S, 8000)
         y = self.simulate(t, phys, x0, 0.0)
-        per = measure_period(t, y, max_periods=2)
+        w = t >= CONDITIONING_S
+        per = measure_period(t[w], y[w])
         return {"period_s": float(per) if per else float(T0),
                 "implied_length_m": float(G / phys["omega0"] ** 2)}
 

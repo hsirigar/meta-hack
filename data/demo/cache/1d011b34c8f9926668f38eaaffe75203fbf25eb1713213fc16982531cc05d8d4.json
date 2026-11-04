@@ -1,0 +1,1 @@
+{"model": "sam-3.1", "request": {"task": "image_probe", "prompt": "orange ball", "frame": 180}, "response": "<0f>0<|box;x1=676;y1=527;x2=715;y2=566;w=1280;h=720;c=0.8827838897705078|><|mask;x=0;y=0;c=0.8827838897705078;data=40,40,!!!!!LF?c6cF`zfj@GOa!Jsp'RIrq)aN:wbH7k=FFaQLI4!6^MN9l]|>\n"}

@@ -1,0 +1,54 @@
+{
+ "id": "c_49ad52bdcf5d",
+ "experiment_id": "exp_filters_b",
+ "created_at": "2026-11-04T09:23:20.627282Z",
+ "knob_setting": {
+  "n_filters": 4.0
+ },
+ "models": [
+  {
+   "name": "drag_linear",
+   "params": {
+    "v_t": 1.1023304103570692
+   },
+   "param_std": {
+    "v_t": 0.0004992099535832679
+   },
+   "knob_transfer": "v_t(k filters) = k * v_t(1)",
+   "predicted_observables": {
+    "terminal_velocity_mps": 4.409321641428277,
+    "fall_time_2m_s": 0.915,
+    "v_t_at_target": 4.409321641428277
+   }
+  },
+  {
+   "name": "drag_quadratic",
+   "params": {
+    "v_t": 1.1022427192830306
+   },
+   "param_std": {
+    "v_t": 0.00043063014880162775
+   },
+   "knob_transfer": "v_t(k filters) = sqrt(k) * v_t(1)",
+   "predicted_observables": {
+    "terminal_velocity_mps": 2.2044854385660613,
+    "fall_time_2m_s": 1.2,
+    "v_t_at_target": 2.2044854385660613
+   }
+  }
+ ],
+ "protocol": {
+  "conditioning": "initial state (position, velocity) estimated from the first conditioning_window_s seconds of valid data only; physical parameters frozen",
+  "metric": "RMSE of the observed variable after the conditioning window",
+  "observable": "pendulum: mean period over the 10 s after the conditioning window; drag: late-fall speed",
+  "success_rule": "winner = lowest RMSE after the conditioning window, provided the run is valid",
+  "conditioning_window_s": 0.5,
+  "noise_sigma_ref": 0.001417322712633139
+ },
+ "reference": {
+  "system_type": "falling_drag",
+  "meters_per_pixel": 0.0018212765957446807
+ },
+ "canonical_json": "{\"created_at\":\"2026-11-04T09:23:20.627282Z\",\"experiment_id\":\"exp_filters_b\",\"knob_setting\":{\"n_filters\":4},\"models\":[{\"knob_transfer\":\"v_t(k filters) = k * v_t(1)\",\"name\":\"drag_linear\",\"param_std\":{\"v_t\":0.000499209954},\"params\":{\"v_t\":1.10233041},\"predicted_observables\":{\"fall_time_2m_s\":0.915,\"terminal_velocity_mps\":4.40932164,\"v_t_at_target\":4.40932164}},{\"knob_transfer\":\"v_t(k filters) = sqrt(k) * v_t(1)\",\"name\":\"drag_quadratic\",\"param_std\":{\"v_t\":0.000430630149},\"params\":{\"v_t\":1.10224272},\"predicted_observables\":{\"fall_time_2m_s\":1.2,\"terminal_velocity_mps\":2.20448544,\"v_t_at_target\":2.20448544}}],\"protocol\":{\"conditioning\":\"initial state (position, velocity) estimated from the first conditioning_window_s seconds of valid data only; physical parameters frozen\",\"conditioning_window_s\":0.5,\"metric\":\"RMSE of the observed variable after the conditioning window\",\"noise_sigma_ref\":0.00141732271,\"observable\":\"pendulum: mean period over the 10 s after the conditioning window; drag: late-fall speed\",\"success_rule\":\"winner = lowest RMSE after the conditioning window, provided the run is valid\"},\"reference\":{\"meters_per_pixel\":0.0018212766,\"system_type\":\"falling_drag\"},\"reference_knob\":{\"n_filters\":1},\"source_run_id\":\"run_b_1filter\"}",
+ "sha256": "49ad52bdcf5d9d134606759b3f4332dc1f0695e3714397b768ac3ecbf1d3213c"
+}

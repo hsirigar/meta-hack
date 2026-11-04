@@ -8,6 +8,7 @@ Real footage is used when present in data/raw/real/ with these names, else synth
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import shutil
 import sys
@@ -68,7 +69,7 @@ def main():
 
     T = time.time()
     print("Scene A: pendulum")
-    ea = P.create_experiment("Pendulum A", "pendulum", "Small-angle pendulum: linear or nonlinear?", exp_id="exp_pendulum_a")
+    ea = P.create_experiment("Pendulum A", "pendulum", "Small-angle pendulum: linear or nonlinear? The green disk taped in the plane of motion is a US quarter (24.26 mm diameter).", exp_id="exp_pendulum_a")
     r8 = P.add_run(ea.id, clip("pendulum_8"), {"release_angle_deg": 8}, run_id="run_a_8deg")
     agent("analyze", run_id=r8.id)
     res = agent("next", experiment_id=ea.id)
@@ -83,13 +84,21 @@ def main():
     print(f"  ({time.time() - T:.0f}s)")
 
     print("Scene B: coffee filters")
-    eb = P.create_experiment("Coffee filters", "falling_drag", "Falling coffee filters: linear or quadratic drag?", exp_id="exp_filters_b")
+    eb = P.create_experiment("Coffee filters", "falling_drag", "Falling coffee filters: linear or quadratic drag? The green rectangle taped to the wall is a credit card (85.6 mm long side).", exp_id="exp_filters_b")
     r1 = P.add_run(eb.id, clip("filters_1"), {"n_filters": 1}, run_id="run_b_1filter")
     agent("analyze", run_id=r1.id)
     res = agent("next", experiment_id=eb.id)
     cidb = res.get("commitment_id")
     r4 = P.add_run(eb.id, clip("filters_4"), {"n_filters": 4}, role="reveal", commitment_id=cidb, run_id="run_b_4filters")
     agent("score", run_id=r4.id, commitment_id=cidb)
+    from ghostline.config import get_settings
+    from ghostline.scene import scene_backend_label
+    s = get_settings()
+    seg = s.segment_backend
+    (a.out / "manifest.json").write_text(json.dumps({
+        "scene_backend": scene_backend_label(), "segment_backend": seg, "llm_backend": s.llm_backend,
+        "agent_model": s.agent_model if s.llm_backend == "meta" else "scripted mock",
+        "muse_spark_open": s.muse_spark_open_active, "built_at": time.strftime("%Y-%m-%d %H:%M %Z")}, indent=1))
     print(f"done in {time.time() - T:.0f}s -> {a.out}")
 
 

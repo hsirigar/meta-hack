@@ -55,7 +55,11 @@ def check_camera(run: Run) -> list[ValidityCheck]:
         out.append(ValidityCheck(name="camera_jump", status="pass", value=j / sig, threshold=s.camera_jump_sigma,
                                  reason="No sudden camera jumps."))
     sizes = reference_sizes_px(tr, ref)[valid]
-    sm_s = _rolling_median(sizes, 15)
+    # Zoom is a sustained change, so compare 1 s rolling means: averaging also removes the 1 px
+    # quantisation of box-based sizes (SAM boxes are integer pixels; a 20 px marker flips 19<->20).
+    fps = len(tv) / max(float(tv[-1] - tv[0]), 1e-9)
+    win = int(min(max(15, round(fps)), max(len(sizes) // 3, 1)))
+    sm_s = np.convolve(sizes, np.ones(win) / win, mode="valid") if len(sizes) >= win else sizes
     med = float(np.median(sizes))
     change = float((sm_s.max() - sm_s.min()) / med) if med > 0 else 0.0
     if change > s.scale_change_frac:

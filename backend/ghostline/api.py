@@ -76,6 +76,10 @@ def _agent_stream(task: str, replay: bool, **ids) -> EventSourceResponse:
 @app.get("/api/health")
 def health():
     s = get_settings()
+    manifest = s.data_dir / "manifest.json"
+    if s.demo_mode and manifest.exists():  # report the backends that produced the replayed demo data
+        import json as _json
+        return {"ok": True, "demo_mode": True, **_json.loads(manifest.read_text())}
     return {"ok": True, "demo_mode": s.demo_mode, "scene_backend": scene_backend_label(),
             "segment_backend": s.segment_backend, "llm_backend": s.llm_backend,
             "agent_model": s.agent_model if s.llm_backend == "meta" else "scripted mock",

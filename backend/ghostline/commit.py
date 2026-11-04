@@ -10,7 +10,7 @@ from scipy.optimize import least_squares
 
 from .fit import physics_of
 from .models.base import get_model
-from .models.pendulum import measure_period
+from .models.pendulum import PERIOD_WINDOW_S, measure_period
 from .schemas import Commitment, CommittedModel, FitResult, ValidityReport, Verdict
 
 SIG_DIGITS = 9
@@ -52,6 +52,7 @@ def sha256_hex(s: str) -> str:
 PROTOCOL = {
     "conditioning": "initial state (position, velocity) estimated from the first conditioning_window_s seconds of valid data only; physical parameters frozen",
     "metric": "RMSE of the observed variable after the conditioning window",
+    "observable": "pendulum: mean period over the 10 s after the conditioning window; drag: late-fall speed",
     "success_rule": "winner = lowest RMSE after the conditioning window, provided the run is valid",
 }
 
@@ -133,7 +134,8 @@ def condition_initial_state(model_name: str, phys: dict, t: np.ndarray, y: np.nd
 
 def _observed_observable(system: str, t: np.ndarray, y: np.ndarray) -> float | None:
     if system == "pendulum":
-        return measure_period(t, y)
+        w = t <= t[0] + PERIOD_WINDOW_S if len(t) else t
+        return measure_period(t[w], y[w])
     if len(t) >= 6:  # late-fall speed: slope over the last 30% of the evaluated window
         k = max(int(len(t) * 0.3), 4)
         return float(np.polyfit(t[-k:], y[-k:], 1)[0])

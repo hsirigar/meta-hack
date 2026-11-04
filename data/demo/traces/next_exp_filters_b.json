@@ -7,8 +7,8 @@
  "events": [
   {
    "type": "status",
-   "ts": 1793703547.24135,
-   "text": "agent: scripted policy (mock; set LLM_BACKEND=meta for Muse Wonder)",
+   "ts": 1793784200.485006,
+   "text": "agent: muse-wonder-1.0 via Meta Model API",
    "task": "next",
    "ids": {
     "experiment_id": "exp_filters_b",
@@ -17,101 +17,154 @@
   },
   {
    "type": "thought",
-   "ts": 1793703547.241358,
-   "text": "Searching over the setting I control for the experiment where the models disagree the most, relative to measurement noise."
+   "ts": 1793784200.485554,
+   "text": "I will list the falling-drag candidate models so I know what needs separating."
   },
   {
    "type": "tool_call",
-   "ts": 1793703547.241359,
-   "id": "call_0_design_experiment",
-   "name": "design_experiment",
+   "ts": 1793784200.485559,
+   "id": "call_9aa154de-a6a1-4eac-8480-d9831d01fb4f",
+   "name": "list_models",
    "args": {
-    "experiment_id": "exp_filters_b",
-    "knob": "n_filters"
+    "system_type": "falling_drag"
    }
   },
   {
    "type": "tool_result",
-   "ts": 1793703547.395933,
-   "id": "call_0_design_experiment",
+   "ts": 1793784200.485625,
+   "id": "call_9aa154de-a6a1-4eac-8480-d9831d01fb4f",
+   "name": "list_models",
+   "ok": true,
+   "result": {
+    "models": [
+     {
+      "name": "drag_linear",
+      "equation": "\\dot v = g\\,(1 - v/v_t)",
+      "params": [
+       "v_t",
+       "y0",
+       "v0"
+      ],
+      "knob_transfer": "v_t(k filters) = k * v_t(1)"
+     },
+     {
+      "name": "drag_quadratic",
+      "equation": "\\dot v = g\\,(1 - (v/v_t)^2)",
+      "params": [
+       "v_t",
+       "y0",
+       "v0"
+      ],
+      "knob_transfer": "v_t(k filters) = sqrt(k) * v_t(1)"
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793784200.486058,
+   "text": "I will design the filter-count experiment that best separates the linear and quadratic drag models."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793784200.486062,
+   "id": "call_8b5ecb10-ff90-4c37-bf0e-7850c77a6506",
+   "name": "design_experiment",
+   "args": {
+    "experiment_id": "exp_filters_b",
+    "knob": "n_filters",
+    "model_names": [
+     "drag_linear",
+     "drag_quadratic"
+    ]
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793784200.624408,
+   "id": "call_8b5ecb10-ff90-4c37-bf0e-7850c77a6506",
    "name": "design_experiment",
    "ok": true,
    "result": {
     "knob": "n_filters",
     "recommended_value": 4.0,
-    "expected_separation_sigma": 342.4,
-    "expected_max_separation_sigma": 555.0,
+    "expected_separation_sigma": 287.9,
+    "expected_max_separation_sigma": 468.7,
     "discrimination_curve": [
      {
       "value": 1.0,
-      "separation_sigma": 0.3276
+      "separation_sigma": 0.2198
      },
      {
       "value": 2.0,
-      "separation_sigma": 272.5
+      "separation_sigma": 227.0
      },
      {
       "value": 3.0,
-      "separation_sigma": 356.2
+      "separation_sigma": 295.3
      },
      {
       "value": 4.0,
-      "separation_sigma": 342.4
+      "separation_sigma": 287.9
      },
      {
       "value": 5.0,
-      "separation_sigma": 320.1
+      "separation_sigma": 271.8
      },
      {
       "value": 6.0,
-      "separation_sigma": 298.5
+      "separation_sigma": 255.7
      }
     ],
-    "feasibility_note": "Recommend 4 filters because it is the feasible setting with the largest physical effect (67% difference in the predicted observable) among settings that separate the models by \u226510\u03c3. Expected separation 342.4\u03c3 RMS (max 555\u03c3) after the 0.5 s conditioning window. Compare 0.3\u03c3 at the current setting (1 filters). Larger values were avoided because stacks above 5 filters tend to tumble.",
+    "feasibility_note": "Recommend 4 filters because it is the feasible setting with the largest physical effect (67% difference in the predicted observable) among settings that separate the models by \u226510\u03c3. Expected separation 287.9\u03c3 RMS (max 469\u03c3) after the 0.5 s conditioning window. Compare 0.2\u03c3 at the current setting (1 filters). Larger values were avoided because stacks above 5 filters tend to tumble.",
     "filming_instructions": "Stack 4 coffee filters (nested), drop them from the same height (~2 m) in front of the same wall, with the camera and reference card unchanged."
    }
   },
   {
    "type": "thought",
-   "ts": 1793703547.395937,
-   "text": "Locking in every model's prediction now, before you film, so the result can't be fitted after the fact."
+   "ts": 1793784200.626218,
+   "text": "The design points to 4 filters. I will freeze both models' predictions for that setting before you film."
   },
   {
    "type": "tool_call",
-   "ts": 1793703547.395939,
-   "id": "call_1_commit_predictions",
+   "ts": 1793784200.626224,
+   "id": "call_ccec8ced-6b20-4bbd-9a00-f647333f2dc4",
    "name": "commit_predictions",
    "args": {
     "experiment_id": "exp_filters_b",
     "knob_setting": {
      "n_filters": 4.0
-    }
+    },
+    "model_names": [
+     "drag_linear",
+     "drag_quadratic"
+    ]
    }
   },
   {
    "type": "tool_result",
-   "ts": 1793703547.399024,
-   "id": "call_1_commit_predictions",
+   "ts": 1793784200.628603,
+   "id": "call_ccec8ced-6b20-4bbd-9a00-f647333f2dc4",
    "name": "commit_predictions",
    "ok": true,
    "result": {
-    "commitment_id": "c_0fdf6bff6f07",
-    "sha256": "0fdf6bff6f07f2d1cc11323d23fce9abad507bd1f4c188d9adcbd739b327c7dd",
-    "hash12": "0fdf6bff6f07",
-    "created_at": "2026-11-03T10:59:07.397707Z",
+    "commitment_id": "c_49ad52bdcf5d",
+    "sha256": "49ad52bdcf5d9d134606759b3f4332dc1f0695e3714397b768ac3ecbf1d3213c",
+    "hash12": "49ad52bdcf5d",
+    "created_at": "2026-11-04T09:23:20.627282Z",
     "knob_setting": {
      "n_filters": 4.0
     },
     "predictions": {
      "drag_linear": {
-      "terminal_velocity_mps": 4.5061,
-      "fall_time_2m_s": 0.91,
-      "v_t_at_target": 4.5061
+      "terminal_velocity_mps": 4.4093,
+      "fall_time_2m_s": 0.915,
+      "v_t_at_target": 4.4093
      },
      "drag_quadratic": {
-      "terminal_velocity_mps": 2.2529,
-      "fall_time_2m_s": 1.185,
-      "v_t_at_target": 2.2529
+      "terminal_velocity_mps": 2.2045,
+      "fall_time_2m_s": 1.2,
+      "v_t_at_target": 2.2045
      }
     },
     "protocol": "winner = lowest RMSE after the conditioning window, provided the run is valid"
@@ -119,15 +172,14 @@
   },
   {
    "type": "message",
-   "ts": 1793703547.3990479,
-   "text": "Film this next: 4 filters. There the models separate by 342.4\u03c3 (max 555\u03c3), versus 0.3\u03c3 at the weakest setting. Predictions are committed as 0fdf6bff6f07 (drag_linear: terminal_velocity_mps 4.51, fall_time_2m_s 0.91; drag_quadratic: terminal_velocity_mps 2.25, fall_time_2m_s 1.19). Stack 4 coffee filters (nested), drop them from the same height (~2 m) in front of the same wall, with the camera and reference card unchanged."
+   "ts": 1793784205.89613,
+   "text": "Film next with 4 nested coffee filters, dropped from the same height (~2 m) in front of the same wall, with the camera and reference card unchanged. Predictions are frozen before filming under commitment c_49ad52bdcf5d, hash 49ad52bdcf5d. At 4 filters, drag_linear predicts a terminal velocity of 4.4093 m/s and a 2 m fall time of 0.915 s, while drag_quadratic predicts 2.2045 m/s and 1.2 s. This setting should separate the models by 287.9\u03c3, compared with 0.2198\u03c3 at 1 filter."
   },
   {
    "type": "done",
-   "ts": 1793703547.3990521,
+   "ts": 1793784205.896509,
    "result": {
-    "commitment_id": "c_0fdf6bff6f07",
-    "sha256": "0fdf6bff6f07f2d1cc11323d23fce9abad507bd1f4c188d9adcbd739b327c7dd"
+    "commitment_id": "c_49ad52bdcf5d"
    }
   }
  ]

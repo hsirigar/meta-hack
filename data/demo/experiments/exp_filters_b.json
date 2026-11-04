@@ -7,41 +7,41 @@
   "run_b_4filters"
  ],
  "commit_ids": [
-  "c_0fdf6bff6f07"
+  "c_49ad52bdcf5d"
  ],
- "description": "Falling coffee filters: linear or quadratic drag?",
+ "description": "Falling coffee filters: linear or quadratic drag? The green rectangle taped to the wall is a credit card (85.6 mm long side).",
  "proposal": {
   "knob": "n_filters",
   "value": 4.0,
-  "expected_separation_sigma": 342.37355182487005,
-  "expected_max_separation_sigma": 555.0045959017609,
+  "expected_separation_sigma": 287.8860667305543,
+  "expected_max_separation_sigma": 468.71659809105273,
   "discrimination_curve": [
    [
     1.0,
-    0.32755563351088257
+    0.21981947086870968
    ],
    [
     2.0,
-    272.46314872736133
+    226.95921870518885
    ],
    [
     3.0,
-    356.22497509060827
+    295.2763712984598
    ],
    [
     4.0,
-    342.37355182487005
+    287.8860667305543
    ],
    [
     5.0,
-    320.1268690948228
+    271.8184815086324
    ],
    [
     6.0,
-    298.51784546220523
+    255.70838717466495
    ]
   ],
-  "feasibility_note": "Recommend 4 filters because it is the feasible setting with the largest physical effect (67% difference in the predicted observable) among settings that separate the models by ≥10σ. Expected separation 342.4σ RMS (max 555σ) after the 0.5 s conditioning window. Compare 0.3σ at the current setting (1 filters). Larger values were avoided because stacks above 5 filters tend to tumble.",
+  "feasibility_note": "Recommend 4 filters because it is the feasible setting with the largest physical effect (67% difference in the predicted observable) among settings that separate the models by ≥10σ. Expected separation 287.9σ RMS (max 469σ) after the 0.5 s conditioning window. Compare 0.2σ at the current setting (1 filters). Larger values were avoided because stacks above 5 filters tend to tumble.",
   "models": [
    "drag_linear",
    "drag_quadratic"
@@ -49,5 +49,5 @@
   "source_run_id": "run_b_1filter",
   "filming_instructions": "Stack 4 coffee filters (nested), drop them from the same height (~2 m) in front of the same wall, with the camera and reference card unchanged."
  },
- "created_at": "2026-11-03T10:59:05.288144Z"
+ "created_at": "2026-11-04T09:23:19.045215Z"
 }

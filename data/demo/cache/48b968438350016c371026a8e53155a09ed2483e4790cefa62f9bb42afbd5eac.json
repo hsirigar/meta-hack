@@ -1,0 +1,1 @@
+{"model": "sam-3.1", "request": {"task": "image_probe", "prompt": "orange disk", "frame": 85}, "response": "<0f>0<|box;x1=314;y1=638;x2=379;y2=651;w=720;h=1280;c=0.8439024686813354|><|mask;x=0;y=0;c=0.8439024686813354;data=14,66,!!!!!=N]E*XIto)--EmF-$+ynu4$3'2P5OAZ|>\n"}
