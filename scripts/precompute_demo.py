@@ -91,6 +91,23 @@ def main():
     cidb = res.get("commitment_id")
     r4 = P.add_run(eb.id, clip("filters_4"), {"n_filters": 4}, role="reveal", commitment_id=cidb, run_id="run_b_4filters")
     agent("score", run_id=r4.id, commitment_id=cidb)
+    small, large = a.real_dir / "mouse_small.mp4", a.real_dir / "mouse_large.mp4"
+    if small.exists() and large.exists():
+        print("Scene D: real footage (a computer mouse on its cable)")
+        ed = P.create_experiment(
+            "Real footage: mouse on a cable", "pendulum",
+            "Real phone footage: a computer mouse hanging on its cable in front of a mesh chair back. The reference is "
+            "an ID-1 card (85.6 mm long side, same size as a credit card) on the ledge below; its face is blurred for privacy. "
+            "This rig can only swing to about 20° before the mouse leaves the frame.",
+            exp_id="exp_real_mouse", knob_max=20.0)
+        rs = P.add_run(ed.id, small, run_id="run_d_small")
+        agent("analyze", run_id=rs.id)
+        res = agent("next", experiment_id=ed.id)
+        cidd = res.get("commitment_id")
+        rl = P.add_run(ed.id, large, role="reveal", commitment_id=cidd, run_id="run_d_large")
+        agent("score", run_id=rl.id, commitment_id=cidd)
+        print(f"  ({time.time() - T:.0f}s)")
+
     from ghostline.config import get_settings
     from ghostline.scene import scene_backend_label
     s = get_settings()

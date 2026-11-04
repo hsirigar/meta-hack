@@ -126,6 +126,7 @@ class Experiment(BaseModel):
     run_ids: list[str] = Field(default_factory=list)
     commit_ids: list[str] = Field(default_factory=list)
     description: str = ""
+    knob_max: Optional[float] = None  # largest knob value the experimenter's rig allows (e.g. max release angle)
     proposal: Optional["ExperimentProposal"] = None
     created_at: str = ""
 

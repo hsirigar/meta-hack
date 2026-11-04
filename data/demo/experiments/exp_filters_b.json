@@ -7,41 +7,42 @@
   "run_b_4filters"
  ],
  "commit_ids": [
-  "c_49ad52bdcf5d"
+  "c_cef98eacf170"
  ],
  "description": "Falling coffee filters: linear or quadratic drag? The green rectangle taped to the wall is a credit card (85.6 mm long side).",
+ "knob_max": null,
  "proposal": {
   "knob": "n_filters",
   "value": 4.0,
-  "expected_separation_sigma": 287.8860667305543,
-  "expected_max_separation_sigma": 468.71659809105273,
+  "expected_separation_sigma": 296.11350372364075,
+  "expected_max_separation_sigma": 482.120278075014,
   "discrimination_curve": [
    [
     1.0,
-    0.21981947086870968
+    0.21347798915721225
    ],
    [
     2.0,
-    226.95921870518885
+    233.4803897645073
    ],
    [
     3.0,
-    295.2763712984598
+    303.750582106269
    ],
    [
     4.0,
-    287.8860667305543
+    296.11350372364075
    ],
    [
     5.0,
-    271.8184815086324
+    279.6039006077596
    ],
    [
     6.0,
-    255.70838717466495
+    263.03439482533463
    ]
   ],
-  "feasibility_note": "Recommend 4 filters because it is the feasible setting with the largest physical effect (67% difference in the predicted observable) among settings that separate the models by ≥10σ. Expected separation 287.9σ RMS (max 469σ) after the 0.5 s conditioning window. Compare 0.2σ at the current setting (1 filters). Larger values were avoided because stacks above 5 filters tend to tumble.",
+  "feasibility_note": "Recommend 4 filters because it is the feasible setting with the largest physical effect (67% difference in the predicted observable) among settings that separate the models by ≥10σ. Expected separation 296.1σ RMS (max 482σ) after the 0.5 s conditioning window. Compare 0.2σ at the current setting (1 filters). Larger values were avoided because stacks above 5 filters tend to tumble.",
   "models": [
    "drag_linear",
    "drag_quadratic"
@@ -49,5 +50,5 @@
   "source_run_id": "run_b_1filter",
   "filming_instructions": "Stack 4 coffee filters (nested), drop them from the same height (~2 m) in front of the same wall, with the camera and reference card unchanged."
  },
- "created_at": "2026-11-04T09:23:19.045215Z"
+ "created_at": "2026-11-04T19:17:24.285955Z"
 }

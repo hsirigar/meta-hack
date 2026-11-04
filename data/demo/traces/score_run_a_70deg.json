@@ -2,32 +2,32 @@
  "task": "score",
  "ids": {
   "run_id": "run_a_70deg",
-  "commitment_id": "c_0355f5ddcf7d",
+  "commitment_id": "c_c9a86cd6b2b4",
   "experiment_id": "exp_pendulum_a",
   "system_type": "pendulum"
  },
  "events": [
   {
    "type": "status",
-   "ts": 1793784143.8893728,
+   "ts": 1793819790.562588,
    "text": "agent: muse-wonder-1.0 via Meta Model API",
    "task": "score",
    "ids": {
     "run_id": "run_a_70deg",
-    "commitment_id": "c_0355f5ddcf7d",
+    "commitment_id": "c_c9a86cd6b2b4",
     "experiment_id": "exp_pendulum_a",
     "system_type": "pendulum"
    }
   },
   {
    "type": "thought",
-   "ts": 1793784149.705556,
-   "text": "Checking the new video to confirm what to track and how it was set up."
+   "ts": 1793819794.163834,
+   "text": "Checking the scene in run_a_70deg to see what to track and how it was set up."
   },
   {
    "type": "tool_call",
-   "ts": 1793784149.7055738,
-   "id": "call_e2d69a08-5bc6-4c9f-b3c1-f0a9d39cf332",
+   "ts": 1793819794.1638532,
+   "id": "call_f1b03b9e-422f-4126-9715-8a760358d171",
    "name": "describe_scene",
    "args": {
     "run_id": "run_a_70deg"
@@ -35,8 +35,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793784149.715062,
-   "id": "call_e2d69a08-5bc6-4c9f-b3c1-f0a9d39cf332",
+   "ts": 1793819794.181105,
+   "id": "call_f1b03b9e-422f-4126-9715-8a760358d171",
    "name": "describe_scene",
    "ok": true,
    "result": {
@@ -58,13 +58,13 @@
   },
   {
    "type": "thought",
-   "ts": 1793784153.3505988,
-   "text": "Tracking the orange ball through the frames so I can measure its motion."
+   "ts": 1793819799.343387,
+   "text": "Tracking the orange ball in this reveal run so its motion can be measured."
   },
   {
    "type": "tool_call",
-   "ts": 1793784153.350623,
-   "id": "call_769bb2cd-bb6f-4199-ac3a-c1febef633e4",
+   "ts": 1793819799.3434508,
+   "id": "call_8630d88a-ae48-4e3a-824c-3195e2093552",
    "name": "track_objects",
    "args": {
     "run_id": "run_a_70deg",
@@ -75,8 +75,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793784153.583157,
-   "id": "call_769bb2cd-bb6f-4199-ac3a-c1febef633e4",
+   "ts": 1793819799.509583,
+   "id": "call_8630d88a-ae48-4e3a-824c-3195e2093552",
    "name": "track_objects",
    "ok": true,
    "result": {
@@ -98,13 +98,13 @@
   },
   {
    "type": "thought",
-   "ts": 1793784156.225297,
-   "text": "Converting those tracks into a calibrated angle time series."
+   "ts": 1793819802.689264,
+   "text": "Converting the tracks into a calibrated angle time series to prepare for scoring."
   },
   {
    "type": "tool_call",
-   "ts": 1793784156.2253141,
-   "id": "call_55cfae39-27d7-4736-9ca4-05c03439021c",
+   "ts": 1793819802.689285,
+   "id": "call_f9af75b5-a8ad-4b83-a846-a5485dfd552d",
    "name": "measure",
    "args": {
     "run_id": "run_a_70deg"
@@ -112,8 +112,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793784156.239286,
-   "id": "call_55cfae39-27d7-4736-9ca4-05c03439021c",
+   "ts": 1793819802.711027,
+   "id": "call_f9af75b5-a8ad-4b83-a846-a5485dfd552d",
    "name": "measure",
    "ok": true,
    "result": {
@@ -139,13 +139,13 @@
   },
   {
    "type": "thought",
-   "ts": 1793784159.301161,
-   "text": "Checking whether this recording is trustworthy before scoring it."
+   "ts": 1793819806.391242,
+   "text": "Now checking whether this recording can be trusted before any scoring."
   },
   {
    "type": "tool_call",
-   "ts": 1793784159.301184,
-   "id": "call_74aee29a-e8c6-4f91-b7c3-a40c1d561831",
+   "ts": 1793819806.391278,
+   "id": "call_82fb6789-d506-4eb7-a544-3503dbe44131",
    "name": "check_validity",
    "args": {
     "run_id": "run_a_70deg"
@@ -153,8 +153,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793784159.3272672,
-   "id": "call_74aee29a-e8c6-4f91-b7c3-a40c1d561831",
+   "ts": 1793819806.4289129,
+   "id": "call_82fb6789-d506-4eb7-a544-3503dbe44131",
    "name": "check_validity",
    "ok": true,
    "result": {
@@ -193,30 +193,30 @@
      {
       "name": "setup_mismatch",
       "status": "pass",
-      "reason": "Same pendulum as the committed experiment (length 0.613 m vs 0.600 m)."
+      "reason": "Same pendulum as the committed experiment (length 0.598 m from swing timing vs 0.600 m)."
      }
     ]
    }
   },
   {
    "type": "thought",
-   "ts": 1793784162.9220538,
-   "text": "Scoring this reveal run against the frozen predictions, without refitting."
+   "ts": 1793819809.815082,
+   "text": "Validity passed, so scoring this run against the frozen commitment c_c9a86cd6b2b4."
   },
   {
    "type": "tool_call",
-   "ts": 1793784162.92207,
-   "id": "call_9867d6ca-86cf-41f8-afca-7273f58c59f9",
+   "ts": 1793819809.8151062,
+   "id": "call_a1eae4ba-05cf-4566-88b6-cd17452280dc",
    "name": "evaluate_commitment",
    "args": {
-    "commitment_id": "c_0355f5ddcf7d",
+    "commitment_id": "c_c9a86cd6b2b4",
     "run_id": "run_a_70deg"
    }
   },
   {
    "type": "tool_result",
-   "ts": 1793784162.991064,
-   "id": "call_9867d6ca-86cf-41f8-afca-7273f58c59f9",
+   "ts": 1793819809.895575,
+   "id": "call_a1eae4ba-05cf-4566-88b6-cd17452280dc",
    "name": "evaluate_commitment",
    "ok": true,
    "result": {
@@ -231,7 +231,10 @@
      "eval_samples": 687,
      "eval_start_t": 0.5333,
      "observable_measured": 1.664,
-     "rmse_ratio_loser_over_winner": 48.06
+     "rmse_ratio_loser_over_winner": 48.06,
+     "winner_rmse_sigma": 15.04,
+     "winner_observable_error_pct": 0.07407,
+     "all_models_inadequate": false
     },
     "per_model": [
      {
@@ -266,13 +269,13 @@
   },
   {
    "type": "thought",
-   "ts": 1793784166.369397,
-   "text": "Rendering each model as a ghost overlay so you can see the predictions."
+   "ts": 1793819813.817685,
+   "text": "Rendering each committed model as a ghost over the video so you can see the comparison."
   },
   {
    "type": "tool_call",
-   "ts": 1793784166.369418,
-   "id": "call_88df693c-3a29-4a9c-9bb1-699b8ab793c8",
+   "ts": 1793819813.8177228,
+   "id": "call_0df96bff-9f14-469f-b23a-d2928b90c908",
    "name": "render_ghosts",
    "args": {
     "run_id": "run_a_70deg",
@@ -285,8 +288,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793784168.446472,
-   "id": "call_88df693c-3a29-4a9c-9bb1-699b8ab793c8",
+   "ts": 1793819815.272208,
+   "id": "call_0df96bff-9f14-469f-b23a-d2928b90c908",
    "name": "render_ghosts",
    "ok": true,
    "result": {
@@ -301,12 +304,12 @@
   },
   {
    "type": "message",
-   "ts": 1793784174.077513,
-   "text": "Verdict: the nonlinear pendulum model wins decisively on this pre-committed reveal run.\n\nThe recording passed validity, the commitment hash verified, and predictions were scored without refitting after conditioning on the first 0.5 s. The nonlinear model predicted a period of 1.663 s versus a measured 1.664 s and had an error of 0.02032 rad, while the next model was 48.06 times worse. The ghost overlay showing all three models is ready to view."
+   "ts": 1793819821.790254,
+   "text": "Verdict: pendulum_nonlinear wins this reveal run. The commitment hash was verified, the video was valid, and at 70\u00b0 release its predicted period was 1.663 s versus 1.664 s measured, an error of 0.074%. The next model was 48.06 times worse in RMSE, so this is decisive pre-committed evidence, not a refit. Ghosts are rendered in the overlay for you to inspect."
   },
   {
    "type": "done",
-   "ts": 1793784174.0796459,
+   "ts": 1793819821.7924201,
    "result": {}
   }
  ]

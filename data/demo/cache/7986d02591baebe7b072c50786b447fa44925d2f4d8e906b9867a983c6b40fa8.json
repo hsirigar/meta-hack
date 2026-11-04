@@ -1,0 +1,1 @@
+{"model": "sam-3.1", "request": {"task": "image_probe", "prompt": "white rectangle", "frame": 176}, "response": "<0f>0<|box;x1=526;y1=608;x2=806;y2=681;w=1280;h=720;c=0.5747508406639099|><|mask;x=0;y=0;c=0.5747508406639099;data=74,281,!!!!!^G+y:mr574`2qv=FHM[=a?!m*nv5Vp$6Dl2+c8=3:BUt1FVj@=Z)UD1kgp`.CT_jDz(+'#|>\n"}

@@ -32,11 +32,19 @@ def track_run(run: Run, concepts: list[str], backend: str | None = None) -> dict
     be = get_backend(backend)
     tracks = be.track(str(abs_path(run.video_path)), run.frame_times, concepts)
     min_score = get_settings().sam_min_score
+    W, H = run.width or 0, run.height or 0
     for tr in tracks.values():
         for f in tr.frames:
             if f.score < min_score:
                 f.centroid = None
+            elif W and H and f.centroid is not None and touches_border(f.bbox, W, H):
+                f.centroid = None  # partly out of frame: the visible centre is biased, so don't measure it
     return tracks
+
+
+def touches_border(bbox, W: int, H: int, margin: float = 2.0) -> bool:
+    x, y, w, h = bbox
+    return x <= margin or y <= margin or x + w >= W - margin or y + h >= H - margin
 
 
 def track_summary(tracks: dict[str, Track]) -> dict:

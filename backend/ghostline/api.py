@@ -91,6 +91,7 @@ class NewExperiment(BaseModel):
     name: str
     system_type: str
     description: str = ""
+    knob_max: float | None = None
 
 
 def _run_summary(r) -> dict:
@@ -117,7 +118,7 @@ def list_experiments():
 def create_experiment(body: NewExperiment):
     if body.system_type not in ("pendulum", "falling_drag"):
         raise HTTPException(400, "system_type must be pendulum or falling_drag")
-    return _j(P.create_experiment(body.name, body.system_type, body.description))
+    return _j(P.create_experiment(body.name, body.system_type, body.description, knob_max=body.knob_max))
 
 
 @app.get("/api/experiments/{eid}")

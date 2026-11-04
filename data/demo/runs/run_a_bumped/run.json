@@ -35282,9 +35282,9 @@
    {
     "name": "setup_mismatch",
     "status": "pass",
-    "value": 0.02338161115397111,
+    "value": 0.008526688110754037,
     "threshold": 0.05,
-    "reason": "Same pendulum as the committed experiment (length 0.614 m vs 0.600 m)."
+    "reason": "Same pendulum as the committed experiment (length 0.595 m from swing timing vs 0.600 m)."
    }
   ]
  },
@@ -35296,7 +35296,7 @@
   "release_angle_deg": 70.0
  },
  "role": "reveal",
- "commitment_id": "c_0355f5ddcf7d",
+ "commitment_id": "c_c9a86cd6b2b4",
  "fits": null,
  "comparison": null,
  "discovery": null,
@@ -35305,5 +35305,5 @@
  "trace_tasks": [
   "score"
  ],
- "created_at": "2026-11-04T09:22:55.854653Z"
+ "created_at": "2026-11-04T19:17:02.962466Z"
 }

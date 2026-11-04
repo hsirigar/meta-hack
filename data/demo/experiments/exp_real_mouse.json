@@ -1,0 +1,47 @@
+{
+ "id": "exp_real_mouse",
+ "name": "Real footage: mouse on a cable",
+ "system_type": "pendulum",
+ "run_ids": [
+  "run_d_small",
+  "run_d_large"
+ ],
+ "commit_ids": [
+  "c_aa7f524343e8"
+ ],
+ "description": "Real phone footage: a computer mouse hanging on its cable in front of a mesh chair back. The reference is an ID-1 card (85.6 mm long side, same size as a credit card) on the ledge below; its face is blurred for privacy. This rig can only swing to about 20° before the mouse leaves the frame.",
+ "knob_max": 20.0,
+ "proposal": {
+  "knob": "release_angle_deg",
+  "value": 20.0,
+  "expected_separation_sigma": 759.3613092355789,
+  "expected_max_separation_sigma": 1193.5492736011192,
+  "discrimination_curve": [
+   [
+    5.0,
+    36.00726443667855
+   ],
+   [
+    10.0,
+    221.54574198031634
+   ],
+   [
+    15.0,
+    472.413187011043
+   ],
+   [
+    20.0,
+    759.3613092355789
+   ]
+  ],
+  "feasibility_note": "Recommend 20° because it is the feasible setting with the largest physical effect (0% difference in the predicted observable) among settings that separate the models by ≥10σ. Expected separation 759.4σ RMS (max 1194σ) after the 0.5 s conditioning window. Searched only up to 20°, the most this setup allows. ",
+  "models": [
+   "pendulum_linear",
+   "pendulum_nonlinear",
+   "pendulum_nonlinear_quaddamp"
+  ],
+  "source_run_id": "run_d_small",
+  "filming_instructions": "Release the same pendulum from 20° (string taut, bob at rest), keep the camera and the reference object exactly where they were, and record at least 6 full swings."
+ },
+ "created_at": "2026-11-04T19:18:47.599580Z"
+}

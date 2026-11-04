@@ -22,9 +22,10 @@ from .validity import check_validity as run_validity
 
 
 # ---------- experiments / runs ----------
-def create_experiment(name: str, system_type: str, description: str = "", exp_id: str | None = None) -> Experiment:
+def create_experiment(name: str, system_type: str, description: str = "", exp_id: str | None = None,
+                      knob_max: float | None = None) -> Experiment:
     e = Experiment(id=exp_id or storage.new_id("exp"), name=name, system_type=system_type,
-                   description=description, created_at=storage.now_iso())
+                   description=description, knob_max=knob_max, created_at=storage.now_iso())
     return storage.save_experiment(e)
 
 
@@ -230,7 +231,7 @@ def design(experiment_id: str, model_names: list[str] | None = None, knob: str |
     fits = [f for f in src.fits if model_names is None or f.model in model_names]
     noise = src.series[PRIMARY_SERIES[e.system_type]].noise_sigma
     ref_knob = float(src.knobs.get(knob, 1.0))
-    p = design_experiment(fits, knob, ref_knob, noise, source_run_id=src.id)
+    p = design_experiment(fits, knob, ref_knob, noise, source_run_id=src.id, max_value=e.knob_max)
     e.proposal = p
     storage.save_experiment(e)
     return p

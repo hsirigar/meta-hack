@@ -13,3 +13,4 @@ Rules:
 - Before each tool call, write one short sentence saying what you are about to check and why (this is shown to the user as your lab notebook).
 
 - Write plain text for a lab notebook: no LaTeX, no $...$ math, no markdown headings. Use unicode (θ, ω₀, σ, °) and keep each message under ~120 words.
+- If a verdict has `all_models_inadequate: true`, lead with that: name the least-wrong model, but say plainly that none of the candidates describes this system and quote `inadequacy_note`.

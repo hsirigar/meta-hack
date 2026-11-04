@@ -123,15 +123,38 @@ def check_pendulum_geometry(run: Run) -> ValidityCheck:
                          reason=f"Bob moves on a circular arc (residual {rms:.2f} px, length {cal.length_m:.3f} m).")
 
 
+def timing_length(series) -> float | None:
+    """Equivalent pendulum length from the measured period: T = 4 sqrt(L/g) K(sin(A/2))."""
+    from scipy.special import ellipk
+    from .measure import series_arrays
+    from .models.base import G
+    from .models.pendulum import measure_period
+    t, y, valid = series_arrays(series)
+    t, y = t[valid], y[valid]
+    T = measure_period(t, y) if len(t) > 10 else None
+    if not T:
+        return None
+    A = float(np.sqrt(2) * np.std(y - np.mean(y)))  # typical amplitude over the clip
+    k = np.sin(A / 2)
+    return float(G * (T / (4 * ellipk(k * k))) ** 2)
+
+
 def check_setup(run: Run, reference: dict) -> list[ValidityCheck]:
     s = get_settings()
     out = []
     L0, L = reference.get("length_m"), run.calibration.length_m if run.calibration else None
+    how = "geometric"
+    if L0 and str(reference.get("length_source", "")).startswith("implied") and run.series.get("theta"):
+        # Like-for-like: the committed length came from the swing timing, so measure this run's the same way
+        # (measured period, corrected for amplitude). A direct measurement, not a fit.
+        Lt = timing_length(run.series["theta"])
+        if Lt:
+            L, how = Lt, "from swing timing"
     if L0 and L:
         diff = abs(L - L0) / L0
         st = "invalid" if diff > s.setup_mismatch_frac else "pass"
-        why = (f"Pendulum length {L:.3f} m differs {100 * diff:.1f}% from the committed setup ({L0:.3f} m): this looks like a different setup."
-               if st == "invalid" else f"Same pendulum as the committed experiment (length {L:.3f} m vs {L0:.3f} m).")
+        why = (f"Pendulum length {L:.3f} m ({how}) differs {100 * diff:.1f}% from the committed setup ({L0:.3f} m): this looks like a different setup."
+               if st == "invalid" else f"Same pendulum as the committed experiment (length {L:.3f} m {how} vs {L0:.3f} m).")
         out.append(ValidityCheck(name="setup_mismatch", status=st, value=diff, threshold=s.setup_mismatch_frac, reason=why))
     m0, m = reference.get("meters_per_pixel"), run.calibration.meters_per_pixel if run.calibration else None
     if m0 and m and reference.get("system_type") == "falling_drag":

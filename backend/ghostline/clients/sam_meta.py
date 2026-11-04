@@ -71,7 +71,9 @@ def parse_output(text: str) -> dict[int, dict[int, dict]]:
     return out
 
 
-SHAPES = ["ball", "circle", "disk", "ellipse", "rectangle", "object"]
+SHAPES = ["ball", "circle", "disk", "ellipse", "rectangle", "strip", "object"]
+COLOR_WORDS = ("white", "black", "grey", "gray", "silver", "brown", "purple", "orange", "red", "yellow",
+               "green", "blue", "pink", "magenta")
 
 
 def prompt_variants(concept: str) -> list[str]:
@@ -81,7 +83,8 @@ def prompt_variants(concept: str) -> list[str]:
     out = [concept]
     if len(words) > 2:
         out.append(" ".join(words[-2:]))
-    color = color_for(concept)
+    named = [w for w in (x.lower() for x in words) if w in COLOR_WORDS]
+    color = named[0] if named else color_for(concept)
     out += [f"{color} {s}" for s in SHAPES]
     seen, uniq = set(), []
     for p in out:

@@ -1,0 +1,1 @@
+{"model": "sam-3.1", "request": {"task": "image_probe", "prompt": "white ellipse", "frame": 420}, "response": ""}

@@ -14,6 +14,8 @@ from .models.pendulum import PERIOD_WINDOW_S, measure_period
 from .schemas import Commitment, CommittedModel, FitResult, ValidityReport, Verdict
 
 SIG_DIGITS = 9
+ADEQUATE_SIGMA = 20.0     # winner RMSE above this many noise sigmas ...
+ADEQUATE_OBS_PCT = 1.0    # ... and observable error above this percent => no candidate describes the data
 
 
 class CommitmentTampered(RuntimeError):
@@ -185,5 +187,15 @@ def evaluate_commitment(c: Commitment, run_id: str, t: np.ndarray, y: np.ndarray
     facts = {"knob": knob, "value": value, "conditioning_window_s": window, "noise_sigma": noise_sigma,
              "eval_samples": int(ev.sum()), "eval_start_t": t_start + window, "observable_measured": obs_measured,
              "rmse_ratio_loser_over_winner": (per_model[-1]["rmse"] / max(per_model[0]["rmse"], 1e-12)) if len(per_model) > 1 else None}
+    if per_model:
+        w = per_model[0]
+        err_pct = abs(w.get("observable_error_pct") or 0.0)
+        # Ranking says which candidate is least wrong; adequacy says whether any of them actually describes the data.
+        facts["winner_rmse_sigma"] = w["rmse_sigma"]
+        facts["winner_observable_error_pct"] = err_pct
+        facts["all_models_inadequate"] = bool(w["rmse_sigma"] > ADEQUATE_SIGMA and err_pct > ADEQUATE_OBS_PCT)
+        if facts["all_models_inadequate"]:
+            facts["inadequacy_note"] = (f"Even the best model misses by {w['rmse_sigma']:.0f}σ and its {w['observable']} is off by "
+                                        f"{err_pct:.1f}%: the system is outside the candidate set.")
     return Verdict(commitment_id=c.id, run_id=run_id, hash_verified=True, validity=validity, per_model=per_model,
                    winner=winner, summary_facts=facts), curves

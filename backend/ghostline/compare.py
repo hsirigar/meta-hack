@@ -43,14 +43,20 @@ def compare_fits(fits: list[FitResult], t_hold: np.ndarray, noise_sigma: float,
         sep = float(np.max(np.abs(predict(a, t_hold) - predict(b, t_hold))) / max(noise_sigma, 1e-12))
     else:
         sep = 0.0
-    ambiguous = abs(dbic) < s.ambig_dbic and (ratio < s.ambig_rmse_ratio or not np.isfinite(ratio)) and sep < s.ambig_sep_sigma
+    # BIC assumes independent residuals. On real footage residuals are often autocorrelated (Ljung-Box p < 0.01),
+    # which inflates |dBIC|; then only the predictive criteria (holdout ratio, separation) can call it decisive.
+    pa, pb = a.residual_whiteness_p, b.residual_whiteness_p
+    bic_unreliable = all(p is not None and np.isfinite(p) and p < 0.01 for p in (pa, pb))
+    bic_ok = abs(dbic) < s.ambig_dbic or bic_unreliable
+    ambiguous = bic_ok and (ratio < s.ambig_rmse_ratio or not np.isfinite(ratio)) and sep < s.ambig_sep_sigma
     best = None
     if not ambiguous:
         with_h = [f for f in fits if f.holdout_rmse is not None]
         best = min(with_h, key=lambda f: f.holdout_rmse).model if with_h else a.model
     facts.update({"top_models": [a.model, b.model], "delta_bic": dbic, "holdout_rmse_ratio": ratio,
-                  "max_separation_sigma": sep,
+                  "max_separation_sigma": sep, "bic_ignored_autocorrelated_residuals": bic_unreliable,
                   "thresholds": {"delta_bic": s.ambig_dbic, "rmse_ratio": s.ambig_rmse_ratio, "sep_sigma": s.ambig_sep_sigma},
-                  "rule": "ambiguous if |dBIC| < 6 and holdout RMSE ratio < 1.2 and max separation < 3 sigma"})
+                  "rule": "ambiguous if |dBIC| < 6 and holdout RMSE ratio < 1.2 and max separation < 3 sigma "
+                          "(the dBIC test is skipped when both models' residuals are autocorrelated, Ljung-Box p < 0.01)"})
     return Comparison(fits=fits, best=best, status="ambiguous" if ambiguous else "decisive",
                       max_separation_sigma=sep, explanation_facts=facts)

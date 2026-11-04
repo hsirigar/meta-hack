@@ -35282,9 +35282,9 @@
    {
     "name": "setup_mismatch",
     "status": "pass",
-    "value": 0.02086283644835241,
+    "value": 0.004849626213709168,
     "threshold": 0.05,
-    "reason": "Same pendulum as the committed experiment (length 0.613 m vs 0.600 m)."
+    "reason": "Same pendulum as the committed experiment (length 0.598 m from swing timing vs 0.600 m)."
    }
   ]
  },
@@ -35296,13 +35296,13 @@
   "release_angle_deg": 70.0
  },
  "role": "reveal",
- "commitment_id": "c_0355f5ddcf7d",
+ "commitment_id": "c_c9a86cd6b2b4",
  "fits": null,
  "comparison": null,
  "discovery": null,
  "overlay_path": "runs/run_a_70deg/overlay.mp4",
  "verdict": {
-  "commitment_id": "c_0355f5ddcf7d",
+  "commitment_id": "c_c9a86cd6b2b4",
   "run_id": "run_a_70deg",
   "hash_verified": true,
   "validity": {
@@ -35353,9 +35353,9 @@
     {
      "name": "setup_mismatch",
      "status": "pass",
-     "value": 0.02086283644835241,
+     "value": 0.004849626213709168,
      "threshold": 0.05,
-     "reason": "Same pendulum as the committed experiment (length 0.613 m vs 0.600 m)."
+     "reason": "Same pendulum as the committed experiment (length 0.598 m from swing timing vs 0.600 m)."
     }
    ]
   },
@@ -35442,11 +35442,14 @@
    "eval_samples": 687,
    "eval_start_t": 0.5333330000000001,
    "observable_measured": 1.6640275400664433,
-   "rmse_ratio_loser_over_winner": 48.05506979804407
+   "rmse_ratio_loser_over_winner": 48.05506979804407,
+   "winner_rmse_sigma": 15.03801960145264,
+   "winner_observable_error_pct": 0.07407377815800914,
+   "all_models_inadequate": false
   }
  },
  "trace_tasks": [
   "score"
  ],
- "created_at": "2026-11-04T09:22:23.888119Z"
+ "created_at": "2026-11-04T19:16:30.561820Z"
 }

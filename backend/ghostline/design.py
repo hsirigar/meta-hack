@@ -77,8 +77,10 @@ def separation(fits: list[FitResult], knob: str, value: float, ref_knob: float, 
 
 
 def design_experiment(fits: list[FitResult], knob: str, ref_knob: float, noise_sigma: float,
-                      source_run_id: str = "") -> ExperimentProposal:
-    grid = KNOB_GRIDS[knob]
+                      source_run_id: str = "", max_value: float | None = None) -> ExperimentProposal:
+    grid = [v for v in KNOB_GRIDS[knob] if max_value is None or v <= max_value + 1e-9]
+    if not grid:
+        grid = [min(KNOB_GRIDS[knob])]
     rows = []
     for v in grid:
         rms, mx, _ = separation(fits, knob, v, ref_knob, noise_sigma)
@@ -101,9 +103,11 @@ def design_experiment(fits: list[FitResult], knob: str, ref_knob: float, noise_s
     unit = "°" if knob == "release_angle_deg" else " filters"
     cur = dict(curve).get(ref_knob)
     cur_txt = f"{cur:.1f}σ at the current setting ({ref_knob:g}{unit})" if cur is not None else ""
+    limit_txt = (f"Searched only up to {max_value:g}{unit}, the most this setup allows. " if max_value is not None else "")
     feas_note = (f"Recommend {v:g}{unit} because {why}. Expected separation {rms:.1f}σ RMS (max {mx:.0f}σ) after the "
-                 f"0.5 s conditioning window. " + (f"Compare {cur_txt}. " if cur_txt else "") +
-                 (f"Larger values were avoided because {feasibility(knob, grid[-1])[1]}." if note == "" else f"Caution: {note}."))
+                 f"0.5 s conditioning window. " + (f"Compare {cur_txt}. " if cur_txt else "") + limit_txt +
+                 ("" if max_value is not None else
+                  (f"Larger values were avoided because {feasibility(knob, grid[-1])[1]}." if note == "" else f"Caution: {note}.")))
     if knob == "release_angle_deg":
         instr = (f"Release the same pendulum from {v:g}° (string taut, bob at rest), keep the camera and the reference "
                  f"object exactly where they were, and record at least 6 full swings.")
