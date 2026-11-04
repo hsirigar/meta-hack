@@ -66,7 +66,9 @@ class _Mock:
         if "error" in sc:
             yield _ev("message", text=f"I couldn't understand the scene: {sc['error']}"); return
         yield from self.call("track_objects", {"run_id": run_id},
-                             f"Tracking the {sc['tracked_concepts'][0]} and the {sc['reference_object']['concept']} ({sc['reference_object']['known_size_m'] * 1000:.2f} mm reference).")
+                             f"Tracking the {sc['tracked_concepts'][0]} and the {sc['reference_object']['concept']} "
+                             + (f"({sc['reference_object']['known_size_m'] * 1000:.2f} mm reference)." if sc['reference_object']['known_size_m'] > 0
+                                else "(a fixed landmark for the camera checks; nothing of known size is in view, so I measure angles and periods only)."))
         yield from self.call("measure", {"run_id": run_id}, "Converting pixels to physical units and fixing the train/holdout split before any fitting.")
         if "error" in self.results["measure"]:
             yield _ev("message", text=f"Measurement failed: {self.results['measure']['error']}"); return

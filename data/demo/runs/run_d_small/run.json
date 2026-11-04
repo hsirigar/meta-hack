@@ -735,7 +735,7 @@
   },
   "anchor_hint": "pivot at top center",
   "gravity_direction_hint": "down",
-  "notes": "mouse on cable as pendulum bob, blurred ID-1 card below, small angle swing",
+  "notes": "mouse on cable as bob, card on ledge below blurred, swing limited to ~20 deg",
   "confidence": 0.9
  },
  "tracks": {
@@ -34674,15 +34674,15 @@
    {
     "name": "camera_drift",
     "status": "pass",
-    "value": 0.0008734640537108554,
+    "value": 0.00078125,
     "threshold": 0.03,
-    "reason": "Reference object stayed within 1.1 px of its starting position."
+    "reason": "Reference object stayed within 1.0 px of its starting position."
    },
    {
     "name": "camera_jump",
     "status": "pass",
     "value": 20.0,
-    "threshold": 10.0,
+    "threshold": 40.0,
     "reason": "No sudden camera jumps."
    },
    {
@@ -34717,7 +34717,7 @@
     "name": "object_shape",
     "status": "pass",
     "value": 0.14655172413793102,
-    "threshold": 0.35,
+    "threshold": 0.5,
     "reason": "The tracked object keeps a steady outline (size varies 15%)."
    }
   ]
@@ -47666,5 +47666,5 @@
  "trace_tasks": [
   "analyze"
  ],
- "created_at": "2026-11-04T20:26:39.579434Z"
+ "created_at": "2026-11-04T21:11:13.528209Z"
 }

@@ -17,6 +17,20 @@ def _rolling_median(x: np.ndarray, k: int) -> np.ndarray:
     return np.array([np.median(xp[i:i + k]) for i in range(len(x))])
 
 
+def _edge_robust_track(tr, valid: np.ndarray, xy: np.ndarray) -> np.ndarray:
+    """Reference position that ignores segmentation flicker. Camera motion moves every edge of the reference box
+    together, but a mask that sometimes includes a knob or shadow at one end moves only that edge. Each frame,
+    take the steadier of the two edge shifts on each axis and accumulate it."""
+    b = np.array([f.bbox for f, v in zip(tr.frames, valid) if v], float)
+    if len(b) != len(xy) or len(b) < 2:
+        return xy
+    e = np.column_stack([b[:, 0], b[:, 0] + b[:, 2], b[:, 1], b[:, 1] + b[:, 3]])
+    d = np.diff(e, axis=0)
+    pick = lambda a, b_: np.where(np.abs(a) <= np.abs(b_), a, b_)
+    step = np.column_stack([pick(d[:, 0], d[:, 1]), pick(d[:, 2], d[:, 3])])
+    return xy[0] + np.vstack([[0.0, 0.0], np.cumsum(step, axis=0)])
+
+
 def check_camera(run: Run) -> list[ValidityCheck]:
     s = get_settings()
     ref = run.scene.reference_object
@@ -30,7 +44,7 @@ def check_camera(run: Run) -> list[ValidityCheck]:
     if valid.sum() < 5:
         return [ValidityCheck(name="camera_moved", status="invalid",
                               reason=f"The reference object ({ref.concept}) is visible in only {int(valid.sum())} frames.")]
-    c, tv = xy[valid], t[valid]
+    c, tv = _edge_robust_track(tr, valid, xy[valid]), t[valid]
     n0 = max(3, len(c) // 10)
     base = np.median(c[:n0], axis=0)
     sm = np.column_stack([_rolling_median(c[:, 0], 5), _rolling_median(c[:, 1], 5)])
@@ -49,10 +63,10 @@ def check_camera(run: Run) -> list[ValidityCheck]:
     j, i_j = float(jumps.max()), int(jumps.argmax())
     thr = max(s.camera_jump_sigma * sig, 2.0)
     if j > thr:
-        out.append(ValidityCheck(name="camera_jump", status="invalid", value=j / sig, threshold=s.camera_jump_sigma,
+        out.append(ValidityCheck(name="camera_jump", status="invalid", value=j / sig, threshold=thr / sig,
                                  reason=f"The reference object jumped {j:.1f} px between t={tv[i_j]:.2f}s and t={tv[i_j + 1]:.2f}s ({j / sig:.0f}σ of normal jitter): the camera was bumped."))
     else:
-        out.append(ValidityCheck(name="camera_jump", status="pass", value=j / sig, threshold=s.camera_jump_sigma,
+        out.append(ValidityCheck(name="camera_jump", status="pass", value=j / sig, threshold=thr / sig,
                                  reason="No sudden camera jumps."))
     sizes = reference_sizes_px(tr, ref)[valid]
     # Zoom is a sustained change, so compare 1 s rolling means: averaging also removes the 1 px
@@ -120,7 +134,8 @@ def check_pendulum_geometry(run: Run) -> ValidityCheck:
         return ValidityCheck(name="pendulum_geometry", status="warning", value=rms, threshold=thr,
                              reason=f"The bob's path is not a clean arc (circle-fit residual {rms:.1f} px): string may stretch or the swing isn't planar.")
     return ValidityCheck(name="pendulum_geometry", status="pass", value=rms, threshold=thr,
-                         reason=f"Bob moves on a circular arc (residual {rms:.2f} px, length {cal.length_m:.3f} m).")
+                         reason=f"Bob moves on a circular arc (residual {rms:.2f} px, "
+                         + (f"length {cal.length_m:.3f} m)." if cal.length_m else f"radius {R:.0f} px; no metre scale in this clip)."))
 
 
 def timing_length(series) -> float | None:
@@ -181,7 +196,7 @@ def check_object_rigidity(run: Run) -> ValidityCheck | None:
     w, h = b[:, 2], b[:, 3]
     k = max(len(w) // 100, 1)  # ignore the most extreme 1% at each end (blur, edge frames)
     span = max((np.sort(w)[-k] - np.sort(w)[k - 1]) / np.median(w), (np.sort(h)[-k] - np.sort(h)[k - 1]) / np.median(h))
-    thr = 0.35
+    thr = 0.5  # motion blur alone stretches a fast bob's box by up to ~40% (real washer at 25°: 39%); a twisting mouse: 62%
     if span > thr:
         return ValidityCheck(name="object_shape", status="warning", value=float(span), threshold=thr,
                              reason=f"The tracked object's outline changes size by {100 * span:.0f}% during the clip: it twists, tilts or "

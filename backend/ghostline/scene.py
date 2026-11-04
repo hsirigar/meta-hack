@@ -32,7 +32,9 @@ Given keyframes from a phone video of a simple physical experiment, return ONLY 
   "notes": short string, "confidence": 0..1}}
 Concepts must be SHORT (2-3 words: colour + simple noun, e.g. "orange ball", "green circle"); the
 segmentation model matches short concrete phrases best. If the user states the reference object's size,
-use exactly that size.
+use exactly that size. If nothing of known size is visible, set reference_object to a fixed, rigid
+landmark that never moves and sits fully inside the frame (e.g. "horizontal rod" of a stand) with known_size_m 0: pendulum angles and periods
+need no scale, and the landmark still lets Ghostline detect camera motion.
 {KNOWN_SIZES}"""
 
 TEMPLATES = {

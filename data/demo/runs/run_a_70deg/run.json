@@ -35240,15 +35240,15 @@
    {
     "name": "camera_drift",
     "status": "pass",
-    "value": 0.000390625,
+    "value": 0.0,
     "threshold": 0.03,
-    "reason": "Reference object stayed within 0.5 px of its starting position."
+    "reason": "Reference object stayed within 0.0 px of its starting position."
    },
    {
     "name": "camera_jump",
     "status": "pass",
-    "value": 10.0,
-    "threshold": 10.0,
+    "value": 0.0,
+    "threshold": 40.0,
     "reason": "No sudden camera jumps."
    },
    {
@@ -35283,7 +35283,7 @@
     "name": "object_shape",
     "status": "pass",
     "value": 0.05,
-    "threshold": 0.35,
+    "threshold": 0.5,
     "reason": "The tracked object keeps a steady outline (size varies 5%)."
    },
    {
@@ -35303,13 +35303,13 @@
   "release_angle_deg": 70.0
  },
  "role": "reveal",
- "commitment_id": "c_c81aafb138ec",
+ "commitment_id": "c_b0da35c67449",
  "fits": null,
  "comparison": null,
  "discovery": null,
  "overlay_path": "runs/run_a_70deg/overlay.mp4",
  "verdict": {
-  "commitment_id": "c_c81aafb138ec",
+  "commitment_id": "c_b0da35c67449",
   "run_id": "run_a_70deg",
   "hash_verified": true,
   "validity": {
@@ -35318,15 +35318,15 @@
     {
      "name": "camera_drift",
      "status": "pass",
-     "value": 0.000390625,
+     "value": 0.0,
      "threshold": 0.03,
-     "reason": "Reference object stayed within 0.5 px of its starting position."
+     "reason": "Reference object stayed within 0.0 px of its starting position."
     },
     {
      "name": "camera_jump",
      "status": "pass",
-     "value": 10.0,
-     "threshold": 10.0,
+     "value": 0.0,
+     "threshold": 40.0,
      "reason": "No sudden camera jumps."
     },
     {
@@ -35361,7 +35361,7 @@
      "name": "object_shape",
      "status": "pass",
      "value": 0.05,
-     "threshold": 0.35,
+     "threshold": 0.5,
      "reason": "The tracked object keeps a steady outline (size varies 5%)."
     },
     {
@@ -35465,5 +35465,5 @@
  "trace_tasks": [
   "score"
  ],
- "created_at": "2026-11-04T20:24:30.531850Z"
+ "created_at": "2026-11-04T21:09:27.751853Z"
 }

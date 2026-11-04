@@ -7,7 +7,7 @@
   "run_b_4filters"
  ],
  "commit_ids": [
-  "c_87deede32785"
+  "c_28c4acfb791f"
  ],
  "description": "Falling coffee filters: linear or quadratic drag? The green rectangle taped to the wall is a credit card (85.6 mm long side).",
  "knob_max": null,
@@ -50,5 +50,5 @@
   "source_run_id": "run_b_1filter",
   "filming_instructions": "Stack 4 coffee filters (nested), drop them from the same height (~2 m) in front of the same wall, with the camera and reference card unchanged."
  },
- "created_at": "2026-11-04T20:25:18.551205Z"
+ "created_at": "2026-11-04T21:10:20.879306Z"
 }

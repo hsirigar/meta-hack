@@ -88,7 +88,7 @@ export default function Home() {
                       </a>
                       <div className="mt-1 max-w-xl text-[13px] leading-snug text-ink2">{e.description}</div>
                     </td>
-                    <td className="py-4 pr-4 text-[13px]">{isReal(e) ? <span className="font-medium">Real, iPhone</span> : <span className="text-ink2">Rendered, known truth</span>}</td>
+                    <td className="py-4 pr-4 text-[13px]">{/jefferson lab/i.test(e.name) ? <span className="font-medium">Real, Jefferson Lab (public video)</span> : isReal(e) ? <span className="font-medium">Real, iPhone</span> : <span className="text-ink2">Rendered, known truth</span>}</td>
                     <td className="mono py-4 pr-4 text-right">{e.runs.length}</td>
                     <td className={`py-4 text-[13px] font-medium ${st.tone}`}>{st.text}</td>
                   </tr>

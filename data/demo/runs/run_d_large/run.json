@@ -869,7 +869,7 @@
   },
   "anchor_hint": "pivot at top center",
   "gravity_direction_hint": "down",
-  "notes": "mouse on cable as pendulum bob, blurred ID-1 card below, small angle swing | reused from committed setup",
+  "notes": "mouse on cable as bob, card on ledge below blurred, swing limited to ~20 deg | reused from committed setup",
   "confidence": 0.9
  },
  "tracks": {
@@ -37745,15 +37745,15 @@
    {
     "name": "camera_drift",
     "status": "pass",
-    "value": 0.0008734640537108554,
+    "value": 0.0011048543456039805,
     "threshold": 0.03,
-    "reason": "Reference object stayed within 1.1 px of its starting position."
+    "reason": "Reference object stayed within 1.4 px of its starting position."
    },
    {
     "name": "camera_jump",
     "status": "pass",
     "value": 20.0,
-    "threshold": 10.0,
+    "threshold": 40.0,
     "reason": "No sudden camera jumps."
    },
    {
@@ -37788,7 +37788,7 @@
     "name": "object_shape",
     "status": "warning",
     "value": 0.6205357142857143,
-    "threshold": 0.35,
+    "threshold": 0.5,
     "reason": "The tracked object's outline changes size by 62% during the clip: it twists, tilts or swings toward the camera, so its centre is not a fixed point. Point-mass models may not fit; use a small, round, heavy bob on a thin string."
    },
    {
@@ -37808,13 +37808,13 @@
   "release_angle_deg": 18.0
  },
  "role": "reveal",
- "commitment_id": "c_7d1f535b6863",
+ "commitment_id": "c_dce3c5fd62fc",
  "fits": null,
  "comparison": null,
  "discovery": null,
  "overlay_path": "runs/run_d_large/overlay.mp4",
  "verdict": {
-  "commitment_id": "c_7d1f535b6863",
+  "commitment_id": "c_dce3c5fd62fc",
   "run_id": "run_d_large",
   "hash_verified": true,
   "validity": {
@@ -37823,15 +37823,15 @@
     {
      "name": "camera_drift",
      "status": "pass",
-     "value": 0.0008734640537108554,
+     "value": 0.0011048543456039805,
      "threshold": 0.03,
-     "reason": "Reference object stayed within 1.1 px of its starting position."
+     "reason": "Reference object stayed within 1.4 px of its starting position."
     },
     {
      "name": "camera_jump",
      "status": "pass",
      "value": 20.0,
-     "threshold": 10.0,
+     "threshold": 40.0,
      "reason": "No sudden camera jumps."
     },
     {
@@ -37866,7 +37866,7 @@
      "name": "object_shape",
      "status": "warning",
      "value": 0.6205357142857143,
-     "threshold": 0.35,
+     "threshold": 0.5,
      "reason": "The tracked object's outline changes size by 62% during the clip: it twists, tilts or swings toward the camera, so its centre is not a fixed point. Point-mass models may not fit; use a small, round, heavy bob on a thin string."
     },
     {
@@ -37972,5 +37972,5 @@
  "trace_tasks": [
   "score"
  ],
- "created_at": "2026-11-04T20:27:49.032395Z"
+ "created_at": "2026-11-04T21:11:49.877147Z"
 }

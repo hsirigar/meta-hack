@@ -1,0 +1,316 @@
+{
+ "task": "score",
+ "ids": {
+  "run_id": "run_e_large",
+  "commitment_id": "c_f1fdd47c1e22",
+  "experiment_id": "exp_real_jlab",
+  "system_type": "pendulum"
+ },
+ "events": [
+  {
+   "type": "status",
+   "ts": 1793826781.694825,
+   "text": "agent: muse-wonder-1.0 via Meta Model API",
+   "task": "score",
+   "ids": {
+    "run_id": "run_e_large",
+    "commitment_id": "c_f1fdd47c1e22",
+    "experiment_id": "exp_real_jlab",
+    "system_type": "pendulum"
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793826785.020192,
+   "text": "Checking the new large-angle video first to see what to track and confirm the setup."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793826785.02021,
+   "id": "call_64b0fc9d-8c9e-4449-98cd-b4ecd5a7c98a",
+   "name": "describe_scene",
+   "args": {
+    "run_id": "run_e_large"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793826785.025289,
+   "id": "call_64b0fc9d-8c9e-4449-98cd-b4ecd5a7c98a",
+   "name": "describe_scene",
+   "ok": true,
+   "result": {
+    "system_type": "pendulum",
+    "tracked_concepts": [
+     "white washer"
+    ],
+    "reference_object": {
+     "concept": "silver bar",
+     "known_size_m": 0.0,
+     "dimension": "width"
+    },
+    "anchor_hint": "pivot at right end of silver bar",
+    "gravity_direction_hint": "down",
+    "notes": "white washer on thread, small ~7 deg swing; bar is scale-free camera-motion landmark | reused from committed setup",
+    "confidence": 0.95,
+    "backend": "Muse Spark (muse-spark-1.3) via Meta Model API"
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793826788.946951,
+   "text": "Tracking the white washer and silver bar to rebuild the swing motion for scoring."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793826788.9469628,
+   "id": "call_12229770-a4d5-419a-9297-d246fd8beba1",
+   "name": "track_objects",
+   "args": {
+    "run_id": "run_e_large",
+    "concepts": [
+     "white washer",
+     "silver bar"
+    ]
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793826789.0822499,
+   "id": "call_12229770-a4d5-419a-9297-d246fd8beba1",
+   "name": "track_objects",
+   "ok": true,
+   "result": {
+    "tracks": {
+     "white washer": {
+      "track_id": "sam3.1:0:white circle",
+      "frames": 339,
+      "coverage": 1.0,
+      "mean_score": 0.746
+     },
+     "silver bar": {
+      "track_id": "sam3.1:1:silver bar",
+      "frames": 339,
+      "coverage": 1.0,
+      "mean_score": 0.7968
+     }
+    }
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793826791.668525,
+   "text": "Converting the tracks to a calibrated \u03b8 over time series so the commitment predictions can be scored."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793826791.6685388,
+   "id": "call_6d0c1cfc-e50f-41a9-9980-a57f93712fb9",
+   "name": "measure",
+   "args": {
+    "run_id": "run_e_large"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793826791.67681,
+   "id": "call_6d0c1cfc-e50f-41a9-9980-a57f93712fb9",
+   "name": "measure",
+   "ok": true,
+   "result": {
+    "series": "theta",
+    "unit": "rad",
+    "n_frames": 339,
+    "n_valid": 339,
+    "duration_s": 11.278,
+    "noise_sigma": 0.00060689,
+    "meters_per_pixel": 0.0,
+    "calibration_method": "angles_only",
+    "split_train_end_t": 0.5,
+    "knobs": {
+     "release_angle_deg": 25.5
+    }
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793826795.157345,
+   "text": "Checking whether this recording is trustworthy before using it to judge the models."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793826795.1573682,
+   "id": "call_c06b4061-f356-4407-ab57-dd9b3bcb2086",
+   "name": "check_validity",
+   "args": {
+    "run_id": "run_e_large"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793826795.174931,
+   "id": "call_c06b4061-f356-4407-ab57-dd9b3bcb2086",
+   "name": "check_validity",
+   "ok": true,
+   "result": {
+    "status": "valid",
+    "checks": [
+     {
+      "name": "camera_drift",
+      "status": "pass",
+      "reason": "Reference object stayed within 1.0 px of its starting position."
+     },
+     {
+      "name": "camera_jump",
+      "status": "pass",
+      "reason": "No sudden camera jumps."
+     },
+     {
+      "name": "scale_changed",
+      "status": "pass",
+      "reason": "Scale stable (reference size varied 0.1%)."
+     },
+     {
+      "name": "tracking_lost",
+      "status": "pass",
+      "reason": "Object tracked in 100.0% of the evaluation frames."
+     },
+     {
+      "name": "frame_timing",
+      "status": "pass",
+      "reason": "Frame timing regular (median 30.0 fps)."
+     },
+     {
+      "name": "pendulum_geometry",
+      "status": "pass",
+      "reason": "Bob moves on a circular arc (residual 0.34 px, radius 512 px; no metre scale in this clip)."
+     },
+     {
+      "name": "object_shape",
+      "status": "pass",
+      "reason": "The tracked object keeps a steady outline (size varies 39%)."
+     },
+     {
+      "name": "setup_mismatch",
+      "status": "pass",
+      "reason": "Same pendulum as the committed experiment (length 0.280 m from swing timing vs 0.279 m)."
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793826798.85284,
+   "text": "Validity passed, so now scoring this reveal run against the frozen commitment without refitting."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793826798.852861,
+   "id": "call_299660b6-5e9f-4d96-8d0e-06b9e7ba5784",
+   "name": "evaluate_commitment",
+   "args": {
+    "commitment_id": "c_f1fdd47c1e22",
+    "run_id": "run_e_large"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793826798.924429,
+   "id": "call_299660b6-5e9f-4d96-8d0e-06b9e7ba5784",
+   "name": "evaluate_commitment",
+   "ok": true,
+   "result": {
+    "hash_verified": true,
+    "validity": "valid",
+    "winner": "pendulum_nonlinear",
+    "summary": {
+     "knob": "release_angle_deg",
+     "value": 25,
+     "conditioning_window_s": 0.5,
+     "noise_sigma": 0.0006069,
+     "eval_samples": 324,
+     "eval_start_t": 0.5,
+     "observable_measured": 1.074,
+     "rmse_ratio_loser_over_winner": 6.563,
+     "winner_rmse_sigma": 36.98,
+     "winner_observable_error_pct": 0.2012,
+     "all_models_inadequate": false
+    },
+    "per_model": [
+     {
+      "model": "pendulum_nonlinear",
+      "rmse": 0.02244,
+      "rmse_sigma": 36.98,
+      "observable": "period_s",
+      "observable_predicted": 1.072,
+      "observable_measured": 1.074,
+      "observable_error_pct": -0.2012
+     },
+     {
+      "model": "pendulum_nonlinear_quaddamp",
+      "rmse": 0.04137,
+      "rmse_sigma": 68.17,
+      "observable": "period_s",
+      "observable_predicted": 1.07,
+      "observable_measured": 1.074,
+      "observable_error_pct": -0.3394
+     },
+     {
+      "model": "pendulum_linear",
+      "rmse": 0.1473,
+      "rmse_sigma": 242.7,
+      "observable": "period_s",
+      "observable_predicted": 1.06,
+      "observable_measured": 1.074,
+      "observable_error_pct": -1.268
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793826802.323626,
+   "text": "Scoring favours the nonlinear model, so rendering ghosts for all three predictions to show the difference visually."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793826802.323655,
+   "id": "call_fd75eb53-2145-4297-8a60-169a91021637",
+   "name": "render_ghosts",
+   "args": {
+    "run_id": "run_e_large",
+    "model_names": [
+     "pendulum_nonlinear",
+     "pendulum_nonlinear_quaddamp",
+     "pendulum_linear"
+    ]
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793826802.790825,
+   "id": "call_fd75eb53-2145-4297-8a60-169a91021637",
+   "name": "render_ghosts",
+   "ok": true,
+   "result": {
+    "overlay_url": "/api/runs/run_e_large/overlay.mp4",
+    "ghosts": [
+     "linear (small-angle)",
+     "nonlinear (sin)",
+     "nonlinear + quad drag"
+    ],
+    "path": "runs/run_e_large/overlay.mp4"
+   }
+  },
+  {
+   "type": "message",
+   "ts": 1793826809.08303,
+   "text": "Verdict: pendulum_nonlinear wins this reveal run, and the commitment hash was verified with validity valid. It predicted a period of 1.072 s versus 1.074 s measured, an error of -0.2012%, with RMSE 0.02244 versus 0.1473 for pendulum_linear. The ghost overlay is rendered so you can see the linear, nonlinear, and nonlinear-plus-drag predictions over the video."
+  },
+  {
+   "type": "done",
+   "ts": 1793826809.083084,
+   "result": {}
+  }
+ ]
+}

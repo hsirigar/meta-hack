@@ -1,0 +1,51 @@
+{
+ "id": "exp_real_jlab",
+ "name": "Real footage: lab pendulum (Jefferson Lab)",
+ "system_type": "pendulum",
+ "run_ids": [
+  "run_e_small",
+  "run_e_large"
+ ],
+ "commit_ids": [
+  "c_f1fdd47c1e22"
+ ],
+ "description": "Public footage from Jefferson Lab's Frostbite Theater video \"Swinging Pendulums (Different Angles)\" (YouTube), cropped, with the video's on-screen labels blacked out. A white washer on a thread hangs from the clamp of a lab stand. Nothing of known size is in view, so use the horizontal silver bar at the top of the stand as a fixed landmark (concept \"silver bar\", known_size_m 0): angles and periods only. This clip swings about 7 degrees; the largest swing available in the same footage is about 25 degrees.",
+ "knob_max": 25.0,
+ "proposal": {
+  "knob": "release_angle_deg",
+  "value": 25.0,
+  "expected_separation_sigma": 151.0143652918191,
+  "expected_max_separation_sigma": 340.6399643606137,
+  "discrimination_curve": [
+   [
+    5.0,
+    1.857722498973631
+   ],
+   [
+    10.0,
+    4.764100575191459
+   ],
+   [
+    15.0,
+    26.58789719174459
+   ],
+   [
+    20.0,
+    72.60303982366597
+   ],
+   [
+    25.0,
+    151.0143652918191
+   ]
+  ],
+  "feasibility_note": "Recommend 25° because it is the feasible setting with the largest physical effect (1% difference in the predicted observable) among settings that separate the models by ≥10σ. Expected separation 151.0σ RMS (max 341σ) after the 0.5 s conditioning window. Searched only up to 25°, the most this setup allows. ",
+  "models": [
+   "pendulum_linear",
+   "pendulum_nonlinear",
+   "pendulum_nonlinear_quaddamp"
+  ],
+  "source_run_id": "run_e_small",
+  "filming_instructions": "Release the same pendulum from 25° (string taut, bob at rest), keep the camera and the reference object exactly where they were, and record at least 6 full swings."
+ },
+ "created_at": "2026-11-04T21:12:24.884348Z"
+}

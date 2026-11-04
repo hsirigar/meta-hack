@@ -108,6 +108,25 @@ def main():
         agent("score", run_id=rl.id, commitment_id=cidd)
         print(f"  ({time.time() - T:.0f}s)")
 
+    js, jl = a.real_dir / "jlab_small.mp4", a.real_dir / "jlab_large.mp4"
+    if js.exists() and jl.exists():
+        print("Scene E: real footage (Jefferson Lab, two release angles)")
+        ee = P.create_experiment(
+            "Real footage: lab pendulum (Jefferson Lab)", "pendulum",
+            "Public footage from Jefferson Lab's Frostbite Theater video \"Swinging Pendulums (Different Angles)\" "
+            "(YouTube), cropped, with the video's on-screen labels blacked out. "
+            "A white washer on a thread hangs from the clamp of a lab stand. Nothing of known size is in view, so use "
+            "the horizontal silver bar at the top of the stand as a fixed landmark (concept \"silver bar\", known_size_m 0): angles and periods only. This clip swings "
+            "about 7 degrees; the largest swing available in the same footage is about 25 degrees.",
+            exp_id="exp_real_jlab", knob_max=25.0)
+        rs = P.add_run(ee.id, js, run_id="run_e_small")
+        agent("analyze", run_id=rs.id)
+        res = agent("next", experiment_id=ee.id)
+        cide = res.get("commitment_id")
+        rl = P.add_run(ee.id, jl, role="reveal", commitment_id=cide, run_id="run_e_large")
+        agent("score", run_id=rl.id, commitment_id=cide)
+        print(f"  ({time.time() - T:.0f}s)")
+
     from ghostline.config import get_settings
     from ghostline.scene import scene_backend_label
     s = get_settings()

@@ -94,12 +94,19 @@ export default function RunPanel({ runId, live, hash, onChanged }: { runId: stri
                 <dd>“{run.scene.tracked_concepts.join(", ")}”</dd>
                 <dt className="text-mute">Reference</dt>
                 <dd>
-                  {run.scene.reference_object.concept}, <span className="mono">{(run.scene.reference_object.known_size_m * 1000).toFixed(2)} mm</span> {run.scene.reference_object.dimension.replace("_", " ")}
+                  {run.scene.reference_object.concept}
+                  {run.scene.reference_object.known_size_m > 0 ? (
+                    <>, <span className="mono">{(run.scene.reference_object.known_size_m * 1000).toFixed(2)} mm</span> {run.scene.reference_object.dimension.replace("_", " ")}</>
+                  ) : (
+                    <span className="text-mute"> (fixed landmark for camera checks, size unknown)</span>
+                  )}
                 </dd>
                 {run.calibration && (
                   <>
                     <dt className="text-mute">Scale</dt>
-                    <dd className="mono">{(run.calibration.meters_per_pixel * 1000).toFixed(3)} mm/px</dd>
+                    <dd className="mono">
+                      {run.calibration.meters_per_pixel > 0 ? `${(run.calibration.meters_per_pixel * 1000).toFixed(3)} mm/px` : "none: angles and periods only"}
+                    </dd>
                   </>
                 )}
                 {run.calibration?.length_m && (

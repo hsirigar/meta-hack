@@ -2,32 +2,32 @@
  "task": "score",
  "ids": {
   "run_id": "run_b_4filters",
-  "commitment_id": "c_87deede32785",
+  "commitment_id": "c_28c4acfb791f",
   "experiment_id": "exp_filters_b",
   "system_type": "falling_drag"
  },
  "events": [
   {
    "type": "status",
-   "ts": 1793823972.417144,
+   "ts": 1793826644.8000052,
    "text": "agent: muse-wonder-1.0 via Meta Model API",
    "task": "score",
    "ids": {
     "run_id": "run_b_4filters",
-    "commitment_id": "c_87deede32785",
+    "commitment_id": "c_28c4acfb791f",
     "experiment_id": "exp_filters_b",
     "system_type": "falling_drag"
    }
   },
   {
    "type": "thought",
-   "ts": 1793823976.302851,
-   "text": "I am checking the scene in run_b_4filters first to see what to track for the commitment test."
+   "ts": 1793826649.777856,
+   "text": "I will look at the keyframes first to confirm what to track in this reveal run."
   },
   {
    "type": "tool_call",
-   "ts": 1793823976.302877,
-   "id": "call_e946433a-2bef-4da5-a844-41ddad4cba4f",
+   "ts": 1793826649.777876,
+   "id": "call_d90d3961-6bb9-41c4-821e-1e1c97dba3ba",
    "name": "describe_scene",
    "args": {
     "run_id": "run_b_4filters"
@@ -35,8 +35,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793823976.306678,
-   "id": "call_e946433a-2bef-4da5-a844-41ddad4cba4f",
+   "ts": 1793826649.7814379,
+   "id": "call_d90d3961-6bb9-41c4-821e-1e1c97dba3ba",
    "name": "describe_scene",
    "ok": true,
    "result": {
@@ -51,20 +51,20 @@
     },
     "anchor_hint": null,
     "gravity_direction_hint": "down",
-    "notes": "orange filter falls vertically; green card at bottom right | reused from committed setup",
+    "notes": "orange filter falling vertically; green card reference lower right | reused from committed setup",
     "confidence": 0.9,
     "backend": "Muse Spark (muse-spark-1.3) via Meta Model API"
    }
   },
   {
    "type": "thought",
-   "ts": 1793823979.478123,
-   "text": "Scene is a falling orange filter with a green reference card. I will track both objects through the video."
+   "ts": 1793826652.84212,
+   "text": "I will track the orange filter and the green reference card to get the fall path."
   },
   {
    "type": "tool_call",
-   "ts": 1793823979.478137,
-   "id": "call_9a91cdc2-aec1-4277-9efb-bf6414f6044b",
+   "ts": 1793826652.842135,
+   "id": "call_e1fc48ff-0ad1-41ee-9e69-72d77a24add5",
    "name": "track_objects",
    "args": {
     "run_id": "run_b_4filters",
@@ -76,8 +76,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793823979.568628,
-   "id": "call_9a91cdc2-aec1-4277-9efb-bf6414f6044b",
+   "ts": 1793826652.919487,
+   "id": "call_e1fc48ff-0ad1-41ee-9e69-72d77a24add5",
    "name": "track_objects",
    "ok": true,
    "result": {
@@ -99,13 +99,13 @@
   },
   {
    "type": "thought",
-   "ts": 1793823982.125448,
-   "text": "Tracking found the filter and reference. I will now convert the tracks into a calibrated falling position time series."
+   "ts": 1793826656.299914,
+   "text": "I will convert those tracks into a calibrated y of t series and hold out the tail for scoring."
   },
   {
    "type": "tool_call",
-   "ts": 1793823982.125473,
-   "id": "call_fe35f954-fbf3-4e05-8ad5-29bc676c2b5d",
+   "ts": 1793826656.29993,
+   "id": "call_783abdbd-316a-4d17-a696-83f9e66bca4b",
    "name": "measure",
    "args": {
     "run_id": "run_b_4filters"
@@ -113,8 +113,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793823982.131995,
-   "id": "call_fe35f954-fbf3-4e05-8ad5-29bc676c2b5d",
+   "ts": 1793826656.304128,
+   "id": "call_783abdbd-316a-4d17-a696-83f9e66bca4b",
    "name": "measure",
    "ok": true,
    "result": {
@@ -135,13 +135,13 @@
   },
   {
    "type": "thought",
-   "ts": 1793823985.55681,
-   "text": "Measurement is done. I will check validity next before scoring anything, as required."
+   "ts": 1793826659.211194,
+   "text": "I will check validity before I score it, as an invalid reveal run cannot be used."
   },
   {
    "type": "tool_call",
-   "ts": 1793823985.5568619,
-   "id": "call_237dcbac-02e4-4ee2-bfe9-52f5df33cc42",
+   "ts": 1793826659.211209,
+   "id": "call_76023ba9-5281-4c4e-a2b1-ff19078ce6d3",
    "name": "check_validity",
    "args": {
     "run_id": "run_b_4filters"
@@ -149,8 +149,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793823985.56805,
-   "id": "call_237dcbac-02e4-4ee2-bfe9-52f5df33cc42",
+   "ts": 1793826659.217869,
+   "id": "call_76023ba9-5281-4c4e-a2b1-ff19078ce6d3",
    "name": "check_validity",
    "ok": true,
    "result": {
@@ -159,7 +159,7 @@
      {
       "name": "camera_drift",
       "status": "pass",
-      "reason": "Reference object stayed within 0.7 px of its starting position."
+      "reason": "Reference object stayed within 0.0 px of its starting position."
      },
      {
       "name": "camera_jump",
@@ -191,23 +191,23 @@
   },
   {
    "type": "thought",
-   "ts": 1793823989.042547,
-   "text": "Validity passed. I will score this reveal run against the frozen commitment c_87deede32785 without refitting."
+   "ts": 1793826662.133246,
+   "text": "I will score this reveal run against the frozen commitment without refitting."
   },
   {
    "type": "tool_call",
-   "ts": 1793823989.042568,
-   "id": "call_26286e41-5f4b-44b8-9e09-3dca0698aec5",
+   "ts": 1793826662.133259,
+   "id": "call_9c7a78ff-b7fb-4ad5-965f-4f0a4e34c332",
    "name": "evaluate_commitment",
    "args": {
-    "commitment_id": "c_87deede32785",
+    "commitment_id": "c_28c4acfb791f",
     "run_id": "run_b_4filters"
    }
   },
   {
    "type": "tool_result",
-   "ts": 1793823989.075403,
-   "id": "call_26286e41-5f4b-44b8-9e09-3dca0698aec5",
+   "ts": 1793826662.160314,
+   "id": "call_9c7a78ff-b7fb-4ad5-965f-4f0a4e34c332",
    "name": "evaluate_commitment",
    "ok": true,
    "result": {
@@ -251,13 +251,13 @@
   },
   {
    "type": "thought",
-   "ts": 1793823992.291349,
-   "text": "The committed prediction strongly favours one model. I will render ghosts for both models so you can see the predictions over the video."
+   "ts": 1793826665.2224221,
+   "text": "I will render each committed model as a ghost over the video so you can see the separation."
   },
   {
    "type": "tool_call",
-   "ts": 1793823992.291379,
-   "id": "call_b6587b67-995c-4341-8761-7eb90135ac80",
+   "ts": 1793826665.22244,
+   "id": "call_4ea2cc5a-aadd-4bac-a617-433535cb1a0a",
    "name": "render_ghosts",
    "args": {
     "run_id": "run_b_4filters",
@@ -269,8 +269,8 @@
   },
   {
    "type": "tool_result",
-   "ts": 1793823992.541347,
-   "id": "call_b6587b67-995c-4341-8761-7eb90135ac80",
+   "ts": 1793826665.4721742,
+   "id": "call_4ea2cc5a-aadd-4bac-a617-433535cb1a0a",
    "name": "render_ghosts",
    "ok": true,
    "result": {
@@ -284,12 +284,12 @@
   },
   {
    "type": "message",
-   "ts": 1793823997.57857,
-   "text": "Verdict: quadratic drag wins decisively on this pre-committed reveal run.\n\nThe video was valid, with the hash verified. Quadratic drag predicted terminal velocity 2.205 m/s versus measured 2.208 m/s, an error of 0.1682%, with RMSE 0.7966\u03c3. Linear drag predicted 3.918 m/s, with RMSE 315.7\u03c3, making it 396.3 times worse. See the ghost overlay to compare both predictions visually."
+   "ts": 1793826671.5301251,
+   "text": "Verdict: quadratic drag wins decisively on this pre-committed reveal run.\nThe hash was verified and the run was valid, with n_filters = 4 and 28 evaluation samples after 0.8333 s.\nQuadratic drag predicted terminal velocity 2.205 m/s versus measured 2.208 m/s, an error of 0.1682 %, with RMSE 0.7966 \u03c3.\nLinear drag predicted 3.918 m/s, an error of 77.43 %, with RMSE 315.7 \u03c3, 396.3 times worse.\nI rendered both model ghosts over the video so you can see the separation."
   },
   {
    "type": "done",
-   "ts": 1793823997.578728,
+   "ts": 1793826671.530178,
    "result": {}
   }
  ]

@@ -200,7 +200,7 @@
   },
   "anchor_hint": null,
   "gravity_direction_hint": "down",
-  "notes": "orange filter falls vertically; green card at bottom right",
+  "notes": "orange filter falling vertically; green card reference lower right",
   "confidence": 0.9
  },
  "tracks": {
@@ -8195,15 +8195,15 @@
    {
     "name": "camera_drift",
     "status": "pass",
-    "value": 0.0009820927516479827,
+    "value": 0.0,
     "threshold": 0.03,
-    "reason": "Reference object stayed within 0.7 px of its starting position."
+    "reason": "Reference object stayed within 0.0 px of its starting position."
    },
    {
     "name": "camera_jump",
     "status": "pass",
-    "value": 14.142135623730951,
-    "threshold": 10.0,
+    "value": 0.0,
+    "threshold": 40.0,
     "reason": "No sudden camera jumps."
    },
    {
@@ -9944,5 +9944,5 @@
  "trace_tasks": [
   "analyze"
  ],
- "created_at": "2026-11-04T20:25:18.903636Z"
+ "created_at": "2026-11-04T21:10:21.276848Z"
 }

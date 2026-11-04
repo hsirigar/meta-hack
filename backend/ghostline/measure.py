@@ -173,6 +173,10 @@ def measure_run(run: Run, system_type: str, homography: list[list[float]] | None
         good = valid.copy()
         xy[good] = apply_homography(homography, xy[good])
         mpp, mpp_std, method = 1.0, 0.0, "ruler_points"
+    elif ref.known_size_m <= 0:
+        if system_type != "pendulum":
+            raise ValueError("a reference object of known size is needed to measure a fall in metres")
+        mpp, mpp_std, method = 0.0, 0.0, "angles_only"  # pendulum angle and period need no scale
     else:
         mpp, mpp_std = reference_scale(run.tracks[ref.concept], ref)
         method = "reference_object"
@@ -187,7 +191,7 @@ def measure_run(run: Run, system_type: str, homography: list[list[float]] | None
         offset = oscillation_center(t[valid2], theta[valid2])
         theta = theta - offset
         ys = ys - offset
-        length_m = R * mpp
+        length_m = R * mpp if mpp > 0 else None
         cal = Calibration(meters_per_pixel=mpp, meters_per_pixel_std=mpp_std, method=method,
                           homography=homography, pivot_px=(cx, cy), length_px=R, length_m=length_m,
                           circle_fit_rms_px=rms, gravity_axis=(0.0, 1.0), theta_offset=offset,

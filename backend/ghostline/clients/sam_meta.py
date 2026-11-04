@@ -107,6 +107,14 @@ def _frame_from_record(fi: int, t: float, rec: dict) -> TrackFrame:
                       centroid=(cx, cy), area=area, min_rect=(long_s, short_s))
 
 
+def _frame_size(video_path: str) -> tuple[int, int]:
+    import cv2
+    cap = cv2.VideoCapture(video_path)
+    W, H = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    cap.release()
+    return W, H
+
+
 class MetaApiSam:
     name = "sam-3.1 (Meta Model API)"
 
@@ -186,11 +194,15 @@ class MetaApiSam:
                 if len(per_frame) >= 0.5 * n:
                     break
             prompt, per_frame = best_try
-            # keep the object id with the best coverage x confidence
+            # keep the object id with the best coverage x confidence, ignoring detections cut by the frame edge
+            # (segment.track_run drops those anyway, e.g. a stand's pole that runs off the top and bottom)
+            W, H = _frame_size(video_path)
             score_by_id: dict[int, float] = defaultdict(float)
             for recs in per_frame.values():
                 for oid, r in recs.items():
-                    score_by_id[oid] += r["score"]
+                    x1, y1, x2, y2 = r["box"]
+                    edge = W and H and (x1 <= 2 or y1 <= 2 or x2 >= W - 3 or y2 >= H - 3)
+                    score_by_id[oid] += 0.0 if edge else r["score"]
             best = max(score_by_id, key=score_by_id.get) if score_by_id else None
             frames = []
             for i, t in enumerate(frame_times):

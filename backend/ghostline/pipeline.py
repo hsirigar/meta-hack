@@ -123,7 +123,12 @@ def measure(run_id: str) -> dict:
 
 def commitment_reference(r: Run, system_type: str) -> dict:
     ref = {"system_type": system_type, "meters_per_pixel": r.calibration.meters_per_pixel}
-    if r.calibration.length_m:
+    if system_type == "pendulum" and not r.calibration.length_m and r.fits:
+        # angles-only clip (no object of known size): the setup is identified by its swing timing
+        from .models.base import G
+        implied = [G / f.params["omega0"] ** 2 for f in r.fits if "omega0" in f.params]
+        ref["length_m"], ref["length_source"] = float(np.mean(implied)), "implied by fitted omega0 (no metre scale in the video)"
+    elif r.calibration.length_m:
         t, y, valid = series_arrays(r.series["theta"])
         span = float(np.degrees(np.ptp(y[valid])))
         ref["measured_length_m"] = r.calibration.length_m

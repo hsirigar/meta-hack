@@ -35240,15 +35240,15 @@
    {
     "name": "camera_drift",
     "status": "pass",
-    "value": 0.025606057213394352,
+    "value": 0.025242960033442986,
     "threshold": 0.03,
-    "reason": "Reference object stayed within 32.8 px of its starting position."
+    "reason": "Reference object stayed within 32.3 px of its starting position."
    },
    {
     "name": "camera_jump",
     "status": "invalid",
     "value": 646.2197768561404,
-    "threshold": 10.0,
+    "threshold": 40.0,
     "reason": "The reference object jumped 32.3 px between t=4.98s and t=5.00s (646σ of normal jitter): the camera was bumped."
    },
    {
@@ -35283,7 +35283,7 @@
     "name": "object_shape",
     "status": "pass",
     "value": 0.05,
-    "threshold": 0.35,
+    "threshold": 0.5,
     "reason": "The tracked object keeps a steady outline (size varies 5%)."
    },
    {
@@ -35303,7 +35303,7 @@
   "release_angle_deg": 70.0
  },
  "role": "reveal",
- "commitment_id": "c_c81aafb138ec",
+ "commitment_id": "c_b0da35c67449",
  "fits": null,
  "comparison": null,
  "discovery": null,
@@ -35312,5 +35312,5 @@
  "trace_tasks": [
   "score"
  ],
- "created_at": "2026-11-04T20:24:59.841012Z"
+ "created_at": "2026-11-04T21:10:00.182467Z"
 }

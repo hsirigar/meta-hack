@@ -131,7 +131,7 @@
   },
   "anchor_hint": null,
   "gravity_direction_hint": "down",
-  "notes": "orange filter falls vertically; green card at bottom right | reused from committed setup",
+  "notes": "orange filter falling vertically; green card reference lower right | reused from committed setup",
   "confidence": 0.9
  },
  "tracks": {
@@ -4853,15 +4853,15 @@
    {
     "name": "camera_drift",
     "status": "pass",
-    "value": 0.0009820927516479827,
+    "value": 0.0,
     "threshold": 0.03,
-    "reason": "Reference object stayed within 0.7 px of its starting position."
+    "reason": "Reference object stayed within 0.0 px of its starting position."
    },
    {
     "name": "camera_jump",
     "status": "pass",
-    "value": 10.0,
-    "threshold": 10.0,
+    "value": 0.0,
+    "threshold": 40.0,
     "reason": "No sudden camera jumps."
    },
    {
@@ -4902,13 +4902,13 @@
   "n_filters": 4.0
  },
  "role": "reveal",
- "commitment_id": "c_87deede32785",
+ "commitment_id": "c_28c4acfb791f",
  "fits": null,
  "comparison": null,
  "discovery": null,
  "overlay_path": "runs/run_b_4filters/overlay.mp4",
  "verdict": {
-  "commitment_id": "c_87deede32785",
+  "commitment_id": "c_28c4acfb791f",
   "run_id": "run_b_4filters",
   "hash_verified": true,
   "validity": {
@@ -4917,15 +4917,15 @@
     {
      "name": "camera_drift",
      "status": "pass",
-     "value": 0.0009820927516479827,
+     "value": 0.0,
      "threshold": 0.03,
-     "reason": "Reference object stayed within 0.7 px of its starting position."
+     "reason": "Reference object stayed within 0.0 px of its starting position."
     },
     {
      "name": "camera_jump",
      "status": "pass",
-     "value": 10.0,
-     "threshold": 10.0,
+     "value": 0.0,
+     "threshold": 40.0,
      "reason": "No sudden camera jumps."
     },
     {
@@ -5022,5 +5022,5 @@
  "trace_tasks": [
   "score"
  ],
- "created_at": "2026-11-04T20:26:12.416549Z"
+ "created_at": "2026-11-04T21:10:44.799159Z"
 }

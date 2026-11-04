@@ -1,0 +1,80 @@
+{
+ "id": "c_f1fdd47c1e22",
+ "experiment_id": "exp_real_jlab",
+ "created_at": "2026-11-04T21:12:55.841373Z",
+ "knob_setting": {
+  "release_angle_deg": 25.0
+ },
+ "models": [
+  {
+   "name": "pendulum_linear",
+   "params": {
+    "omega0": 5.925590244109209,
+    "gamma": 0.0054725962877835085
+   },
+   "param_std": {
+    "omega0": 0.00027817128070216894,
+    "gamma": 0.0002616667706987929
+   },
+   "knob_transfer": "omega0 and gamma are properties of the pendulum and stay fixed; the new initial state comes from the conditioning window",
+   "predicted_observables": {
+    "period_s": 1.060327980444496,
+    "implied_length_m": 0.2793867296811855,
+    "omega0_at_target": 5.925590244109209,
+    "gamma_at_target": 0.0054725962877835085
+   }
+  },
+  {
+   "name": "pendulum_nonlinear",
+   "params": {
+    "omega0": 5.931787665772643,
+    "gamma": 0.005469343481758247
+   },
+   "param_std": {
+    "omega0": 0.0002786224595245383,
+    "gamma": 0.0002560529175930083
+   },
+   "knob_transfer": "omega0 and gamma are properties of the pendulum and stay fixed; the new initial state comes from the conditioning window",
+   "predicted_observables": {
+    "period_s": 1.0711754475069384,
+    "implied_length_m": 0.2788032385109682,
+    "omega0_at_target": 5.931787665772643,
+    "gamma_at_target": 0.005469343481758247
+   }
+  },
+  {
+   "name": "pendulum_nonlinear_quaddamp",
+   "params": {
+    "omega0": 5.931786245217776,
+    "c": 0.016797424073077452
+   },
+   "param_std": {
+    "omega0": 0.00027865106898335005,
+    "c": 0.0008327872292423812
+   },
+   "knob_transfer": "omega0 and gamma are properties of the pendulum and stay fixed; the new initial state comes from the conditioning window",
+   "predicted_observables": {
+    "period_s": 1.0696400293694701,
+    "implied_length_m": 0.2788033720475889,
+    "omega0_at_target": 5.931786245217776,
+    "c_at_target": 0.016797424073077452
+   }
+  }
+ ],
+ "protocol": {
+  "conditioning": "initial state (position, velocity) estimated from the first conditioning_window_s seconds of valid data only; physical parameters frozen",
+  "metric": "RMSE of the observed variable after the conditioning window",
+  "observable": "pendulum: mean period over the 10 s after the conditioning window; drag: late-fall speed",
+  "success_rule": "winner = lowest RMSE after the conditioning window, provided the run is valid",
+  "conditioning_window_s": 0.5,
+  "noise_sigma_ref": 0.00045342664019348437
+ },
+ "reference": {
+  "system_type": "pendulum",
+  "meters_per_pixel": 0.0,
+  "length_m": 0.2789977800799142,
+  "length_source": "implied by fitted omega0 (no metre scale in the video)"
+ },
+ "canonical_json": "{\"created_at\":\"2026-11-04T21:12:55.841373Z\",\"experiment_id\":\"exp_real_jlab\",\"knob_setting\":{\"release_angle_deg\":25},\"models\":[{\"knob_transfer\":\"omega0 and gamma are properties of the pendulum and stay fixed; the new initial state comes from the conditioning window\",\"name\":\"pendulum_linear\",\"param_std\":{\"gamma\":0.000261666771,\"omega0\":0.000278171281},\"params\":{\"gamma\":0.00547259629,\"omega0\":5.92559024},\"predicted_observables\":{\"gamma_at_target\":0.00547259629,\"implied_length_m\":0.27938673,\"omega0_at_target\":5.92559024,\"period_s\":1.06032798}},{\"knob_transfer\":\"omega0 and gamma are properties of the pendulum and stay fixed; the new initial state comes from the conditioning window\",\"name\":\"pendulum_nonlinear\",\"param_std\":{\"gamma\":0.000256052918,\"omega0\":0.00027862246},\"params\":{\"gamma\":0.00546934348,\"omega0\":5.93178767},\"predicted_observables\":{\"gamma_at_target\":0.00546934348,\"implied_length_m\":0.278803239,\"omega0_at_target\":5.93178767,\"period_s\":1.07117545}},{\"knob_transfer\":\"omega0 and gamma are properties of the pendulum and stay fixed; the new initial state comes from the conditioning window\",\"name\":\"pendulum_nonlinear_quaddamp\",\"param_std\":{\"c\":0.000832787229,\"omega0\":0.000278651069},\"params\":{\"c\":0.0167974241,\"omega0\":5.93178625},\"predicted_observables\":{\"c_at_target\":0.0167974241,\"implied_length_m\":0.278803372,\"omega0_at_target\":5.93178625,\"period_s\":1.06964003}}],\"protocol\":{\"conditioning\":\"initial state (position, velocity) estimated from the first conditioning_window_s seconds of valid data only; physical parameters frozen\",\"conditioning_window_s\":0.5,\"metric\":\"RMSE of the observed variable after the conditioning window\",\"noise_sigma_ref\":0.00045342664,\"observable\":\"pendulum: mean period over the 10 s after the conditioning window; drag: late-fall speed\",\"success_rule\":\"winner = lowest RMSE after the conditioning window, provided the run is valid\"},\"reference\":{\"length_m\":0.27899778,\"length_source\":\"implied by fitted omega0 (no metre scale in the video)\",\"meters_per_pixel\":0,\"system_type\":\"pendulum\"},\"reference_knob\":{\"release_angle_deg\":7.6},\"source_run_id\":\"run_e_small\"}",
+ "sha256": "f1fdd47c1e2299b8b6e4274b6201d3b5352df82e5d6a6e4ed7d11acad2b44c23"
+}

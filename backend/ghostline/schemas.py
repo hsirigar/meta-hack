@@ -10,7 +10,7 @@ SystemType = Literal["pendulum", "falling_drag", "spring_mass", "unknown"]
 
 class ReferenceObject(BaseModel):
     concept: str  # e.g. "US quarter"
-    known_size_m: float  # e.g. 0.02426
+    known_size_m: float  # e.g. 0.02426; 0 = fixed landmark of unknown size (camera checks only, angles-only measurement)
     dimension: Literal["diameter", "width", "height", "long_side"] = "diameter"
 
 
@@ -46,7 +46,7 @@ class Track(BaseModel):
 class Calibration(BaseModel):
     meters_per_pixel: float
     meters_per_pixel_std: float
-    method: Literal["reference_object", "ruler_points", "manual"]
+    method: Literal["reference_object", "ruler_points", "manual", "angles_only"]
     homography: Optional[list[list[float]]] = None
     pivot_px: Optional[tuple[float, float]] = None
     length_px: Optional[float] = None

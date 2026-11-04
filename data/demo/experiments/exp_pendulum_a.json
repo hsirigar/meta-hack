@@ -8,7 +8,7 @@
   "run_a_bumped"
  ],
  "commit_ids": [
-  "c_c81aafb138ec"
+  "c_b0da35c67449"
  ],
  "description": "Small-angle pendulum: linear or nonlinear? The green disk taped in the plane of motion is a US quarter (24.26 mm diameter).",
  "knob_max": null,
@@ -92,5 +92,5 @@
   "source_run_id": "run_a_8deg",
   "filming_instructions": "Release the same pendulum from 70° (string taut, bob at rest), keep the camera and the reference object exactly where they were, and record at least 6 full swings."
  },
- "created_at": "2026-11-04T20:23:13.571706Z"
+ "created_at": "2026-11-04T21:08:54.906961Z"
 }

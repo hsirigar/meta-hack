@@ -1,0 +1,441 @@
+{
+ "task": "analyze",
+ "ids": {
+  "run_id": "run_e_small",
+  "experiment_id": "exp_real_jlab",
+  "system_type": "pendulum"
+ },
+ "events": [
+  {
+   "type": "status",
+   "ts": 1793826745.399503,
+   "text": "agent: muse-wonder-1.0 via Meta Model API",
+   "task": "analyze",
+   "ids": {
+    "run_id": "run_e_small",
+    "experiment_id": "exp_real_jlab",
+    "system_type": "pendulum"
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793826745.400057,
+   "text": "I will inspect the keyframes first to confirm what is moving and what to track."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793826745.400061,
+   "id": "call_6e56df81-29f1-4581-a28a-9d7159e6259d",
+   "name": "describe_scene",
+   "args": {
+    "run_id": "run_e_small"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793826745.4020429,
+   "id": "call_6e56df81-29f1-4581-a28a-9d7159e6259d",
+   "name": "describe_scene",
+   "ok": true,
+   "result": {
+    "system_type": "pendulum",
+    "tracked_concepts": [
+     "white washer"
+    ],
+    "reference_object": {
+     "concept": "silver bar",
+     "known_size_m": 0.0,
+     "dimension": "width"
+    },
+    "anchor_hint": "pivot at right end of silver bar",
+    "gravity_direction_hint": "down",
+    "notes": "white washer on thread, small ~7 deg swing; bar is scale-free camera-motion landmark",
+    "confidence": 0.95,
+    "backend": "Muse Spark (muse-spark-1.3) via Meta Model API"
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793826745.402315,
+   "text": "I found a pendulum with a white washer, so I will track the washer and the bar to get its motion."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793826745.402317,
+   "id": "call_30a9dfee-74c4-4b6e-b37b-4cefa6f0b332",
+   "name": "track_objects",
+   "args": {
+    "run_id": "run_e_small",
+    "concepts": [
+     "white washer",
+     "silver bar"
+    ]
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793826745.5101252,
+   "id": "call_30a9dfee-74c4-4b6e-b37b-4cefa6f0b332",
+   "name": "track_objects",
+   "ok": true,
+   "result": {
+    "tracks": {
+     "white washer": {
+      "track_id": "sam3.1:0:white ball",
+      "frames": 339,
+      "coverage": 0.9882,
+      "mean_score": 0.7816
+     },
+     "silver bar": {
+      "track_id": "sam3.1:0:silver bar",
+      "frames": 339,
+      "coverage": 1.0,
+      "mean_score": 0.7419
+     }
+    }
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793826745.510446,
+   "text": "Tracking looks complete, so I will convert the tracks into a calibrated angle over time."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793826745.510449,
+   "id": "call_08d75cb5-bf6b-448c-a675-cfe15ba18ed5",
+   "name": "measure",
+   "args": {
+    "run_id": "run_e_small"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793826745.513624,
+   "id": "call_08d75cb5-bf6b-448c-a675-cfe15ba18ed5",
+   "name": "measure",
+   "ok": true,
+   "result": {
+    "series": "theta",
+    "unit": "rad",
+    "n_frames": 339,
+    "n_valid": 333,
+    "duration_s": 11.078,
+    "noise_sigma": 0.00045343,
+    "meters_per_pixel": 0.0,
+    "calibration_method": "angles_only",
+    "split_train_end_t": 6.8468,
+    "knobs": {
+     "release_angle_deg": 7.6
+    }
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793826745.513916,
+   "text": "I have the angle series, so I will check whether the recording can be trusted before fitting."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793826745.5139189,
+   "id": "call_8c9c5bfd-fb24-45b1-a188-e9e6724608d7",
+   "name": "check_validity",
+   "args": {
+    "run_id": "run_e_small"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793826745.518708,
+   "id": "call_8c9c5bfd-fb24-45b1-a188-e9e6724608d7",
+   "name": "check_validity",
+   "ok": true,
+   "result": {
+    "status": "valid",
+    "checks": [
+     {
+      "name": "camera_drift",
+      "status": "pass",
+      "reason": "Reference object stayed within 1.0 px of its starting position."
+     },
+     {
+      "name": "camera_jump",
+      "status": "pass",
+      "reason": "No sudden camera jumps."
+     },
+     {
+      "name": "scale_changed",
+      "status": "pass",
+      "reason": "Scale stable (reference size varied 1.4%)."
+     },
+     {
+      "name": "tracking_lost",
+      "status": "pass",
+      "reason": "Object tracked in 100.0% of the evaluation frames."
+     },
+     {
+      "name": "frame_timing",
+      "status": "pass",
+      "reason": "Frame timing regular (median 30.0 fps)."
+     },
+     {
+      "name": "pendulum_geometry",
+      "status": "pass",
+      "reason": "Bob moves on a circular arc (residual 0.89 px, radius 468 px; no metre scale in this clip)."
+     },
+     {
+      "name": "object_shape",
+      "status": "pass",
+      "reason": "The tracked object keeps a steady outline (size varies 14%)."
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793826749.281467,
+   "text": "The recording passed the checks, so I will list the candidate pendulum models to fit."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793826749.281492,
+   "id": "call_22c301e8-2251-4da7-92f1-761c8b8ae607",
+   "name": "list_models",
+   "args": {
+    "system_type": "pendulum"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793826749.281646,
+   "id": "call_22c301e8-2251-4da7-92f1-761c8b8ae607",
+   "name": "list_models",
+   "ok": true,
+   "result": {
+    "models": [
+     {
+      "name": "pendulum_linear",
+      "equation": "\\ddot\\theta + 2\\gamma\\dot\\theta + \\omega_0^2\\,\\theta = 0",
+      "params": [
+       "omega0",
+       "gamma",
+       "theta0",
+       "dtheta0"
+      ],
+      "knob_transfer": "omega0 and gamma are properties of the pendulum and stay fixed; the new initial state comes from the conditioning window"
+     },
+     {
+      "name": "pendulum_nonlinear",
+      "equation": "\\ddot\\theta + 2\\gamma\\dot\\theta + \\omega_0^2\\,\\sin\\theta = 0",
+      "params": [
+       "omega0",
+       "gamma",
+       "theta0",
+       "dtheta0"
+      ],
+      "knob_transfer": "omega0 and gamma are properties of the pendulum and stay fixed; the new initial state comes from the conditioning window"
+     },
+     {
+      "name": "pendulum_nonlinear_quaddamp",
+      "equation": "\\ddot\\theta + c\\,\\dot\\theta|\\dot\\theta| + \\omega_0^2\\,\\sin\\theta = 0",
+      "params": [
+       "omega0",
+       "c",
+       "theta0",
+       "dtheta0"
+      ],
+      "knob_transfer": "omega0 and gamma are properties of the pendulum and stay fixed; the new initial state comes from the conditioning window"
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793826753.997453,
+   "text": "I have three candidates, so I will fit them on the training part and score them on the held-out part."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793826753.99747,
+   "id": "call_091276f8-2e4e-4702-900d-3a284b3763f1",
+   "name": "fit_models",
+   "args": {
+    "run_id": "run_e_small",
+    "model_names": [
+     "pendulum_linear",
+     "pendulum_nonlinear",
+     "pendulum_nonlinear_quaddamp"
+    ]
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793826760.519974,
+   "id": "call_091276f8-2e4e-4702-900d-3a284b3763f1",
+   "name": "fit_models",
+   "ok": true,
+   "result": {
+    "note": "fitted on training window only; holdout scored with frozen parameters",
+    "fits": [
+     {
+      "model": "pendulum_linear",
+      "params": {
+       "omega0": 5.926,
+       "gamma": 0.005473,
+       "theta0": 0.1131,
+       "dtheta0": 0.399
+      },
+      "param_std": {
+       "omega0": 0.0002782,
+       "gamma": 0.0002617,
+       "theta0": 0.0001347,
+       "dtheta0": 0.000807
+      },
+      "train_rmse": 0.0006642,
+      "holdout_rmse": 0.0008962,
+      "bic": -2906.0,
+      "ljung_box_p": 1.484e-13,
+      "n_train": 200,
+      "n_holdout": 133
+     },
+     {
+      "model": "pendulum_nonlinear",
+      "params": {
+       "omega0": 5.932,
+       "gamma": 0.005469,
+       "theta0": 0.1131,
+       "dtheta0": 0.3986
+      },
+      "param_std": {
+       "omega0": 0.0002786,
+       "gamma": 0.0002561,
+       "theta0": 0.0001356,
+       "dtheta0": 0.0008053
+      },
+      "train_rmse": 0.000664,
+      "holdout_rmse": 0.0008893,
+      "bic": -2906.0,
+      "ljung_box_p": 2.369e-13,
+      "n_train": 200,
+      "n_holdout": 133
+     },
+     {
+      "model": "pendulum_nonlinear_quaddamp",
+      "params": {
+       "omega0": 5.932,
+       "c": 0.0168,
+       "theta0": 0.1131,
+       "dtheta0": 0.3986
+      },
+      "param_std": {
+       "omega0": 0.0002787,
+       "c": 0.0008328,
+       "theta0": 0.0001367,
+       "dtheta0": 0.000807
+      },
+      "train_rmse": 0.0006646,
+      "holdout_rmse": 0.0008851,
+      "bic": -2905.0,
+      "ljung_box_p": 1.599e-13,
+      "n_train": 200,
+      "n_holdout": 133
+     }
+    ]
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793826764.142598,
+   "text": "The fits are close, so I will compare them on the held-out evidence to see if any wins clearly."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793826764.142624,
+   "id": "call_af7cd564-0e49-4ce1-8694-0d1dee3fcfa1",
+   "name": "compare_models",
+   "args": {
+    "run_id": "run_e_small"
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793826764.154641,
+   "id": "call_af7cd564-0e49-4ce1-8694-0d1dee3fcfa1",
+   "name": "compare_models",
+   "ok": true,
+   "result": {
+    "status": "ambiguous",
+    "best": null,
+    "max_separation_sigma": 0.4991,
+    "delta_bic": 0.1141,
+    "holdout_rmse_ratio": 1.008,
+    "noise_sigma": 0.0004534,
+    "rule": "ambiguous if |dBIC| < 6 and holdout RMSE ratio < 1.2 and max separation < 3 sigma (the dBIC test is skipped when both models' residuals are autocorrelated, Ljung-Box p < 0.01)",
+    "holdout_rmse": {
+     "pendulum_linear": 0.0008962,
+     "pendulum_nonlinear": 0.0008893,
+     "pendulum_nonlinear_quaddamp": 0.0008851
+    },
+    "holdout_rmse_in_noise_sigma": {
+     "pendulum_linear": 1.977,
+     "pendulum_nonlinear": 1.961,
+     "pendulum_nonlinear_quaddamp": 1.952
+    },
+    "implied_length_m": {
+     "pendulum_linear": 0.2794,
+     "pendulum_nonlinear": 0.2788,
+     "pendulum_nonlinear_quaddamp": 0.2788
+    },
+    "measured_length_m": null,
+    "amplitude": {
+     "deg": 7.556
+    }
+   }
+  },
+  {
+   "type": "thought",
+   "ts": 1793826767.5847292,
+   "text": "The comparison is inconclusive, so I will render each model as a ghost over the video for you to see."
+  },
+  {
+   "type": "tool_call",
+   "ts": 1793826767.584748,
+   "id": "call_4b21bf2b-4180-4d9a-be17-8715ce82becf",
+   "name": "render_ghosts",
+   "args": {
+    "run_id": "run_e_small",
+    "model_names": [
+     "pendulum_linear",
+     "pendulum_nonlinear",
+     "pendulum_nonlinear_quaddamp"
+    ]
+   }
+  },
+  {
+   "type": "tool_result",
+   "ts": 1793826768.1209228,
+   "id": "call_4b21bf2b-4180-4d9a-be17-8715ce82becf",
+   "name": "render_ghosts",
+   "ok": true,
+   "result": {
+    "overlay_url": "/api/runs/run_e_small/overlay.mp4",
+    "ghosts": [
+     "linear (small-angle)",
+     "nonlinear (sin)",
+     "nonlinear + quad drag"
+    ],
+    "path": "runs/run_e_small/overlay.mp4"
+   }
+  },
+  {
+   "type": "message",
+   "ts": 1793826773.23948,
+   "text": "Inconclusive. This valid small swing at 7.556\u00b0 is too small to separate the models: held-out errors were 0.0008962 rad for linear, 0.0008893 rad for nonlinear, and 0.0008851 rad for nonlinear with quadratic damping, a ratio of only 1.008 and a maximum separation of 0.4991\u03c3. I rendered all three ghosts over the video so you can see they overlap."
+  },
+  {
+   "type": "done",
+   "ts": 1793826773.239536,
+   "result": {}
+  }
+ ]
+}
