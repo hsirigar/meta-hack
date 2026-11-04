@@ -47,6 +47,8 @@
    10
   ]
  },
+ "tracker": "fallback_color_tracker",
+ "scene_backend": "mock",
  "rows": [
   {
    "kind": "pendulum_small",
